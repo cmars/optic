@@ -158,6 +158,14 @@ export function makeRouter(dependencies: ICaptureRouterDependencies) {
     });
   });
 
+  router.post('/interactions', async (req, res) => {
+    const { body } = req;
+    const { captureId } = req.params;
+    // map format to X
+    // figure out how to save them to this capture
+    console.log(body);
+  });
+
   ////////////////////////////////////////////////////////////////////////////////
 
   return router;
