@@ -30,5 +30,6 @@ export default class IngestUrl extends Command {
 
     const ingestUrl = `ingestUrl: ${apiBaseUrl}/${cliSession.session.id}/captures/${captureId}/interactions`;
     this.log(ingestUrl);
+    process.exit(0);
   }
 }

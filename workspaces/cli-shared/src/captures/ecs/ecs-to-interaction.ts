@@ -3,7 +3,7 @@ import { IHttpInteraction } from '../../optic-types';
 //@todo MIKE 'ecs' needs types
 //@todo write tests
 export function ecsToHttpInteraction(ecs: any): IHttpInteraction {
-  const { request, response } = ecs.host;
+  const { request, response } = ecs.http;
   const { query, path, domain } = ecs.url;
   return {
     uuid: uuid.v4(),
