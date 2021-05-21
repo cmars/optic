@@ -28,7 +28,7 @@ export default class IngestUrl extends Command {
     const cliSession = await cliClient.findSession(paths.cwd, null, null);
     const eventEmitter = new EventEmitter();
 
-    const ingestUrl = `ingestUrl: ${apiBaseUrl}/${cliSession.session.id}/captures/${captureId}/interactions`;
+    const ingestUrl = `ingestUrl: ${apiBaseUrl}/specs/${cliSession.session.id}/captures/${captureId}/interactions`;
     this.log(ingestUrl);
     process.exit(0);
   }
