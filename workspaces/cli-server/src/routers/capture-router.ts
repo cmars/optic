@@ -10,7 +10,17 @@ import {
 import { ILearnedBodies } from '@useoptic/cli-shared/build/diffs/initial-types';
 import { OnDemandInitialBodyRust } from '../tasks/on-demand-initial-body-rust';
 import { OnDemandShapeDiffAffordancesRust } from '../tasks/on-demand-trail-values-rust';
+<<<<<<< HEAD
 import * as opticEngine from '@useoptic/optic-engine-wasm';
+=======
+import * as opticEngine from '@useoptic/diff-engine-wasm/engine/build';
+import { CaptureSaverWithDiffs } from '@useoptic/cli-shared/build/captures/avro/file-system/capture-saver-with-diffs';
+import { SpecServiceClient } from '@useoptic/cli-client';
+import EventEmitter from 'events';
+import uuid from 'uuid';
+import { IHttpInteraction } from '@useoptic/cli-shared/build/optic-types';
+import { ecsToHttpInteraction } from '@useoptic/cli-shared/build/captures/ecs/ecs-to-interaction';
+>>>>>>> e584524ea (optic ingest)
 
 export interface ICaptureRouterDependencies {
   idGenerator: IdGenerator<string>;
@@ -158,12 +168,47 @@ export function makeRouter(dependencies: ICaptureRouterDependencies) {
     });
   });
 
+  ////////////////////////////////////////////////////////////////////////////////
+
+  const instances: Map<string, CaptureSaverWithDiffs> = new Map();
+  //@todo factor this into a seperate class
   router.post('/interactions', async (req, res) => {
-    const { body } = req;
     const { captureId } = req.params;
-    // map format to X
-    // figure out how to save them to this capture
-    console.log(body);
+    const { body } = req;
+
+    // validate body is array of ecs
+
+    const getOrCreateCaptureSaver = async (captureId: string) => {
+      if (instances.has(captureId)) {
+        return instances.get(captureId)!;
+      } else {
+        const apiBaseUrl = `${req.baseUrl}/api`;
+        const specServiceClient = new SpecServiceClient(
+          req.optic.session.id,
+          new EventEmitter(),
+          apiBaseUrl
+        );
+        const persistenceManager = new CaptureSaverWithDiffs(
+          {
+            captureBaseDirectory: req.optic.paths.capturesPath,
+            captureId,
+            shouldCollectDiffs: false,
+          },
+          req.optic.config,
+          specServiceClient
+        );
+        await persistenceManager.init();
+        instances.set(captureId, persistenceManager);
+        return persistenceManager;
+      }
+    };
+
+    const captureSaver = await getOrCreateCaptureSaver(captureId);
+
+    const interactions = body as any[];
+    interactions.forEach((i) => captureSaver.save(ecsToHttpInteraction(i)));
+
+    res.sendStatus(204);
   });
 
   ////////////////////////////////////////////////////////////////////////////////

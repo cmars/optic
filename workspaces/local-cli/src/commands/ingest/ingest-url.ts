@@ -27,15 +27,8 @@ export default class IngestUrl extends Command {
     const cliClient = new Client(apiBaseUrl);
     const cliSession = await cliClient.findSession(paths.cwd, null, null);
     const eventEmitter = new EventEmitter();
-    const specServiceClient = new SpecServiceClient(
-      cliSession.session.id,
-      eventEmitter,
-      apiBaseUrl
-    );
 
     const ingestUrl = `ingestUrl: ${apiBaseUrl}/${cliSession.session.id}/captures/${captureId}/interactions`;
     this.log(ingestUrl);
-
-    // fail if it's not an optic project
   }
 }
