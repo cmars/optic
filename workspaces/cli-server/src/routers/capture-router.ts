@@ -10,17 +10,11 @@ import {
 import { ILearnedBodies } from '@useoptic/cli-shared/build/diffs/initial-types';
 import { OnDemandInitialBodyRust } from '../tasks/on-demand-initial-body-rust';
 import { OnDemandShapeDiffAffordancesRust } from '../tasks/on-demand-trail-values-rust';
-<<<<<<< HEAD
 import * as opticEngine from '@useoptic/optic-engine-wasm';
-=======
-import * as opticEngine from '@useoptic/diff-engine-wasm/engine/build';
 import { CaptureSaverWithDiffs } from '@useoptic/cli-shared/build/captures/avro/file-system/capture-saver-with-diffs';
 import { SpecServiceClient } from '@useoptic/cli-client';
 import EventEmitter from 'events';
-import uuid from 'uuid';
-import { IHttpInteraction } from '@useoptic/cli-shared/build/optic-types';
 import { ecsToHttpInteraction } from '@useoptic/cli-shared/build/captures/ecs/ecs-to-interaction';
->>>>>>> e584524ea (optic ingest)
 
 export interface ICaptureRouterDependencies {
   idGenerator: IdGenerator<string>;
@@ -180,7 +174,8 @@ export function makeRouter(dependencies: ICaptureRouterDependencies) {
       if (instances.has(captureId)) {
         return instances.get(captureId)!;
       } else {
-        const apiBaseUrl = `${req.baseUrl}/api`;
+        const apiBaseUrl = `http://${req.hostname}:34444/api`;
+
         const specServiceClient = new SpecServiceClient(
           req.optic.session.id,
           new EventEmitter(),

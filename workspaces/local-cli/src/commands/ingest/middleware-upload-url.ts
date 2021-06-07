@@ -5,9 +5,9 @@ import { ensureDaemonStarted } from '@useoptic/cli-server';
 import { lockFilePath } from '../../shared/paths';
 import Config from '../../config';
 import { developerDebugLogger } from '@useoptic/cli-shared';
-import { Client, SpecServiceClient } from '@useoptic/cli-client';
+import { Client } from '@useoptic/cli-client';
 import EventEmitter from 'events';
-export default class IngestUrl extends Command {
+export default class MiddlewareUploadUrl extends Command {
   static description =
     'get a local upload url for capturing traffic from SDKs or HTTP';
   static hidden: boolean = true;
