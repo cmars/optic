@@ -7,12 +7,43 @@ Tap.test('diff-worker-rust', async (test) => {
       http: {
         response: {
           body: {
-            content:
-              '{\n  "args": {}, \n  "data": "", \n  "files": {}, \n  "form": {}, \n  "headers": {\n    "Accept": "*/*", \n    "Accept-Encoding": "gzip, deflate, br", \n    "Host": "localhost", \n    "Postman-Token": "d65619bb-eb24-47f3-81b2-b06d38700564", \n    "User-Agent": "PostmanRuntime/7.28.0", \n    "X-Amzn-Trace-Id": "Root=1-60b910c7-7f9e635f34f56f1d7eed7b25"\n  }, \n  "json": null, \n  "origin": "2.216.83.131", \n  "url": "http://localhost/delete"\n}\n',
+            content: '',
           },
-          status_code: 200,
-          headers: { 'x-powered-by': 'Express' },
+          status_code: 302,
+          headers: {
+            'x-powered-by': 'Express',
+          },
         },
+        request: {
+          body: {
+            content: {},
+            bytes: 0,
+          },
+          method: 'PUT',
+          headers: {
+            'user-agent': 'PostmanRuntime/7.28.0',
+            accept: '*/*',
+            'postman-token': 'fd42c9ce-27ca-407b-950d-b37b959e70a0',
+            host: 'localhost:3000',
+            'accept-encoding': 'gzip, deflate, br',
+            connection: 'keep-alive',
+            'content-length': '0',
+          },
+        },
+        version: '1.1',
+      },
+      url: {
+        full: 'http://localhost:3000/status/302',
+        path: '/status/302',
+        domain: 'localhost',
+      },
+      client: {
+        address: '::1',
+        ip: '::1',
+        port: 60876,
+      },
+      user_agent: {
+        original: 'PostmanRuntime/7.28.0',
       },
     });
   });

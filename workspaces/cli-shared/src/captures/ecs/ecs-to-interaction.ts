@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 import { IHttpInteraction } from '@useoptic/optic-domain';
 import niceTry from 'nice-try';
 //@todo MIKE 'ecs' needs types
