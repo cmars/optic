@@ -1,0 +1,175 @@
+---
+date: "06/22/2021"
+title: "Using Optic's new tools to automate an API design guide"
+author: Stephen Mizell
+author_url: "https://github.com/smizell"
+author_image_url: "/img/team/smizell.jpg"
+description: "We [recently wrote](/blog/design-guides-for-api-changes) about how we're building features to help people write API guidelines that are based on the way an API changes. Not only do these new tools give you insights into how your API is evolving, they enable you to build tools around this change."
+category: Community
+---
+
+We [recently wrote](/blog/design-guides-for-api-changes) about how we're building features to help people write API guidelines that are based on the way an API changes. Not only do these new tools give you insights into how your API is evolving, they enable you to build tools around this change.
+
+We have three new updates to make this possible. We have a new GitBot that adds a comment to your Pull Request (PR) when there is a change in your API. It links to the changelog documentation so you can see all the details.
+
+Next, we're releasing Spectacle, a GraphQL API that gives you the ability to peer into the data Optic has gathered while observing your API. This includes the API specification and data around the way it has changed.
+
+And finally we're adding the ability to write scripts in your build pipeline using these new tools.
+
+## Starting the conversation in your PR
+
+When you open a PR in GitHub, Optic's GitBot will compare your branch with the branch you're wanting to merge into to find any API changes. If it finds changes, it will add a comment to your PR letting you know and link to the full changelog documentation in Optic.
+
+This makes sure no API change goes unnoticed. It's a conversation starter. And it brings people into the conversation who might be interested in the discussion.
+
+After it runs, the GitBot exposes an environment variable `SINCE_BATCH_COMMIT_ID` that tells you the last change that happened in your base branch. You can use this in your tooling to look at what's changed on this PR.
+
+## Querying Spectacle for changes to endpoints
+
+You can run Spectacle in your build pipeline. It lets your query your specification and look at the way it's changed. You can query Spectacle for all the endpoint changes since a given Batch Commit, which is the environment variable the GitBot provides.
+
+The query might look like this.
+
+```js
+query EndpointChanges($sinceBatchCommitId: String!) {
+  endpointChanges(sinceBatchCommitId: $sinceBatchCommitId) {
+    endpoints {
+      change {
+        category
+      }
+      contributions
+      pathId
+      path
+      method
+    }
+  }
+}
+```
+
+The change category will tell you if the endpoint was added or updated. This lets you apply your guidelines to only what's new rather than every endpoint in your spec.
+
+We'll use this query above in a script that to queries Spectacle and applies a design guideline.
+
+## Writing a design guideline for status codes
+
+While we have the query for finding changes, we'll need a query for getting information about our specification. For this, we'll use the requests query.
+
+```
+{
+  requests {
+    id
+    pathId
+    absolutePathPatternWithParameterNames
+    method
+    responses {
+      statusCode
+    }
+  }
+}
+```
+
+You see this query has a pathId and method. We'll take the `pathId` and method from all the new endpoints and match it up with the requests in the spec. Then we'll look at the list of status codes to make sure the status codes provided are present.
+
+The code for this check might look like this.
+
+```js
+function expectStatusCodes(statusCodes) {
+  return (endpointChanges, requests) => {
+    const addedEndpoints =
+      endpointChanges.data.endpointChanges.endpoints.filter(
+        (endpoint) => endpoint.change.category === "added"
+      )
+    const matchingRequests = requests.data.requests.filter((request) =>
+      addedEndpoints.find(
+        (endpoint) =>
+          endpoint.pathId === request.pathId &&
+          endpoint.method === request.method
+      )
+    );
+    for (const request of matchingRequests) {
+      const existingStatusCodes = request.responses.map(
+        (response) => response.statusCode
+      )
+      for (const statusCode of statusCodes) {
+        if (!existingStatusCodes.includes(statusCode)) {
+          return `Expected endpoint ${request.absolutePathPatternWithParameterNames} ${request.method} to have a ${statusCode} status code`
+        }
+      }
+    }
+    return null
+  };
+}
+```
+
+We can use this code like:
+
+```
+expectStatusCodes([404])
+```
+
+We have additional code that wires together this code, our queries, and code that runs these checks. You can view the full script HERE.
+
+## Running our check as an Optic Script
+
+The Optic CLI provides a [tool for running scripts](/docs/apiops/scripts/) around your API Ops process.
+
+In your script, you'll have access to another environment variable called `SPECTACLE_URL`. This gives you the URL for the Spectacle instance running locally.
+
+Our code to query Spectacle might look something like this.
+
+```js
+async function querySpectacle(body) {
+  // this is using the node-fetch npm package
+  const result = await fetch(process.env.SPECTACLE_URL, {
+    method: 'POST',
+    body:    JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  return await result.json()
+}
+```
+
+We'll pass our queries into this to get the data we need to run our checks.
+
+Now we have everything we need. We have:
+
+The `SINCE_BATCH_COMMIT_ID` environment variable from the GitBot telling us where our changes start for this PR
+The code that checks to ensure we added a 404 status code on any new endpoint
+The queries to send to Spectacle to get the endpoint changes and the specification details
+The `SPECTACLE_URL` environment variable to use when we send our query to the Spectacle instance in our build pipeline
+The code that wires this all together
+
+We need to add our script to .optic.yml.
+
+```yml
+yaml
+name: Sample API
+...
+scripts:
+  api-design-guidelines:
+    command: node design-guidelines.js
+```
+
+And then add this command to run this script to our GitHub Action workflow.
+
+```sh
+api script api-design-guidelines
+```
+
+You can see the full workflow file HERE.
+
+## What's our new workflow look like?
+
+With this in place, we'll get a comment in PR every time there's an API change. We'll be able to view those changes in Optic's nice changelog documentation. 
+
+With our design guide check, we'll ensure that every new endpoint has the right status codes. The feedback is limited to what's in the PR, and it's actionable and not a bunch of noise.
+
+This workflow works for any team, whether they are design first or code first. Teams can immediately start using your API design guide checks because they are narrowed in on what has changed. This helps you include teams in your API journey that are often left out because they're unable to make their entire API conform. Now they can make sure each change conforms without having to convert their entire API.
+
+## Sharing your stories
+
+We want to hear about your experiences changing APIs. What were the struggles? Fill out the survey below and we’ll help you write some of the first Optic powered design guides over the next several weeks.
+
+import { Typeform } from "../src/components/Typeform"
+
+<Typeform formId="qTxsT9Dq" />
