@@ -18,9 +18,11 @@ export const AllEndpointsQuery = `{
       name
       isParameterized
       contributions
+      isRemoved
     }
     method
     pathContributions
+    isRemoved
   }
 }`;
 
@@ -35,9 +37,11 @@ export type EndpointQueryResults = {
       name: string;
       isParameterized: boolean;
       contributions: Record<string, string>;
+      isRemoved: boolean;
     }[];
     method: string;
     pathContributions: Record<string, string>;
+    isRemoved: boolean;
   }[];
 };
 
@@ -50,7 +54,6 @@ export const endpointQueryResultsToJson = ({
           requests.map((req) => req.absolutePathPatternWithParameterNames)
         )
       : '/';
-
   return requests.map((request) => ({
     pathId: request.pathId,
     method: request.method,
@@ -67,6 +70,7 @@ export const endpointQueryResultsToJson = ({
     })),
     description: request.pathContributions.description || '',
     purpose: request.pathContributions.purpose || '',
+    isRemoved: request.isRemoved,
   }));
 };
 
@@ -79,6 +83,7 @@ const fetchEndpoints = createAsyncThunk<
     variables: {},
   });
   if (results.errors) {
+    console.error(results.errors);
     throw new Error();
   }
   return results.data!;
