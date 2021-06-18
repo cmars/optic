@@ -1,0 +1,40 @@
+---
+title: Document your API
+slug: /document
+---
+
+import { UseCaseCard } from '../../src/components/UseCaseCard';
+import ExpandDocs from '../../src/components/Expand';
+import InstallSlim   from '../shared/install-slim.mdx';
+import Grid from '@material-ui/core/Grid';
+import PreviewPageModal from '../../src/components/Modal';
+import { MuiThemeProvider } from '../../src/components/MuiIndexPage';
+
+<MuiThemeProvider>
+
+
+Documenting your API
+- real traffic / how it works
+- capturing traffic
+Collapsable Install
+
+<ExpandDocs title="1. Install Optic on your Development Machine" defaultOpen={false}>
+  <InstallSlim/>
+</ExpandDocs>
+
+<ExpandDocs title="2. Add Optic to your project" defaultOpen={true}>
+  <InstallSlim/>
+</ExpandDocs>
+
+## Configure traffic sources
+- we can get traffic from a lot of places
+- local is often easiest place to start
+- don't worry about getting it all in one go, Optic learns incrementally.
+
+
+<PreviewPageModal link={'/docs/capture'} Source={<InstallSlim/>}>
+  WHAT GOES INSIDE
+</PreviewPageModal>
+
+
+</MuiThemeProvider>

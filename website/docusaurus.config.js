@@ -15,7 +15,7 @@ module.exports = {
     hideableSidebar: true,
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: true,
+      disableSwitch: false,
     },
     navbar: {
       title: 'Optic',
@@ -37,7 +37,6 @@ module.exports = {
           label: 'Community',
           position: 'left',
         },
-        { to: 'blog', label: 'Blog', position: 'left' },
         {
           href: 'https://github.com/opticdev/optic',
           label: 'GitHub',
@@ -73,10 +72,6 @@ module.exports = {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
               label: 'Careers',
               href: '/careers',
             },
@@ -101,12 +96,6 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/opticdev/optic/edit/develop/website/',
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/opticdev/optic/edit/develop/website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

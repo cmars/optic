@@ -83,7 +83,7 @@ export const useFeatureStyles = makeStyles({
     color: '#586069',
     fontWeight: 300,
     fontSize: 18,
-    marginTop: 12,
+    marginTop: 6,
     fontFamily: 'Inter',
     marginBottom: 50,
     textAlign: 'left',
