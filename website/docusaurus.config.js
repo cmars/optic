@@ -1,3 +1,6 @@
+const allUseCases = require('./use-cases');
+const allWorkflows = require('./workflows');
+
 module.exports = {
   title: 'Optic',
   tagline: 'Optic documents your APIs as you build them',
@@ -12,7 +15,7 @@ module.exports = {
     googleAnalytics: {
       trackingID: 'UA-137236875-1',
     },
-    hideableSidebar: true,
+    hideableSidebar: false,
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
@@ -26,16 +29,41 @@ module.exports = {
       },
       items: [
         {
-          to: 'docs/',
-          activeBasePath: 'docs',
+          label: 'Use Cases',
+          items: [
+            allUseCases.Document,
+            allUseCases.Test,
+            allUseCases.Change,
+            allUseCases.Share,
+          ],
+          position: 'left',
+        },
+        {
+          label: 'Workflows',
+          items: [
+            allWorkflows.CIGitBot,
+            allWorkflows.TeamDesignFirst,
+            allWorkflows.DevelopWithOpticLocally,
+          ],
+          position: 'left',
+        },
+        {
+          to: '/reference',
+          activeBasePath: '/reference',
           label: 'Docs',
           position: 'left',
         },
         {
-          to: 'docs/community/',
-          activeBasePath: 'docs/community',
+          to: '/community',
+          activeBasePath: '/community',
           label: 'Community',
-          position: 'left',
+          position: 'right',
+        },
+        {
+          to: '/roadmap',
+          activeBasePath: '/roadmap',
+          label: 'Roadmap',
+          position: 'right',
         },
         {
           href: 'https://github.com/opticdev/optic',
@@ -93,6 +121,7 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/opticdev/optic/edit/develop/website/',

@@ -42,3 +42,12 @@ article {
 .MuiAccordion-root:before {
   display: none;
 }
+
+.menu__link--sublist {
+  font-weight: 700;
+  white-space: pre;
+}
+
+.dropdown__link {
+  white-space: pre;
+}

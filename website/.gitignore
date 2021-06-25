@@ -7,6 +7,8 @@
 # Generated files
 .docusaurus
 .cache-loader
+./docs/document/using-integration/**
+./docs/document/browsers/**
 
 # Misc
 .DS_Store

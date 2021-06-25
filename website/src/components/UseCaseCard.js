@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useHistory } from '@docusaurus/router';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { primary, SubtleBlueBackground, UpdatedBlueBackground } from './theme';
 import { Paper, Typography } from '@material-ui/core';
@@ -31,11 +31,20 @@ const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
-export const UseCaseCard = ({ title, description }) => {
+export const UseCaseCard = ({ title, link, description }) => {
   const classes = useStyles();
   const featuredStyles = useFeatureStyles();
+  const history = useHistory();
   return (
-    <Paper elevation={2} className={classes.paper}>
+    <Paper
+      elevation={2}
+      className={classes.paper}
+      onClick={() => {
+        if (link) {
+          history.replace(link);
+        }
+      }}
+    >
       <Typography variant="h5">
         {' '}
         <FormatCopy value={title} />
@@ -45,16 +54,5 @@ export const UseCaseCard = ({ title, description }) => {
         {description}
       </Typography>
     </Paper>
-  );
-};
-
-/// instances
-
-export const DocumentUseCaseCard = (props) => {
-  return (
-    <UseCaseCard
-      title={'**Document** your API in 10 minutes'}
-      description={'Use real traffic to document your API in minutes. '}
-    />
   );
 };

@@ -1,17 +1,37 @@
 ---
-title: Document your API
+title: Use Real Traffic to Document your API
+sidebar_label: Get Started
 slug: /document
 ---
 
-import { UseCaseCard } from '../../src/components/UseCaseCard';
 import ExpandDocs from '../../src/components/Expand';
-import InstallSlim   from '../shared/install-slim.mdx';
-import Grid from '@material-ui/core/Grid';
-import PreviewPageModal from '../../src/components/Modal';
+import InstallSlim from '../shared/install-slim.mdx';
+import { DemoPageModal } from '../../src/components/Modal';
 import { MuiThemeProvider } from '../../src/components/MuiIndexPage';
+import { ShowAllFrameworks } from '../../src/components/ShowAllFrameworks';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { IFrameDemoNotCentered } from '../../src/components/iFrameDemo2';
+
+
+
+<DemoPageModal demoKey={"document-demo"} title="Document your API Demo">
+
+### Use Real Traffic to Document your API
+It does not matter if your API is years old or brand new -- wherever you are, Optic makes it easy to get any API documented, and keep those docs up-to-date. It's like having Git, but for your APIs.
+
+Want to start versioning some of your existing API endpoints with Optic?
+
+1. Collect API traffic
+2. Add them to the spec in just a few clicks
+
+
+*Try out the UI without downloading Optic:*
+<IFrameDemoNotCentered demoPath={'/demos/github/review'} />
+
+</DemoPageModal>
 
 <MuiThemeProvider>
-
 
 Documenting your API
 - real traffic / how it works
@@ -32,9 +52,23 @@ Collapsable Install
 - don't worry about getting it all in one go, Optic learns incrementally.
 
 
-<PreviewPageModal link={'/docs/capture'} Source={<InstallSlim/>}>
-  WHAT GOES INSIDE
-</PreviewPageModal>
+
+<Tabs
+  defaultValue="integration"
+  values={[
+    {label: 'Code Integration', value: 'integration'},
+    {label: 'Browser', value: 'browser'},
+    {label: 'API Tools', value: 'tools'},
+    {label: 'Deployed Environment', value: 'live'},
+  ]}>
+<TabItem value="integration">
+Add Optic to your API project to intercept traffic from development and tests.
+  <ShowAllFrameworks/>
+</TabItem>
+<TabItem value="browser">This is an orange 🍊</TabItem>
+<TabItem value="tools">This is a banana 🍌</TabItem>
+<TabItem value="live">This is a banana 🍌</TabItem>
+</Tabs>
 
 
 </MuiThemeProvider>
