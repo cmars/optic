@@ -13,7 +13,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { IFrameDemoNotCentered } from '../../src/components/iFrameDemo2';
 
-
+<MuiThemeProvider>
 
 <DemoPageModal demoKey={"document-demo"} title="Document your API Demo">
 
@@ -30,8 +30,6 @@ Want to start versioning some of your existing API endpoints with Optic?
 <IFrameDemoNotCentered demoPath={'/demos/github/review'} />
 
 </DemoPageModal>
-
-<MuiThemeProvider>
 
 Documenting your API
 - real traffic / how it works
@@ -50,7 +48,6 @@ Collapsable Install
 - we can get traffic from a lot of places
 - local is often easiest place to start
 - don't worry about getting it all in one go, Optic learns incrementally.
-
 
 
 <Tabs

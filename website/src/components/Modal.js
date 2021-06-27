@@ -9,7 +9,10 @@ import { useHistory } from '@docusaurus/router';
 
 import { Link, Typography } from '@material-ui/core';
 import { SubtleBlueBackground } from './theme';
+import KeyConcepts from '../../docs/reference/key-concepts.mdx';
+import Document from '../../docs/document/document.mdx';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { MuiThemeProvider } from './MuiIndexPage';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -30,46 +33,52 @@ export default function PreviewPageModal(props) {
   };
 
   return (
-    <div>
-      <div onClick={handleClickOpen}>{children}</div>
-      <Dialog
-        open={open}
-        maxWidth={'lg'}
-        fullWidth={true}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-      >
-        <DialogActions
-          style={{
-            backgroundColor: SubtleBlueBackground,
-            borderBottom: '1px solid #e2e2e2',
-            paddingLeft: 10,
-          }}
+    <MuiThemeProvider>
+      <span>
+        <span onClick={handleClickOpen}>{children}</span>
+        <Dialog
+          open={open}
+          maxWidth={'md'}
+          fullWidth={true}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
         >
-          <Typography
-            variant="subtitle1"
-            style={{ fontSize: 15, fontWeight: 600 }}
-            color="primary"
+          <DialogActions
+            style={{
+              backgroundColor: SubtleBlueBackground,
+              borderBottom: '1px solid #e2e2e2',
+              paddingLeft: 10,
+            }}
           >
-            {title}
-          </Typography>
-          <div style={{ flex: 1 }} />
-          <Button onClick={handleClose} color="primary">
-            Close
-          </Button>
-          <Button
-            endIcon={<OpenInNewIcon />}
-            onClick={() => history.replace(link)}
-            style={{ textDecoration: 'none' }}
-            color="primary"
+            <Typography
+              variant="subtitle1"
+              style={{ fontSize: 15, fontWeight: 600 }}
+              color="primary"
+            >
+              {title}
+            </Typography>
+            <div style={{ flex: 1 }} />
+            <Button
+              endIcon={<OpenInNewIcon />}
+              onClick={() => history.replace(link)}
+              style={{ textDecoration: 'none' }}
+              color="primary"
+            >
+              Open as Page
+            </Button>
+            <Button variant="contained" onClick={handleClose} color="primary">
+              Done
+            </Button>
+          </DialogActions>
+          <DialogContent
+            style={{ padding: 20, paddingTop: 25, paddingBottom: 400 }}
           >
-            Open as Page
-          </Button>
-        </DialogActions>
-        <DialogContent style={{ padding: 20 }}>{Source}</DialogContent>
-      </Dialog>
-    </div>
+            {Source}
+          </DialogContent>
+        </Dialog>
+      </span>
+    </MuiThemeProvider>
   );
 }
 
@@ -128,3 +137,30 @@ export function DemoPageModal(props) {
     </div>
   );
 }
+
+export const PreviewPageModalFakeLink = ({ link, title, source, linkText }) => {
+  return (
+    <PreviewPageModal link={link} title={title} Source={source}>
+      <a style={{ cursor: 'pointer' }}>{linkText}</a>
+    </PreviewPageModal>
+  );
+};
+
+export const CommonLinks = {
+  Coverage: () => (
+    <PreviewPageModalFakeLink
+      linkText={'API Coverage'}
+      link={'/reference'}
+      title={`Key Concepts`}
+      source={<KeyConcepts />}
+    />
+  ),
+  Document: ({ text }) => (
+    <PreviewPageModalFakeLink
+      linkText={text}
+      link={'/document'}
+      title={`Document your API with Optic`}
+      source={<Document />}
+    />
+  ),
+};

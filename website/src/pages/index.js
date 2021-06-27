@@ -117,7 +117,7 @@ export default function () {
           <Grid container spacing={4}>
             <Grid item xs={12} sm={12}>
               <UseCaseCard
-                link={'/docs/document'}
+                link={workflows.CIGitBot.href}
                 title={workflows.CIGitBot.label}
                 description={
                   'Monitor your test, development and staging environments.API Coverage + Diff Reports help you confidently release new code.'
@@ -126,7 +126,7 @@ export default function () {
             </Grid>
             <Grid item xs={12} sm={6}>
               <UseCaseCard
-                link={'/docs/document'}
+                link={workflows.DevelopWithOpticLocally.href}
                 title={workflows.DevelopWithOpticLocally.label}
                 description={
                   'Share your API documentation, an auto-generated changelog, and examples with all of your consumers. Optic makes it easy to update these resources whenever the API changes.'
@@ -135,7 +135,7 @@ export default function () {
             </Grid>
             <Grid item xs={6}>
               <UseCaseCard
-                link={'/docs/document'}
+                link={workflows.TeamDesignFirst.href}
                 title={workflows.TeamDesignFirst.label}
                 description={
                   'Optic provides an accurate API changelog in each PR. Start working API-first, have a conversation every time the API is changing'

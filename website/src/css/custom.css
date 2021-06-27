@@ -51,3 +51,7 @@ article {
 .dropdown__link {
   white-space: pre;
 }
+
+blockquote {
+  padding: 10px;
+}
