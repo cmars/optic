@@ -1,9 +1,10 @@
 const { generate } = require('./helper');
 
-const documentLinkTemplate = (slug) => `document/using-integration/${slug}`;
+const documentLinkTemplate = (slug) =>
+  `reference/capture-methods/using-integration/${slug}`;
 const documentTemplate = (name, slug, path, link) => `
 ---
-title: Document using ${name}
+title: Capture traffic from ${name}
 sidebar_label: ${name}
 slug: /${link}
 ---
@@ -19,5 +20,12 @@ module.exports = generate(
   ['../docs', 'frameworks'],
   documentTemplate,
   documentLinkTemplate,
-  [__dirname, '../', 'docs', 'document', 'using-integration']
+  [
+    __dirname,
+    '../',
+    'docs',
+    'reference',
+    'capture-methods',
+    'using-integration',
+  ]
 );

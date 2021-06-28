@@ -5,7 +5,7 @@ module.exports = {
       slug: 'chrome',
       path:
         '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/browsers/chrome.mdx',
-      link: 'document/browsers/chrome',
+      link: 'reference/capture-methods/browsers/chrome',
       metadata: { title: 'Chrome' },
     },
   ],

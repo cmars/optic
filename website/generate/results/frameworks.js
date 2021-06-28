@@ -5,7 +5,7 @@ module.exports = {
       slug: 'express',
       path:
         '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/frameworks/express.mdx',
-      link: 'document/using-integration/express',
+      link: 'reference/capture-methods/using-integration/express',
       metadata: { title: 'Express' },
     },
     {
@@ -13,7 +13,7 @@ module.exports = {
       slug: 'flask',
       path:
         '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/frameworks/flask.mdx',
-      link: 'document/using-integration/flask',
+      link: 'reference/capture-methods/using-integration/flask',
       metadata: { title: 'Flask' },
     },
   ],

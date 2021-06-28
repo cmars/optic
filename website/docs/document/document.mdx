@@ -10,10 +10,13 @@ import { DemoPageModal } from '../../src/components/Modal';
 import { MuiThemeProvider } from '../../src/components/MuiIndexPage';
 import { ShowAllFrameworks } from '../../src/components/ShowAllFrameworks';
 import Tabs from '@theme/Tabs';
+import { ShowAllTools } from '../../src/components/ShowAllTools';
 import TabItem from '@theme/TabItem';
+import { ShowAllBrowsers } from '../../src/components/ShowAllBrowsers';
 import { IFrameDemoNotCentered } from '../../src/components/iFrameDemo2';
 
-<MuiThemeProvider>
+:::note **Estimated Time:** 10 minute setup, 1 hr to finish
+Learn how to capture traffic, and document your API with Optic.
 
 <DemoPageModal demoKey={"document-demo"} title="Document your API Demo">
 
@@ -31,11 +34,9 @@ Want to start versioning some of your existing API endpoints with Optic?
 
 </DemoPageModal>
 
-Documenting your API
-- real traffic / how it works
-- capturing traffic
-Collapsable Install
+:::
 
+### Prerequisites
 <ExpandDocs title="1. Install Optic on your Development Machine" defaultOpen={false}>
   <InstallSlim/>
 </ExpandDocs>
@@ -44,28 +45,72 @@ Collapsable Install
   <InstallSlim/>
 </ExpandDocs>
 
-## Configure traffic sources
-- we can get traffic from a lot of places
-- local is often easiest place to start
-- don't worry about getting it all in one go, Optic learns incrementally.
+## Capture Traffic
+Optic captures real API traffic, and uses its observations to document the behavior of your API. When you're first on-boarding your API to Optic, we recommend using a mix of **Manual Traffic Collection** techniques and **Automated Traffic Collection** techniques. If you have good test coverage, or some other automated traffic sources (like Postman) already set up, you can use those to get the core of your API documented very quickly. Anything you don't have good tests for can be captured by making requests to your API manually or intercepting traffic from your Browsers to your running application (applicable to webapps).
+
+<ExpandDocs title="Comparing Capture Methods" defaultOpen={false}>
+  <img src={'/img/traffic-collection.svg'} />
+</ExpandDocs>
 
 
 <Tabs
-  defaultValue="integration"
+  defaultValue="manual"
   values={[
-    {label: 'Code Integration', value: 'integration'},
-    {label: 'Browser', value: 'browser'},
-    {label: 'API Tools', value: 'tools'},
-    {label: 'Deployed Environment', value: 'live'},
+    {label: 'Manual', value: 'manual'},
+    {label: 'Automated', value: 'automated'},
+    {label: 'Passive (Live Environments)', value: 'passive'},
   ]}>
-<TabItem value="integration">
-Add Optic to your API project to intercept traffic from development and tests.
-  <ShowAllFrameworks/>
+<TabItem value="manual">
+
+**Capture Traffic by using your API / App**:
+
+Setup an `api start` command for your framework. Requests to the API when its run with Optic's CLI will be captured
+
+<ShowAllFrameworks/>
+
+Intercept traffic from your browser's network tab. Just run `api intercept` and API calls you see in the Network Tab will be captured by Optic.
+
+<ShowAllBrowsers />
 </TabItem>
-<TabItem value="browser">This is an orange 🍊</TabItem>
-<TabItem value="tools">This is a banana 🍌</TabItem>
-<TabItem value="live">This is a banana 🍌</TabItem>
+<TabItem value="automated">
+
+**Capture Traffic by running your API tests**
+
+Setup an `api test` command for your framework:
+<ShowAllFrameworks/>
+
+Capture Traffic from your other API Tools:
+<ShowAllTools />
+
+</TabItem>
+
+<TabItem value="passive">This is a banana 🍌</TabItem>
+
 </Tabs>
 
+---
 
-</MuiThemeProvider>
+## Document the API
+
+Let's check if we've captured enough traffic to start documenting our API.
+
+- Run `api status`
+  - If you see API paths, run `api status --review` top open the Optic UI
+  - If you have not been able to capture any traffic
+    - go back to the previous step
+    - get help from the maintainers by clicking here [INTERCOM LINK ASAP]
+
+```bash
+$ api status
+
+Computing API diffs... Done!
+✓  No diffs observed for existing endpoints
+   Undocumented URLs observed
+      (use "api status --review" to start documenting them
+          GET   /todos
+        PATCH   /todos/mc6ttk3vv
+         POST   /todos/
+```
+
+
+**Completed, move onto the next article to learn how to Document Endpoints with Optic

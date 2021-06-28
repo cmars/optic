@@ -4,9 +4,9 @@ import PreviewPageModal from './Modal';
 import { Grid, Link, Typography } from '@material-ui/core';
 import { SubtleBlueBackground } from './theme';
 
-const frameworks = require('../../generate/results/frameworks');
+const tools = require('../../generate/results/tools');
 
-export function ShowAllFrameworks() {
+export function ShowAllTools() {
   return (
     <div style={{ marginTop: 20, marginBottom: 20 }}>
       <Grid
@@ -15,9 +15,9 @@ export function ShowAllFrameworks() {
           padding: 15,
         }}
       >
-        {frameworks.data.map((i, index) => {
-          const Component = frameworks.components[i.slug] ? (
-            frameworks.components[i.slug].default
+        {tools.data.map((i, index) => {
+          const Component = tools.components[i.slug] ? (
+            tools.components[i.slug].default
           ) : (
             <></>
           );

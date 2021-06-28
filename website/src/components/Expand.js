@@ -7,11 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { primary, SubtleBlueBackground, UpdatedBlue } from './theme';
 import { FormatCopy } from './FormatCopy';
+import { MuiThemeProvider } from './MuiIndexPage';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     backgroundColor: SubtleBlueBackground,
+    marginBottom: 22,
     border: '1px solid #e2e2e2',
   },
   heading: {
@@ -27,24 +29,26 @@ export default function ExpandDocs(props) {
   const [open, setOpen] = useState(defaultOpen || false);
 
   return (
-    <Accordion
-      expanded={open}
-      elevation={0}
-      onChange={() => setOpen(!open)}
-      className={classes.root}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel1a-content"
-        id="panel1a-header"
+    <MuiThemeProvider>
+      <Accordion
+        expanded={open}
+        elevation={0}
+        onChange={() => setOpen(!open)}
+        className={classes.root}
       >
-        <Typography variant="h6" color="primary">
-          <FormatCopy value={title} />
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-        {children}
-      </AccordionDetails>
-    </Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography variant="h6" color="primary">
+            <FormatCopy value={title} />
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
+          {children}
+        </AccordionDetails>
+      </Accordion>
+    </MuiThemeProvider>
   );
 }

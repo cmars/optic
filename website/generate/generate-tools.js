@@ -1,10 +1,10 @@
 const { generate } = require('./helper');
 
 const documentLinkTemplate = (slug) =>
-  `reference/capture-methods/browsers/${slug}`;
+  `reference/capture-methods/tools/${slug}`;
 const documentTemplate = (name, slug, path, link) => `
 ---
-title: Capture traffic from ${name} Network Tab
+title: Capture Traffic from ${name}
 sidebar_label: ${name}
 slug: /${link}
 ---
@@ -16,9 +16,9 @@ import SpecificExample from '${path}';
 `;
 
 module.exports = generate(
-  'browsers',
-  ['../docs', 'browsers'],
+  'tools',
+  ['../docs', 'tools'],
   documentTemplate,
   documentLinkTemplate,
-  [__dirname, '../', 'docs', 'reference', 'capture-methods', 'browsers']
+  [__dirname, '../', 'docs', 'reference', 'capture-methods', 'tools']
 );
