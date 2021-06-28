@@ -6,7 +6,11 @@ const allUseCases = require('./use-cases');
 
 module.exports = {
   useCasesSidebar: {
-    [allUseCases.Document.label]: ['document/document'],
+    [allUseCases.Document.label]: [
+      'document/document',
+      'document/baseline',
+      'document/what-next',
+    ],
     [allUseCases.Test.label]: ['document/document'],
     [allUseCases.Change.label]: ['document/document'],
     [allUseCases.Share.label]: ['document/document'],
@@ -16,6 +20,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Capturing Traffic',
+      collapsed: false,
       items: [
         'reference/capture',
         {
@@ -41,24 +46,30 @@ module.exports = {
       ],
     },
     {
-      ['Optic CLI']: [
-        'reference/optic-cli/install',
-        {
-          type: 'category',
-          label: 'CLI Commands',
-          items: [
-            'reference/optic-cli/commands/init',
-            'reference/optic-cli/commands/run',
-          ],
-        },
+      type: 'category',
+      label: 'Optic CLI',
+      collapsed: false,
+      items: [
+        'reference/optic-cli/commands/init',
+        'reference/optic-cli/commands/run',
       ],
-      ['Config in optic.yml']: [
+    },
+    {
+      type: 'category',
+      label: 'Config in optic.yml',
+      collapsed: false,
+      items: [
         'reference/optic-yaml/explained',
         'reference/optic-yaml/tasks',
         'reference/optic-yaml/enviroments',
         'reference/optic-yaml/scripts',
       ],
-      ["Spectacle: Optic's API"]: ['reference/spectacle/spectacle'],
+    },
+    {
+      type: 'category',
+      label: 'Using Spectacle',
+      collapsed: false,
+      items: ['reference/spectacle/spectacle'],
     },
   ],
 };
