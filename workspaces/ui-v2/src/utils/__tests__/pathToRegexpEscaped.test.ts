@@ -24,6 +24,17 @@ test('treats dashes as the same named path parameter', () => {
   expect(regex.test('/api/123/notfeed')).toBe(false);
 });
 
+test('handles named path parameters with multiple colons', () => {
+  const regexColonStart = pathToRegexpEscaped('/api/:::hello/feed');
+  const regexColonMiddle = pathToRegexpEscaped('/api/:hel:lo/feed');
+
+  for (const regex of [regexColonStart, regexColonMiddle]) {
+    expect(regex.test('/api/someother_path/feed')).toBe(true);
+    expect(regex.test('/api/123/feed')).toBe(true);
+    expect(regex.test('/api/123/notfeed')).toBe(false);
+  }
+});
+
 test('treats special characters as the same named path parameter', () => {
   const regexWithPlus = pathToRegexpEscaped('/api/:+/feed');
   const regexWithSpecialCharactersInBetween = pathToRegexpEscaped(

@@ -3,7 +3,7 @@ import { pathToRegexp } from 'path-to-regexp';
 const specialCharactersRegex = /[.*+?^${}()|[\]\\]/g;
 
 // Special characters need to be escaped to be created as a regexp
-const replaceSpecialCharacters = (s: string) =>
+const escapeSpecialCharacters = (s: string) =>
   s.replace(specialCharactersRegex, '\\$&');
 
 // The pathToRegexp lib doesn't treat `-` as the same path parameter
@@ -19,18 +19,23 @@ const replaceDashWithUnderscoreInNamedParameter = (s: string) =>
 const replaceSpecialCharactersInNamedParameter = (s: string) =>
   s
     .split('/')
+    .map((part) => {
+      if (!part.startsWith(':')) {
+        return part;
+      }
+      const partWithoutSpecialChars = part.replace(specialCharactersRegex, '');
+      const partWithoutExtraColons =
+        partWithoutSpecialChars.slice(0, 1) +
+        partWithoutSpecialChars.slice(1).replace(/:/g, '');
 
-    .map((part) =>
-      part.startsWith(':')
-        ? part.replace(specialCharactersRegex, '') + 'a' // The regexp lib expects at least 1 character after a :
-        : part
-    )
+      return partWithoutExtraColons + 'a'; // The regexp lib expects at least 1 character after a colon
+    })
     .join('/');
 
 export const pathToRegexpEscaped: typeof pathToRegexp = (path, ...args) => {
   const escapedPath =
     typeof path === 'string'
-      ? replaceSpecialCharacters(
+      ? escapeSpecialCharacters(
           replaceDashWithUnderscoreInNamedParameter(
             replaceSpecialCharactersInNamedParameter(path)
           )
