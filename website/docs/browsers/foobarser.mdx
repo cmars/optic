@@ -2,6 +2,8 @@
 title: Foobarser
 ---
 
+import GetHelp from '../shared/get-help.mdx';
+
 <>Optic is easy to integrate with {frontMatter.title} using Optic's Intercept feature. Optic will start a local proxy and a browser session that's configured to use the local proxy for its browsing. When you visit the application site, Optic will capture that API traffic for you to document.</>
 
 
@@ -21,14 +23,15 @@ environments:
 
 The `host` parameter defines the host for which all traffic will be assumed to be API traffic. Optic will capture any traffic sent to this host. The `webUI` parameter defines a default page for the new browser session. While it's optional, we recommend using your UI landing page to make documenting your API as smooth as possible.
 
-## Run your API through Optic
+## Verify your API is integrated with Optic
 
 <>Once your environment configuration is set, you're ready to browse your project through {frontMatter.title} and collect traffic to document with Optic. Optic will launch {frontMatter.title} with the necessary configurations to capture your API traffic by running:</>
 
-`api intercept production --foobarser`
+`api intercept production --foobarser --verbose`
 
-<>Make sure you use the new session of {frontMatter.title} that Optic launches to navigate your project. You should send at least five requests to your API while navigating your project to verify the capture is working properly. As you navigate your project, the Optic CLI will report the last request seen that was sent to the API host and the response status code.</>
+<>Optic will launch a new session of your browser and report some basic information about startup on the terminal so that you can verify Optic is running properly. Make sure you use the new session of {frontMatter.title} that Optic launches to navigate your project. You should send at least five requests to your API to verify the capture is working properly. As you send requests, The Optic CLI should report the requests seen and their response codes on the terminal.</>
 
-Once you have at least five captures, press `ctrl+c` on the terminal to end your Optic session. Optic will launch the [Optic dashboard](http://localhost:34444/apis/1/diffs) to show you the captured traffic. Since there is no documentation yet, you should see the traffic marked as unmatched URLs. You're ready to document your API!
 
-If you run into problems here, we definitely want to know about them. Please [let us know](https://github.com/opticdev/optic/issues/new?title=%5Bcapture%5D:%20Error%20intercepting%20traffic) and we'll be happy to help out. You can also schedule a [quick chat with the maintainers](https://calendly.com/opticlabs/maintainer-office-hours).
+Once Optic has seen at least five interactions, press `ctrl+c` on the terminal to end your Optic session. Optic will summarize your session on the terminal and launch the [Optic dashboard](http://localhost:34444/apis/1/diffs) to show you the captured traffic. Since there is no documentation yet, you should see the traffic marked as unmatched URLs. You're ready to document your API!
+
+<GetHelp/>

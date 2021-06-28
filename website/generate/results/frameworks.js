@@ -24,6 +24,7 @@ module.exports = {
         sdk_url: 'https://github.com/opticdev/optic-node',
         sdk_readme:
           'https://github.com/opticdev/optic-node/pull/15/files#diff-7e5ec5d0966e58b0a5ee5fb63ced6a1fcc81cee3c4a771400537c803ebdc2d76',
+        start_command: './foo --bar',
       },
     },
   ],
