@@ -12,7 +12,8 @@ import { generateOpenApi, makeSpectacle } from '@useoptic/spectacle';
 import deepmerge from 'deepmerge';
 
 export default class GenerateOas extends Command {
-  static description = 'export an OpenAPI 3.0.3 spec';
+  static description =
+    'export an OpenAPI 3.0.3 spec and merge in base.openapi.yml if it exists';
 
   static flags = {
     json: flags.boolean({}),
@@ -46,21 +47,35 @@ export async function generateOas(
 
       const parsedOas = await generateOpenApiFromEvents(events);
 
-      const finalOas = flagBaseDocument
+      const baseOpenApiDocDefault = './base.openapi.yml';
+      let baseOpenApiDoc;
+
+      // We use the flag if it's there so people can overwrite the base document
+      if (flagBaseDocument) {
+        baseOpenApiDoc = flagBaseDocument;
+      } else if (fs.existsSync(baseOpenApiDocDefault)) {
+        console.log(
+          fromOptic(
+            `Using base OpenAPI document found at ${baseOpenApiDocDefault}`
+          )
+        );
+        baseOpenApiDoc = baseOpenApiDocDefault;
+      }
+
+      const finalOas = baseOpenApiDoc
         ? deepmerge(
             parsedOas,
-            yaml.load(fs.readFileSync(flagBaseDocument, 'utf-8')) as object
+            yaml.load(fs.readFileSync(baseOpenApiDoc, 'utf-8')) as object
           )
         : parsedOas;
 
       const outputFiles = await emit(paths, finalOas, flagYaml, flagJson);
       const filePaths = Object.values(outputFiles);
       console.log(
-        '\n' +
-          fromOptic(
-            `Generated OAS file${filePaths.length > 1 && 's'}` +
-              filePaths.join('\n')
-          )
+        fromOptic(
+          `Generated OAS file${filePaths.length > 1 && 's'}` +
+            filePaths.join('\n')
+        )
       );
 
       return outputFiles;
