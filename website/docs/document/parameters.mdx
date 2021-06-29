@@ -4,7 +4,7 @@ sidebar_label: Parameterized API Endpoints
 slug: /document/parameters
 ---
 
-There are 7 unmatched URLs left for us to automatically learn in this example. However, sometimes multiple unmatched URLs all go to a single endpoint. For example, the three calls to `GET /api/user/` here differ only in an integer value, the ID of the user:
+There are still undocumented URLs left for us to automatically learn in this example. Clicking the **Diffs** button in the top navbar will get us back to our status, and let us click through the undocumented URLs. There are 7 unmatched URLS left, though some of the unmatched URLs go to a single endpoint. For example, Optic observed traffic to the three `GET /api/user/` paths that differ only in an integer value, the ID of the user:
 
 <Paper elevation={3}>
 
@@ -12,10 +12,29 @@ There are 7 unmatched URLs left for us to automatically learn in this example. H
 
 </Paper>
 
-The User ID is an example of a **path parameter**. We can identify any element of a path as a path parameter, and any pahs that match the pattern will be consolidaed into a single endpoint. For example, we can click on the `3` above and identify this as a `UserId`. The other two paths (ending in `1` and `2`) will automatically be recognized as part of the same endpoint, and all three traffic samples will be used to generate the documentation for the endpoint. This also reduces the number of endpoints to learn.
+The User ID is an example of a **path parameter**. All calls to `GET /api/user/:number` are going to the same endpoint. While they'll return a different user based on the `:number`, or User ID, we know it will always return a user record for a valid ID. 
+
+In Optic, any element of a path can be identified as a path parameter. Any paths that match the pattern will be consolidated into a single endpoint. Any observed traffic that matches this pattern, even if it's to User IDs Optic hasn't seen before, will still be copmared to the parameterized endpoint. 
+
+For example, we can click on the `3` above and identify this as a `UserId`. The other two paths (ending in `1` and `2`) will automatically be recognized as part of the same endpoint, and all three traffic samples will be used to generate the documentation for the endpoint. This also reduces the number of endpoints to learn.
 
 <Paper elevation={3}>
 
 ![Click on the ID element to parameterize the path](/img/docs/doc-consolidate-parameters.png)
 
 </Paper>
+
+Click on the **+** next to this parameterized endpoint, and you'll see the familiar learning screen. Notice we have multiple responses: 
+
+- A 200 (OK) response for valid User IDs
+- A 404 (Not Found) response when a User ID is invalid
+
+Optic learns both of these responses, documenting them separately. It can detect differences not only in endpoints, but in response bodies by the response. That is, if a new field is added to a user record, Optic will help you update the 200 response. If the shape of the error response is changed (perhaps an error message is added, or some other error payload), Optic will help you update the 404 response.
+
+<Paper elevation={3}>
+
+![Click on the ID element to parameterize the path](/img/docs/params-learning.png)
+
+</Paper>
+
+We'll add this endpoint to stage it, and save it to commit the documentation. Then we can move on and document the rest of this API.
