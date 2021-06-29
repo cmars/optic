@@ -27,14 +27,11 @@ If we run `api status -- review`, the Optic UI will open, and we should see some
 
 ## Documenting your first endpoint
 
-[LOU NOTES]
-- Explain the page they're seeing. Get a new picture where one of the endpoints is already documented, and one is recently added, so you can do it justice
-
-On the left you'll see all the URLs Optic observed that do not match any of the endpoints in our specification. On the right side of the page are all the endpoints that are already in your specification. You can see the new ones we add, show up with a green background, indicating that we've just added them:
+On the left you'll see all the URLs Optic observed that do not match any of the endpoints in our specification. If any endpoints are along a documented path, Optic will let us know. On the right side of the page are all the endpoints that have been learned. Endpoints with a green background have just been learned, and we'll need to save them to our specification. Endpoints without a background are already saved in our specification.
 
 <Paper elevation={3}>
 
-![8 Unmatched URLs observed in a traffic capture](/img/docs/doc-8-unmatched.png)
+![Learning from traffic](/img/docs/doc-learn-view.png)
 
 </Paper>
 
@@ -72,19 +69,18 @@ You can safely stage as many endpoints as you like before committing them to you
 
 - For now, let's save this endpoint and give it a commit message:
 
-[LOU Note] -- this is a bad name for the baseline. init is used elsewhere
-
 <Paper elevation={3}>
 
-![The first endpoint is committed](/img/docs/doc-init.png)
+![The first endpoint is committed](/img/docs/doc-commit.png)
 
 </Paper>
 
-
 ## What happens when Optic sees a different shape?
+
 Optic learns your API's behavior incrementally. If you missed an endpoint in this capture or if the example Optic learned originally did not include every possible response code, field or other variations, that's ok. Optic will suggest those additions to your API specifications as it observes more traffic.
 
 When you make changes to your API, Optic can help you document those too. You can learn more about how Optic helps you change your API here.
 
 ## What about Path Parameters?
+
 Most API endpoints are parameterized, ie `GET /todos/:todoId/status`. Optic makes it easy to document parameterized endpoints as well, let's try that next!
