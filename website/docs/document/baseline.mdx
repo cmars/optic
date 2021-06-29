@@ -4,7 +4,33 @@ sidebar_label: Documenting API Endpoints
 slug: /document/baseline
 ---
 
-Now that [Optic is integrated with your API](/document), it's time to start documenting your observed traffic. As an example, we've captured traffic to 8 paths in a sample Todo API when verifying an Optic integration:
+import { Paper } from '@material-ui/core';
+
+> Documenting the endpoints in your API takes seconds with Optic. Just click "+" and name the endpoint.
+
+**Outcome**: Add the first endpoints to your Optic specification
+
+**Do this ⤵️**
+
+If we run `api status -- review`, the Optic UI will open, and we should see some undocumented URLs:
+- Click on the Undocumented URLs Row above to start learning from the URLs Optic observed
+- *Not seeing any URLs to document?* [Capture more traffic and come back to this step](/document)
+
+<Paper elevation={3}>
+
+![8 Unmatched URLs observed in a traffic capture](/img/new-endpoints-to-learn.png)
+
+</Paper>
+
+
+---
+
+## Documenting your first endpoint
+
+[LOU NOTES]
+- Explain the page they're seeing. Get a new picture where one of the endpoints is already documented, and one is recently added, so you can do it justice
+
+On the left you'll see all the URLs Optic observed that do not match any of the endpoints in our specification. On the right side of the page are all the endpoints that are already in your specification. You can see the new ones we add, show up with a green background, indicating that we've just added them:
 
 <Paper elevation={3}>
 
@@ -12,19 +38,25 @@ Now that [Optic is integrated with your API](/document), it's time to start docu
 
 </Paper>
 
-## Documenting your first endpoint
+**Do this ⤵️**
 
-It's time to document an endpoint. A todo app needs a few core capabilities: one of them is get all of the things you have to do. The `GET /api/todos` route will tell us all of our todos, and that's a great place to start documenting. Click on the **+** button to begin learning the endpoint.
+- To keep it simple, choose an endpoint without any path parameters ie  `GET /todos` *(we'll learn how to document endpoints with path parameters next)*.
+- Click the **"+"** icon in the row:
+
+Optic used everything it learned watching traffic to document this endpoint for us. You could look at the same information and manually write the spec file yourself, but Optic has made it much easier by doing that work for you.
+
 
 <Paper elevation={3}>
 
-![Optic shows what it knows about the endpoint](/img/docs/doc-learn-endpoint.png)
+  ![Optic shows what it knows about the endpoint](/img/docs/doc-learn-endpoint.png)
 
 </Paper>
 
-Optic will show you everything it knows about the endpoint. In the traffic observed, we saw a response with an HTTP status code of 200 (OK) that returned an `application/json` body. On the right side, you can see what Optic has inferred about the body from the traffic. It includes all of the fields, optional indicators where the field was not always present in all traffic samples, and the type of the value, or its **shape**. Before Optic, you would create all of this information manually when writing a Schema. Optic makes creating an API schema easier. You would also need to write tests to validate the observed behavior against your schema. That's no longer necessary - Optic will let you know when it detects a change in the traffic shape, and if it's intended, makes it easy to update the documentation.
 
-We can also label this endpoint. Here, the `Gets all todos` description was added. Click through **Add Endpoint** to learn this endpoint.
+**Do this ⤵️**
+
+- Name the endpoint: Here, the `Gets all todos` description was added.
+- Click through **Add Endpoint** to add it to the specification
 
 <Paper elevation={3}>
 
@@ -32,9 +64,15 @@ We can also label this endpoint. Here, the `Gets all todos` description was adde
 
 </Paper>
 
-Optic has staged the `GET /api/todos` endpoint for commit. That is, Optic has learned about this endpoint from the traffic it observed, and is ready to save what it learned to the spec. To compare to git, learning an endpoint is like staging changes. The **Save changes** button is equivalent to committing those changes.
+Optic has staged the `GET /api/todos` endpoint for commit. That is, Optic has learned about this endpoint from the traffic it observed, and is ready to save what it learned to the spec. Learning an endpoint is like staging changes in Git. It is not until you click **Save Changes** that you commit those changes to the spec.
 
-You can safely stage as many endpoints as you like before committing them to your documentation. For now, let's save this endpoint and give it a commit message. Here, we went with `init`.
+You can safely stage as many endpoints as you like before committing them to your documentation.
+
+**Do this ⤵️**
+
+- For now, let's save this endpoint and give it a commit message:
+
+[LOU Note] -- this is a bad name for the baseline. init is used elsewhere
 
 <Paper elevation={3}>
 
@@ -43,46 +81,10 @@ You can safely stage as many endpoints as you like before committing them to you
 </Paper>
 
 
-## Parameterizing endpoint paths
+## What happens when Optic sees a different shape?
+Optic learns your API's behavior incrementally. If you missed an endpoint in this capture or if the example Optic learned originally did not include every possible response code, field or other variations, that's ok. Optic will suggest those additions to your API specifications as it observes more traffic.
 
-There are 7 unmatched URLs left for us to automatically learn in this example. However, sometimes multiple unmatched URLs all go to a single endpoint. For example, the three calls to `GET /api/user/` here differ only in an integer value, the ID of the user:
+When you make changes to your API, Optic can help you document those too. You can learn more about how Optic helps you change your API here.
 
-<Paper elevation={3}>
-
-![3 user paths that map to one endpoint](/img/docs/doc-example-param-path.png)
-
-</Paper>
-
-The User ID is an example of a **path parameter**. We can identify any element of a path as a path parameter, and any pahs that match the pattern will be consolidaed into a single endpoint. For example, we can click on the `3` above and identify this as a `UserId`. The other two paths (ending in `1` and `2`) will automatically be recognized as part of the same endpoint, and all three traffic samples will be used to generate the documentation for the endpoint. This also reduces the number of endpoints to learn.
-
-<Paper elevation={3}>
-
-![Click on the ID element to parameterize the path](/img/docs/doc-consolidate-parameters.png)
-
-</Paper>
-
-## Ignoring endpoints
-
-Optic comes with a set of default ignore rules that capture most of the common non-API traffic an API server might handle. You may find there are certain paths or patterns you want to ignore that aren't in the default list. Ignore rules can be added in the UI. For example, we have some test traffic to the `GET /api/notyetimplemented` endpoint in this capture. This route won't be implemented for a while, and we want to ignore requests to it until it is ready.
-
-<Paper elevation={3}>
-
-![Ignore suggestion input textbox](/img/docs/doc-ignore-suggestion.png)
-
-</Paper>
-
-The Ignore Rule generator at the lower left will automatically suggest routes that match the pattern you type. Here, we've suggested "not", and a rule was suggested to ignore the `GET /api/notyetimplemented` route. After selecting the suggestion, a complete ignore rule is built and ready to be accepted. There's also a link to our more in-depth [ignore rules and pattern matching](TODO)
-
-<Paper elevation={3}>
-
-![Automatically generated ignore rule](/img/docs/doc-ignore-rule.png)
-
-</Paper>
-
-Once complete, we've removed extraneous routes and can focus on only those paths that lead to API endpoints:
-
-<Paper elevation={3}>
-
-![7 Unmatched URLs to learn](/img/docs/doc-7-unmatched.png)
-
-</Paper>
+## What about Path Parameters?
+Most API endpoints are parameterized, ie `GET /todos/:todoId/status`. Optic makes it easy to document parameterized endpoints as well, let's try that next!
