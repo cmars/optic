@@ -3,7 +3,8 @@ module.exports = {
     {
       name: 'Bar',
       slug: 'bar',
-      path: '/Users/lou/repos/optic/website/docs/frameworks/bar.mdx',
+      path:
+        '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/frameworks/bar.mdx',
       link: 'reference/capture-methods/using-integration/bar',
       metadata: { title: 'Bar' },
     },

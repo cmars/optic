@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     backgroundColor: SubtleBlueBackground,
     marginBottom: 22,
+    padding: 0,
     border: '1px solid #e2e2e2',
   },
   heading: {
@@ -36,11 +37,7 @@ export default function ExpandDocs(props) {
         onChange={() => setOpen(!open)}
         className={classes.root}
       >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="h6" color="primary">
             <FormatCopy value={title} />
           </Typography>
