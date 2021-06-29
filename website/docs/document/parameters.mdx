@@ -14,7 +14,7 @@ If we run `api status -- review`, the Optic UI will open, and we should see some
 - Click on the Undocumented URLs Row above to start learning from the URLs Optic observed
 - *Not seeing any URLs to document?* [Capture more traffic and come back to this step](/document)
 
-You should have a few URLs on the Document New Endpoints page that have path parameters ie `GET /todos/:todoId/status`:
+Make sure there are a few URLs on the Document New Endpoints page that have path parameters ie `GET /todos/:todoId/status`:
 
 <Paper elevation={3}>
 
@@ -50,7 +50,7 @@ Optic has collected all of the traffic observed to every path that matches the p
 
 **Do this ⤵️**
 
-- Describe the endpoint
+- Name the endpoint
 - Click the **Add Endpoint** button
 
 The learned endpoint is now on the right, highlighted in green: rmember, this means Optic has learned this endpoint and has staged it be committed to the documentation.
@@ -88,7 +88,7 @@ Don't worry about making a mistake. It's easy to rename a path parameter before 
     - Click the **x** button on a parameterized ID to remove the parameterization from that path.
     - Click on the parameter ID to edit the ID
 
-If you have already staged your endpoint to be committed, you'll need to unstage it first by discarding what Optic has learned. Don't worry, you'll be able to learn it again just as quickly as before, and this time with the correct path parameter.
+If you have already added your endpoint, you'll need to click on it and click **Discard Endpoint**. Don't worry, you'll be able to learn it again just as quickly as before, and this time with the correct path parameter.
 
 <Paper elevation={3}>
 
@@ -111,4 +111,4 @@ Your endpoint will be unstaged, and you will be able to edit the parameter ID or
 
 ## Is it possible to automatically learn all the endpoints?
 
-It's easy to consolidate all of the traffic to a given endpoint. This helps make documenting quick and easy. Did you know that it's also possible to document all of your endpoints in bulk? Read on to see how to [bulk learn](/document/bulk-learn) all of your unmatched endpoints!
+We've also made it easy to document different endpoints in bulk. Read on to see how to [bulk learn](/document/bulk-learn) all of your unmatched endpoints!
