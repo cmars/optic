@@ -3,16 +3,14 @@ module.exports = {
     {
       name: 'Chrome',
       slug: 'chrome',
-      path:
-        '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/browsers/chrome.mdx',
+      path: '/Users/lou/repos/optic/website/docs/browsers/chrome.mdx',
       link: 'reference/capture-methods/browsers/chrome',
       metadata: { title: 'Chrome' },
     },
     {
       name: 'Foobarser',
       slug: 'foobarser',
-      path:
-        '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/browsers/foobarser.mdx',
+      path: '/Users/lou/repos/optic/website/docs/browsers/foobarser.mdx',
       link: 'reference/capture-methods/browsers/foobarser',
       metadata: { title: 'Foobarser' },
     },

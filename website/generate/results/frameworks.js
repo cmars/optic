@@ -3,32 +3,28 @@ module.exports = {
     {
       name: 'Bar',
       slug: 'bar',
-      path:
-        '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/frameworks/bar.mdx',
+      path: '/Users/lou/repos/optic/website/docs/frameworks/bar.mdx',
       link: 'reference/capture-methods/using-integration/bar',
       metadata: { title: 'Bar' },
     },
     {
       name: 'Express',
       slug: 'express',
-      path:
-        '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/frameworks/express.mdx',
+      path: '/Users/lou/repos/optic/website/docs/frameworks/express.mdx',
       link: 'reference/capture-methods/using-integration/express',
       metadata: { title: 'Express' },
     },
     {
       name: 'Flask',
       slug: 'flask',
-      path:
-        '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/frameworks/flask.mdx',
+      path: '/Users/lou/repos/optic/website/docs/frameworks/flask.mdx',
       link: 'reference/capture-methods/using-integration/flask',
       metadata: { title: 'Flask' },
     },
     {
       name: 'Foo',
       slug: 'foo',
-      path:
-        '/Users/aidancunniffe/Developer/optic2021/optic/website/docs/frameworks/foo.mdx',
+      path: '/Users/lou/repos/optic/website/docs/frameworks/foo.mdx',
       link: 'reference/capture-methods/using-integration/foo',
       metadata: {
         title: 'Foo',
