@@ -5,19 +5,39 @@ const allToolsIntegrations = require('./generate/generate-tools.js');
 const allUseCases = require('./use-cases');
 
 module.exports = {
-  useCasesSidebar: {
-    [allUseCases.Document.label]: [
-      'document/document',
-      'document/baseline',
-      'document/parameters',
-      'document/ignoring',
-      'document/bulk-learn',
-      'document/what-next',
-    ],
-    [allUseCases.Test.label]: ['document/document'],
-    [allUseCases.Change.label]: ['document/document'],
-    [allUseCases.Share.label]: ['document/document'],
-  },
+  useCasesSidebar: [
+    {
+      type: 'category',
+      label: allUseCases.Document.label,
+      collapsed: false,
+      items: [
+        'document/document',
+        'document/baseline',
+        'document/parameters',
+        'document/bulk-learn',
+        'document/ignoring',
+        'document/what-next',
+      ],
+    },
+    {
+      type: 'category',
+      label: allUseCases.Test.label,
+      collapsed: false,
+      items: ['test/test', 'test/run-in-ci'],
+    },
+    {
+      type: 'category',
+      label: allUseCases.Share.label,
+      collapsed: false,
+      items: ['share/share', 'share/changelogs', 'share/openapi'],
+    },
+    {
+      type: 'category',
+      label: allUseCases.Change.label,
+      collapsed: false,
+      items: ['document/document'],
+    },
+  ],
   referenceSideBar: [
     'reference/key-concepts',
     {

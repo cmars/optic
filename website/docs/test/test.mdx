@@ -1,4 +1,51 @@
 ---
 title: Testing your API with Optic
+sidebar_label: Get Started
 slug: /test
 ---
+
+> Make your existing API tests much more powerful by running them through Optic. Your existing tests get enriched with 1000s of additional assertions about your API contract -- you don't have to change a thing.
+
+Contracting testing your API is both difficult and essential. Teams who have tried this at scale quickly realize the test cases are tedious to maintain and require complex mocking. After all that effort, these tests often fail to detect important changes. It’s just too easy for a manually written contract tests to end up incomplete or out-of-date.
+
+Optic takes whatever automated test traffic you can produce, and turns it into a contract test suite for you.
+
+```
+> api run test
+
+[ more diverse example with some passing and some failing ]
+
+```
+
+Imagine a test that POSTs a new todo. Simple. We could write assertions about the shape of the response body and all the fields that come back, but that would take a lot of time and be difficult to maintain.
+
+```
+it('a new todo can be created', function(done) {
+  request.post('/todos/', {json: {task: task}}, function (err, response, body) {
+    assert(response.statusCode === 200)
+    done()
+  })
+})
+```
+
+When we run the same test through Optic, the traffic from this one test is verified by checking dozens of additional assertions dynamically applied by Optic as the traffic is observed.
+
+<img src={'/img/tests-explained.svg'} style={{maxWidth: 500}}/>
+
+```
+Request Body must be application/json
+ with an object at the root
+ and a field called `task` that is a string
+ ....and 10 more
+Any 200 response for this endpoint must be application/json
+ with an object at the root
+ and a field called `task` that is a string
+ and a field called `created_at` which is string, with format a IS0 8601 date
+ ...and 32 more
+```
+
+---
+
+## API Coverage and API Diffs
+
+
