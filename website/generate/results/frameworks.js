@@ -1,6 +1,13 @@
 module.exports = {
   data: [
     {
+      name: 'Bar',
+      slug: 'bar',
+      path: '/Users/lou/repos/optic/website/docs/frameworks/bar.mdx',
+      link: 'reference/capture-methods/using-integration/bar',
+      metadata: { title: 'Bar' },
+    },
+    {
       name: 'Express',
       slug: 'express',
       path:
@@ -31,6 +38,7 @@ module.exports = {
     },
   ],
   components: {
+    bar: require('../../docs/frameworks/bar.mdx'),
     express: require('../../docs/frameworks/express.mdx'),
     flask: require('../../docs/frameworks/flask.mdx'),
     foo: require('../../docs/frameworks/foo.mdx'),

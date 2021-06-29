@@ -1,0 +1,68 @@
+---
+title: Bar
+---
+
+import GetHelp from '../shared/get-help.mdx';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs
+  defaultValue="manual"
+  values={[
+    {label: 'Manual integration', value: 'manual'},
+    {label: 'SDK (coming soon)', value: 'sdk'},
+  ]}>
+
+<TabItem value="manual">
+
+<>When working in {frontMatter.title}, you'll need to set up a manual integration with the Optic CLI to capture traffic across your environments. For example, let's say you usually develop against your {frontMatter.title} project locally and view the application on localhost:3005. </>
+
+
+## Integrating Optic with your API project
+
+### Optic needs to know how to start your API
+
+The `optic.yml` file tells Optic how to start up your application. This allows Optic to pass it the appropriate environment variables for the SDK to properly integrate with the Optic CLI. In manual configurations, it also defines where the Optic proxy will listen for traffic to pass along to your application. We recommend using the port you would normally start your application on, as Optic will attempt to start your application on another port.
+
+```
+name: Foo API
+tasks:
+  start:
+    command: ./foo --bar
+    inboundUrl: http://localhost:3005
+```
+
+### Optic also needs the ability to control what port your API starts on
+
+Optic injects a `$PORT` environment variable for our application to listen on when `api start` is run. Wherever you start your API server, set the port on which it will bind with this environment variable:
+
+#### Before
+```
+app.listen(3000)
+```
+
+#### After
+```
+app.listen(port || 3000)
+```
+
+## Verify your API is integrated with Optic
+
+Once the check passes, everything should be set up to capture your traffic and start documenting your API. We recommend testing this process to get familiar with the flow. First, start your API project with Optic:
+
+`api start --verbose`
+
+Optic will report some basic information about startup so you can verify that is is running properly. This includes the local listening point for Optic to intercept traffic (above, http://localhost:3005). Use whatever method you would normally use during development to test out your application, such as navigating the project through a web browser or using a test tool such as Postman. You should send at least five requests to your application. As you send requests, The Optic CLI should report the requests seen and their response codes on the terminal.
+
+Once Optic has seen at least five interactions, press `ctrl+c` on the terminal to end your Optic session. Optic will summarize your session on the terminal and launch the [Optic dashboard](http://localhost:34444/apis/1/diffs) to show you the captured traffic. Since there is no documentation yet, you should see the traffic marked as unmatched URLs. You're ready to document your API!
+</TabItem>
+
+<TabItem value="sdk">
+
+<>Optic is easiest to integrate with an SDK, which assures your traffic can be observed almost anywhere you run your project. At this time, we don't have a production ready SDK for {frontMatter.title}. We're always on the lookout for more contributors to expand our library. Please check out our [SDK requests]() to see what's coming soon, or contribute to our growing library!</>
+
+</TabItem>
+
+</Tabs>
+
+<GetHelp/>

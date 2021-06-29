@@ -42,10 +42,7 @@ Want to start versioning some of your existing API endpoints with Optic?
 </ExpandDocs>
 
 <ExpandDocs title="2. Add Optic to your project" defaultOpen={true}>
-  <InstallSlim/>
-</ExpandDocs>
 
-## Capture Traffic
 Optic captures real API traffic, and uses its observations to document the behavior of your API. When you're first on-boarding your API to Optic, we recommend using a mix of **Manual Traffic Collection** techniques and **Automated Traffic Collection** techniques. If you have good test coverage, or some other automated traffic sources (like Postman) already set up, you can use those to get the core of your API documented very quickly. Anything you don't have good tests for can be captured by making requests to your API manually or intercepting traffic from your Browsers to your running application (applicable to webapps).
 
 <ExpandDocs title="Comparing Capture Methods" defaultOpen={false}>
@@ -88,14 +85,26 @@ Capture Traffic from your other API Tools:
 
 </Tabs>
 
+</ExpandDocs>
+
 ---
 
 ## Document the API
 
+### Capture traffic to document
+
+Every API documentation session will start with capturing some traffic. We just finished capturing some traffic while testing our Optic integration with your project, which will be a good start to understanding how your API behaves today. At any time, you can start a new session and capture more traffic with:
+
+`api run start`
+
+Optic will continue to capture traffic until it is stopped with `ctrl+c` on the terminal.
+
+### Review the captured traffic
+
 Let's check if we've captured enough traffic to start documenting our API.
 
 - Run `api status`
-  - If you see API paths, run `api status --review` top open the Optic UI
+  - If you see API paths, run `api status --review` to open the Optic UI
   - If you have not been able to capture any traffic
     - go back to the previous step
     - get help from the maintainers by clicking here [INTERCOM LINK ASAP]
