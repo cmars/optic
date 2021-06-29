@@ -9,6 +9,9 @@ module.exports = {
     [allUseCases.Document.label]: [
       'document/document',
       'document/baseline',
+      'document/parameters',
+      'document/ignoring',
+      'document/bulk-learn',
       'document/what-next',
     ],
     [allUseCases.Test.label]: ['document/document'],

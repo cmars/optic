@@ -1,0 +1,29 @@
+---
+title: Ignoring Traffic
+sidebar_label: Ignoring Traffic
+slug: /document/ignoring
+---
+
+Optic comes with a set of default ignore rules that capture most of the common non-API traffic an API server might handle. You may find there are certain paths or patterns you want to ignore that aren't in the default list. Ignore rules can be added in the UI. For example, we have some test traffic to the `GET /api/notyetimplemented` endpoint in this capture. This route won't be implemented for a while, and we want to ignore requests to it until it is ready.
+
+<Paper elevation={3}>
+
+![Ignore suggestion input textbox](/img/docs/doc-ignore-suggestion.png)
+
+</Paper>
+
+The Ignore Rule generator at the lower left will automatically suggest routes that match the pattern you type. Here, we've suggested "not", and a rule was suggested to ignore the `GET /api/notyetimplemented` route. After selecting the suggestion, a complete ignore rule is built and ready to be accepted. There's also a link to our more in-depth [ignore rules and pattern matching](TODO)
+
+<Paper elevation={3}>
+
+![Automatically generated ignore rule](/img/docs/doc-ignore-rule.png)
+
+</Paper>
+
+Once complete, we've removed extraneous routes and can focus on only those paths that lead to API endpoints:
+
+<Paper elevation={3}>
+
+![7 Unmatched URLs to learn](/img/docs/doc-7-unmatched.png)
+
+</Paper>

@@ -4,11 +4,60 @@ sidebar_label: Documenting API Endpoints
 slug: /document/baseline
 ---
 
-Now that [Optic works with your API](/document), it's time to start documenting your observed traffic. As an example, we've captured traffic to 8 paths in a sample Todo API:
+Now that [Optic is integrated with your API](/document), it's time to start documenting your observed traffic. As an example, we've captured traffic to 8 paths in a sample Todo API when verifying an Optic integration:
 
 <Paper elevation={3}>
 
 ![8 Unmatched URLs observed in a traffic capture](/img/docs/doc-8-unmatched.png)
+
+</Paper>
+
+## Documenting your first endpoint
+
+It's time to document an endpoint. A todo app needs a few core capabilities: one of them is get all of the things you have to do. The `GET /api/todos` route will tell us all of our todos, and that's a great place to start documenting. Click on the **+** button to begin learning the endpoint.
+
+<Paper elevation={3}>
+
+![Optic shows what it knows about the endpoint](/img/docs/doc-learn-endpoint.png)
+
+</Paper>
+
+Optic will show you everything it knows about the endpoint. In the traffic observed, we saw a response with an HTTP status code of 200 (OK) that returned an `application/json` body. On the right side, you can see what Optic has inferred about the body from the traffic. It includes all of the fields, optional indicators where the field was not always present in all traffic samples, and the type of the value, or its **shape**. Before Optic, you would create all of this information manually when writing a Schema. Optic makes creating an API schema easier. You would also need to write tests to validate the observed behavior against your schema. That's no longer necessary - Optic will let you know when it detects a change in the traffic shape, and if it's intended, makes it easy to update the documentation.
+
+We can also label this endpoint. Here, the `Gets all todos` description was added. Click through **Add Endpoint** to learn this endpoint.
+
+<Paper elevation={3}>
+
+![The first endpoint is staged](/img/docs/doc-first-staged-endpoint.png)
+
+</Paper>
+
+Optic has staged the `GET /api/todos` endpoint for commit. That is, Optic has learned about this endpoint from the traffic it observed, and is ready to save what it learned to the spec. To compare to git, learning an endpoint is like staging changes. The **Save changes** button is equivalent to committing those changes.
+
+You can safely stage as many endpoints as you like before committing them to your documentation. For now, let's save this endpoint and give it a commit message. Here, we went with `init`.
+
+<Paper elevation={3}>
+
+![The first endpoint is committed](/img/docs/doc-init.png)
+
+</Paper>
+
+
+## Parameterizing endpoint paths
+
+There are 7 unmatched URLs left for us to automatically learn in this example. However, sometimes multiple unmatched URLs all go to a single endpoint. For example, the three calls to `GET /api/user/` here differ only in an integer value, the ID of the user:
+
+<Paper elevation={3}>
+
+![3 user paths that map to one endpoint](/img/docs/doc-example-param-path.png)
+
+</Paper>
+
+The User ID is an example of a **path parameter**. We can identify any element of a path as a path parameter, and any pahs that match the pattern will be consolidaed into a single endpoint. For example, we can click on the `3` above and identify this as a `UserId`. The other two paths (ending in `1` and `2`) will automatically be recognized as part of the same endpoint, and all three traffic samples will be used to generate the documentation for the endpoint. This also reduces the number of endpoints to learn.
+
+<Paper elevation={3}>
+
+![Click on the ID element to parameterize the path](/img/docs/doc-consolidate-parameters.png)
 
 </Paper>
 
@@ -37,23 +86,3 @@ Once complete, we've removed extraneous routes and can focus on only those paths
 ![7 Unmatched URLs to learn](/img/docs/doc-7-unmatched.png)
 
 </Paper>
-
-## Parameterizing endpoint paths
-
-There are 7 unmatched URLs left for us to automatically learn in this example. However, sometimes multiple unmatched URLs all go to a single endpoint. For example, the three calls to `GET /api/user/` here differ only in an integer value, the ID of the user:
-
-<Paper elevation={3}>
-
-![3 user paths that map to one endpoint](/img/docs/doc-example-param-path.png)
-
-</Paper>
-
-The User ID is an example of a **path parameter**. We can identify any element of a path as a path parameter, and any pahs that match the pattern will be consolidaed into a single endpoint. For example, we can click on the `3` above and identify this as a `UserId`. The other two paths (ending in `1` and `2`) will automatically be recognized as part of the same endpoint, and all three traffic samples will be used to generate the documentation for the endpoint. This also reduces the number of endpoints to learn.
-
-<Paper elevation={3}>
-
-![Click on the ID element to parameterize the path](/img/docs/doc-consolidate-parameters.png)
-
-</Paper>
-
-Once you've ignored any extraneous traffic and consolidated any parameterized paths, you can click through each endpoint to review it and add it to the documentation individually. When starting out, we recommend using the **bulk mode** by enabling the toggle. This allows you to check multiple endpoints, or check to select all endpoints, and learn their behaviors in bulk. This is a great way to establish the behavior of an API as it is observed today, so you acn move on quickly to detecting changes in expected behavior.

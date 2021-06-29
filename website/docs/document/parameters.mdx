@@ -1,0 +1,21 @@
+---
+title: Documenting Parameterized API Endpoints
+sidebar_label: Parameterized API Endpoints
+slug: /document/parameters
+---
+
+There are 7 unmatched URLs left for us to automatically learn in this example. However, sometimes multiple unmatched URLs all go to a single endpoint. For example, the three calls to `GET /api/user/` here differ only in an integer value, the ID of the user:
+
+<Paper elevation={3}>
+
+![3 user paths that map to one endpoint](/img/docs/doc-example-param-path.png)
+
+</Paper>
+
+The User ID is an example of a **path parameter**. We can identify any element of a path as a path parameter, and any pahs that match the pattern will be consolidaed into a single endpoint. For example, we can click on the `3` above and identify this as a `UserId`. The other two paths (ending in `1` and `2`) will automatically be recognized as part of the same endpoint, and all three traffic samples will be used to generate the documentation for the endpoint. This also reduces the number of endpoints to learn.
+
+<Paper elevation={3}>
+
+![Click on the ID element to parameterize the path](/img/docs/doc-consolidate-parameters.png)
+
+</Paper>
