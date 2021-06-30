@@ -37,6 +37,7 @@ module.exports = {
       collapsed: false,
       items: [
         'change/change',
+        'change/updating',
 
         {
           type: 'category',

@@ -1,33 +1,40 @@
 ---
-title: Updating your Optic Specification
+title: Change your API with Optic
+sidebar_label: Optic and API Change
 slug: /change
 ---
 
-> We built Optic to make it easier for developers to maintain accurate, and up-to-date specifications for their APIs without writing OpenAPI by hand.
+> Optic gives teams tools to ensure every API change gets reviewed, approved, and documented, before getting released.
 
-When your API changes
+- Do you know when your API changes?
+- How does your team talk about, consider and review possible API changes?
+- How do you make sure the API specification is updated when things change?
 
-### Detecting API Changes and updating your Specification
+## Talking about Change
+We have great tools for talking about code changes (Git, Line Diffs and PRs), but the tooling out here today does not make it easy to discuss API Changes. Instead of line diffs, of OpenAPI files, we need semantic diffs, detailing exactly what resources in our API have changed.
+
+Like Git, Optic Specs include a history of every addition and change in your API since you ran `api init`. You can compare any two points in the history to understand how the API has changed.
+
+[ SHOW GRAPHIC of History Page ]
+
+### Real API Changelogs
+Once you choose two versions of your API to compare, Optic's documentation viewer will render the changelog. We tried to build an experience similar to a Git compare page, but optimized for working with API changes.
+
+[ SHOW GRAPHIC of HISTORU PAGE ROOT ]
+- endpoints that were added green, changed yello
+
+[ SHOW GRAPHIC of an ENDPOINT PAGE]
+- new fields green
+- change fields yello
 
 
-**Resources**
-- [Using `api status` command](/change/api-status)
-- [Reviewing Diffs to Existing Endpoints](/change/diff-review)
+### Discuss Change During Code Review
+Optic's ability to understand the changes to your API over time enable powerful workflows that fit nicely into Pull Requests. Our GitBot adds an accurate API Changelog to every Pull Request, giving teams the context they need to discuss API changes during code review.
 
-### Manually Editing the Specification
+"If we merge this PR, it changes this code, and updates that API endpoint"
 
-**Resources**
-- [Deleting Endpoints](/change/endpoint/delete)
-- [Reverting Optic Commits](/change/revert-commit)
-- [Editing Descriptions](/change/descriptions/edit)
-- [Adding Endpoints](/change/endpoint/add)
-- [Editing the Shape of API Bodies](/change/bodies/edit)
+[ SHOW GRAPHIC of GITBOT ]
 
 ---
 
-## Change Management Workflows
-
-**Interesting in using Optic to manage changes to your API? Check out our Team Workflows:**
-
-- [Optic in CI](/workflows/apis-in-pull-requests)
-- Plan API Changes with Optic
+## What's Next

@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 
 const workflows = require('../../workflows');
+const usecases = require('../../use-cases');
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,7 +67,7 @@ export default function () {
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <UseCaseCard
-                link={'/docs/document'}
+                link={usecases.Document.href}
                 title={'**Document** your API in 10 minutes'}
                 description={
                   'Use real traffic to document your API. Optic accurately learns the behavior of each endpoint and starts versioning it, just like Git versions files you track with it.'
@@ -75,7 +76,7 @@ export default function () {
             </Grid>
             <Grid item xs={12} sm={6}>
               <UseCaseCard
-                link={'/docs/document'}
+                link={usecases.Test.href}
                 title={'**Tests** that verify each API meets its contract'}
                 description={
                   "Monitor your test, development and staging environments to make sure your API meets its contract. With Optic's API Coverage and Diff Reports you can confidently release new code."
@@ -84,7 +85,7 @@ export default function () {
             </Grid>
             <Grid item xs={12} sm={6}>
               <UseCaseCard
-                link={'/docs/document'}
+                link={usecases.Share.href}
                 title={'**Share** your API'}
                 description={
                   'Share your API documentation, an auto-generated changelog, and examples with all of your consumers. Optic makes it easy to update these resources whenever the API changes.'
@@ -93,7 +94,7 @@ export default function () {
             </Grid>
             <Grid item xs={12}>
               <UseCaseCard
-                link={'/docs/document'}
+                link={usecases.Change.href}
                 title={'**Change** your API, with confidence'}
                 description={
                   'Optic provides an accurate API changelog in each PR. Start working API-first, have a conversation every time the API is changing'
