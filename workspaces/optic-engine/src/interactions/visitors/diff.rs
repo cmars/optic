@@ -109,7 +109,17 @@ impl InteractionVisitor<InteractionDiffResult> for DiffQueryParametersVisitor {
 }
 impl QueryParametersVisitor<InteractionDiffResult> for DiffQueryParametersVisitor {
   fn begin(&mut self) {}
-  fn visit(&mut self, interaction: &HttpInteraction, context: &QueryParametersVisitorContext) {}
+  fn visit(&mut self, interaction: &HttpInteraction, context: &QueryParametersVisitorContext) {
+    todo!("implement matching and pushing results");
+
+    // if let Some(query) = context.query {
+    //   let (query_id, query_descriptor) = operation;
+
+    //   // TODO: push matching result
+    // } else {
+    //   // TODO push unmatching result
+    // }
+  }
   fn end(&mut self, interaction: &HttpInteraction, context: &PathVisitorContext) {}
 }
 ///////////////////////////////////////////////////////////////////////////////

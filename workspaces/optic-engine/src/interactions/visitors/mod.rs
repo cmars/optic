@@ -77,7 +77,7 @@ pub struct PathVisitorContext<'a> {
 }
 pub struct QueryParametersVisitorContext<'a> {
   pub path: PathComponentIdRef<'a>,
-  pub operation: Option<(&'a RequestId, &'a RequestDescriptor)>,
+  // pub query: Option<(&'a QueryParametersId, &'a QueryParametersDescriptor)>
 }
 pub struct RequestBodyVisitorContext<'a> {
   pub path: PathComponentIdRef<'a>,

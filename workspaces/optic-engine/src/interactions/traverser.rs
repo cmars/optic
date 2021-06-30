@@ -29,25 +29,21 @@ impl<'a> Traverser<'a> {
     };
     path_visitor.visit(interaction, &path_context);
 
-    // TODO: Find a way to have the query params and request body visitor live together in more
-    // harmony. Because they currently both take a mut ref to `visitors`, we can't hold on to
-    // them at the same time.
     let query_params_visitor = visitors.query_params();
     query_params_visitor.begin();
     match resolved_path {
       Some(path_id) => {
-        let operations = self
-          .endpoint_queries
-          .resolve_operations(interaction, path_id);
-        for operation in operations {
-          query_params_visitor.visit(
-            interaction,
-            &QueryParametersVisitorContext {
-              path: path_id,
-              operation: Some(operation),
-            },
-          );
-        }
+        // let query = self
+        //   .endpoint_queries
+        //   .resolve_query_params(path_id, &interaction.request.method);
+
+        // query_params_visitor.visit(
+        //   interaction,
+        //   &QueryParametersVisitorContext {
+        //     path: path_id,
+        //     query,
+        //   },
+        // );
       }
       None => {}
     };
