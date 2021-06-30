@@ -10,7 +10,7 @@ import Chip from '@material-ui/core/Chip';
 import ForumIcon from '@material-ui/icons/Forum';
 import Link from '@docusaurus/core/lib/client/exports/Link';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import {GitHubStats} from './GitHubStatsSlim';
+import { GitHubStats } from './GitHubStatsSlim';
 export const useStyles = makeStyles({
   section: {
     paddingTop: 75,
@@ -39,18 +39,17 @@ export const useStyles = makeStyles({
 });
 
 const tryOptic = {
-  title: "API-first workflows built for awesome developers. **Try Adding Optic to your API**",
+  title:
+    'API-first workflows built for awesome developers. **Try Adding Optic to your API**',
   subtext: 'Setup takes 5-10 mins.',
-  description:
-    'When the CLI is installing, be sure to join the community.',
+  description: 'When the CLI is installing, be sure to join the community.',
 };
-
 
 export function CTATryOptic() {
   const classes = useStyles();
   const featuredStyles = useFeatureStyles();
   return (
-    <Container maxWidth="md" style={{marginBottom: 110}}>
+    <Container maxWidth="md" style={{ marginBottom: 110 }}>
       <Typography
         variant="h4"
         className={featuredStyles.headline}
@@ -84,14 +83,36 @@ export function CTATryOptic() {
         </Typography>
       </Box>
 
-      <Box style={{marginTop: 30, marginBottom: 120}}>
-        <Box alignItems="center" display="flex" flexDirection="row" alignItems="flex-start" justifyContent="flex-start">
-          <Button endIcon={<ForumIcon/>} component={Link} to="/docs/community/" variant="outlined" color="primary"  style={{marginRight: 13}}>Join Community</Button>
-          <Button endIcon={<ChevronRightIcon/>} component={Link} to="/docs/" variant="outlined" color="primary">Get Started</Button>
+      <Box style={{ marginTop: 30, marginBottom: 120 }}>
+        <Box
+          alignItems="center"
+          display="flex"
+          flexDirection="row"
+          alignItems="flex-start"
+          justifyContent="flex-start"
+        >
+          <Button
+            endIcon={<ForumIcon />}
+            component={Link}
+            to="/community/"
+            variant="outlined"
+            color="primary"
+            style={{ marginRight: 13 }}
+          >
+            Join Community
+          </Button>
+          <Button
+            endIcon={<ChevronRightIcon />}
+            component={Link}
+            to="/docs/"
+            variant="outlined"
+            color="primary"
+          >
+            Get Started
+          </Button>
         </Box>
-        <GitHubStats style={{padding: 0, justifyContent: 'flex-start'}}/>
+        <GitHubStats style={{ padding: 0, justifyContent: 'flex-start' }} />
       </Box>
-
     </Container>
   );
 }

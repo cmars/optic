@@ -61,7 +61,7 @@ export default function PreviewPageModal(props) {
             <div style={{ flex: 1 }} />
             <Button
               endIcon={<OpenInNewIcon />}
-              onClick={() => history.replace(link)}
+              onClick={() => history.push(link)}
               style={{ textDecoration: 'none' }}
               color="primary"
             >
