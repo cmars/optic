@@ -1,6 +1,7 @@
 use super::visitors::{
-  InteractionVisitors, PathVisitor, PathVisitorContext, RequestBodyVisitor,
-  RequestBodyVisitorContext, ResponseBodyVisitor, ResponseBodyVisitorContext,
+  InteractionVisitors, PathVisitor, PathVisitorContext, QueryParametersVisitor,
+  QueryParametersVisitorContext, RequestBodyVisitor, RequestBodyVisitorContext,
+  ResponseBodyVisitor, ResponseBodyVisitorContext,
 };
 use crate::events::HttpInteraction;
 use crate::projections::endpoint::ROOT_PATH_ID;
@@ -27,6 +28,30 @@ impl<'a> Traverser<'a> {
       path: resolved_path,
     };
     path_visitor.visit(interaction, &path_context);
+
+    // TODO: Find a way to have the query params and request body visitor live together in more
+    // harmony. Because they currently both take a mut ref to `visitors`, we can't hold on to
+    // them at the same time.
+    let query_params_visitor = visitors.query_params();
+    query_params_visitor.begin();
+    match resolved_path {
+      Some(path_id) => {
+        let operations = self
+          .endpoint_queries
+          .resolve_operations(interaction, path_id);
+        for operation in operations {
+          query_params_visitor.visit(
+            interaction,
+            &QueryParametersVisitorContext {
+              path: path_id,
+              operation: Some(operation),
+            },
+          );
+        }
+      }
+      None => {}
+    };
+    query_params_visitor.end(interaction, &path_context);
 
     let request_body_visitor = visitors.request_body();
     request_body_visitor.begin();
