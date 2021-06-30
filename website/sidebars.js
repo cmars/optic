@@ -24,19 +24,45 @@ module.exports = {
       type: 'category',
       label: allUseCases.Test.label,
       collapsed: false,
-      items: ['test/test', 'test/with-optic', 'test/run-in-ci'],
+      items: [
+        'test/test',
+        'test/with-optic',
+        'test/run-in-ci',
+        'test/what-next',
+      ],
     },
     {
       type: 'category',
       label: allUseCases.Share.label,
       collapsed: false,
-      items: ['share/share', 'share/changelogs', 'share/openapi'],
+      items: [
+        'change/change',
+
+        {
+          type: 'category',
+          label: 'Using Diffs to Update Spec',
+          collapsed: true,
+          items: ['change/options/status', 'change/options/diff-review'],
+        },
+        {
+          type: 'category',
+          label: 'Manual Editing',
+          collapsed: true,
+          items: [
+            'change/options/delete',
+            'change/options/revert',
+            'change/options/descriptions',
+            'change/options/add',
+            'change/options/edit-body',
+          ],
+        },
+      ],
     },
     {
       type: 'category',
       label: allUseCases.Change.label,
       collapsed: false,
-      items: ['document/document'],
+      items: ['share/share', 'share/changelogs', 'share/openapi'],
     },
   ],
   referenceSideBar: [
