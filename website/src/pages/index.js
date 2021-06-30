@@ -76,9 +76,9 @@ export default function () {
             <Grid item xs={12} sm={6}>
               <UseCaseCard
                 link={'/docs/document'}
-                title={'**Test** your API without writing contract tests'}
+                title={'**Tests** that verify each API meets its contract'}
                 description={
-                  'Monitor your test, development and staging environments.API Coverage + Diff Reports help you confidently release new code.'
+                  "Monitor your test, development and staging environments to make sure your API meets its contract. With Optic's API Coverage and Diff Reports you can confidently release new code."
                 }
               />
             </Grid>

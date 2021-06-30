@@ -1,5 +1,6 @@
 const allIntegrationDocs = require('./generate/generate-frameworks.js');
 const allBrowserIntegrationDocs = require('./generate/generate-browsers.js');
+const allCIProviders = require('./generate/generate-ci.js');
 const allToolsIntegrations = require('./generate/generate-tools.js');
 
 const allUseCases = require('./use-cases');
@@ -23,7 +24,7 @@ module.exports = {
       type: 'category',
       label: allUseCases.Test.label,
       collapsed: false,
-      items: ['test/test', 'test/run-in-ci'],
+      items: ['test/test', 'test/with-optic', 'test/run-in-ci'],
     },
     {
       type: 'category',
@@ -86,6 +87,7 @@ module.exports = {
         'reference/optic-yaml/tasks',
         'reference/optic-yaml/enviroments',
         'reference/optic-yaml/scripts',
+        'reference/optic-yaml/ignore',
       ],
     },
     {
@@ -93,6 +95,18 @@ module.exports = {
       label: 'Using Spectacle',
       collapsed: false,
       items: ['reference/spectacle/spectacle'],
+    },
+    {
+      type: 'category',
+      label: 'Using Optic in CI/CD',
+      collapsed: false,
+      items: [
+        {
+          type: 'category',
+          label: 'CI Providers',
+          items: allCIProviders,
+        },
+      ],
     },
   ],
 };

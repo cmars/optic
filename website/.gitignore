@@ -7,8 +7,11 @@
 # Generated files
 .docusaurus
 .cache-loader
-./docs/document/using-integration/**
-./docs/document/browsers/**
+docs/reference/capture-methods/browsers/*
+docs/reference/capture-methods/tools/*
+docs/reference/capture-methods/using-integration/*
+docs/reference/ci-providers/*
+generate/results/*
 
 # Misc
 .DS_Store

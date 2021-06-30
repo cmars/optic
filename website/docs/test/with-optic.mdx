@@ -1,0 +1,44 @@
+---
+title: Run tests with Optic
+slug: /test/with-optic
+---
+
+> When your existing tests are run through Optic, you gain the ability to fail the test suite when the API contract is not met.
+
+import { ShowAllFrameworks } from '../../src/components/ShowAllFrameworks';
+import { ShowAllTools } from '../../src/components/ShowAllTools';
+
+## Collect traffic from your Automated Tests with Optic
+
+Setup an `api test` command for your framework:
+
+<ShowAllFrameworks/>
+
+Capture Traffic from your other API Tools:
+<ShowAllTools />
+
+
+## Naming your test tasks
+Optic recommends keeping things simple and calling your test task `test`, so you can run it with `api run test` or `api test`. However, if you have multiple test commands, you can call them whatever makes sense to your team. For this guide we'll stick to `api run test` to keep it simple, but you can sub this for any other task in the `optic.yml`
+
+## Running your tests tasks
+```
+api run test
+```
+
+> result
+
+### API Coverage
+- how to print it
+- what it means
+
+show an example with less than 100% coverage
+
+show an example with more than 100%
+
+### Exit on Diff
+- why should users want to exit on diffs?
+- it lets them fail the tests, when the API behavior has changed.
+
+### Want to run Optic in CI?
+- why: It's a simple way to make sure there that no unplanned API changes get introduced

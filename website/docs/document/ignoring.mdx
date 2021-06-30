@@ -4,29 +4,53 @@ sidebar_label: Ignoring Traffic
 slug: /document/ignoring
 ---
 
-Do you see any paths that shouldn't be there? Optic comes with a set of default ignore rules that handle most of the common non-API traffic an API server might handle. You may find there are certain paths or patterns you want to ignore that aren't in the default list. Ignore rules can be added in the UI. For example, we have some test traffic to the `GET /api/notyetimplemented` endpoint in this capture. This route won't be implemented for a while, if ever, and we want to ignore requests to it. At the bottom of the unmatched URL learning page, we can build ignore rules dynamically.
+import PreviewPageModal, { PreviewPageModalFakeLink } from '../../src/components/Modal';
+import { Paper } from '@material-ui/core';
+import Ignore from '../reference/optic-yaml/ignore.mdx'
+
+> Keep the signal/noise ratio reasonable by ignoring certain paths on your hostname ie the routes that serve HTML, images, js, etc.
+
+**Outcome**: Learn how to add ignore rules right from within Optic
+
+
+You should be on Document New Endpoints page with a few URLs captured for resources you do not want in the API documentation:
 
 <Paper elevation={3}>
 
-![Ignore suggestion input textbox](/img/docs/doc-ignore-suggestion.png)
+SOMETHING WITH TRAFFIC YOU WOULD WANT TO IGNORE
 
 </Paper>
 
-The Ignore Rule generator will automatically suggest routes that match the pattern as you type. Here, we've suggested "not", and the generator suggested an ignore rule for the `GET /api/notyetimplemented` route. After selecting the suggestion, a complete ignore rule is built and ready to be accepted. There's also a link to our more in-depth [ignore rules and pattern matching](TODO) when you hover over the information button.
+*Not seeing any URLs to document?* [Capture more traffic and come back to this step](/document)
 
-<Paper elevation={3}>
+---
 
-![Automatically generated ignore rule](/img/docs/doc-ignore-rule.png)
+## Adding Ignore Rules from the Optic UI
 
-</Paper>
+- Show the basic case ignoring a URL 1:1 (from the dropdown)
 
-Once complete, we've removed extraneous routes and can focus on only those paths that lead to API endpoints:
+- Show the medium-advanced case, ignoring a pattern of URLs
 
-<Paper elevation={3}>
+- These rules are saved to .optic/api/ignore, if you check them in, your team will get the same ignore rules.
 
-![3 Unmatched URLs to learn](/img/docs/ignore-3-unmatched.png)
+VALUE: Noise reduced, get back to documenting
 
-</Paper>
+## Advanced Usage
 
-The next step is to learn all of these endpoints in one pass, instead of one at a time. Let's finish up documenting our API from this traffic.
+- You can edit this file .optic/api/ignore manually to add / remove or update patterns.
+- The basic format for a rule line is ``
 
+- Link them to the advanced usage Guide
+
+<PreviewPageModalFakeLink
+  link={'/reference/optic-yaml/ignore'}
+  title={`Advanced Usage of Ignore Rules`}
+  linkText={`Advanced Usage of Ignore Rules`}
+  source={<Ignore />}
+/>
+
+
+VALUE: when you need to do something advanced with ignore rules  you can. Keep signal noise right for you and your team
+
+## So you've documented your API? Now What?
+Learn how Optic can help you test, share and safely change your API.
