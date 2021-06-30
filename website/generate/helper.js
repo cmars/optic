@@ -34,6 +34,7 @@ function generate(
     generateRuntimeOutput(allItemsInGroup)
   );
 
+  emptyDir(path.join(...outputPathArray));
   return allItemsInGroup.map((i) => {
     fs.writeFileSync(
       path.join(...outputPathArray, i.slug + '.mdx'),
@@ -46,3 +47,14 @@ function generate(
 module.exports = {
   generate,
 };
+
+function emptyDir(dir) {
+  fs.readdirSync(dir, (err, files) => {
+    if (err) throw err;
+    for (const file of files) {
+      fs.unlinkSync(path.join(dir, file), (err) => {
+        if (err) throw err;
+      });
+    }
+  });
+}
