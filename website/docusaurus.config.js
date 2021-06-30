@@ -95,7 +95,7 @@ module.exports = {
           items: [
             {
               label: 'Join Community',
-              href: '/docs/community',
+              href: '/community',
             },
             {
               label: 'Discord',

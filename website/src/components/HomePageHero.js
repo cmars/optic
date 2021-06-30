@@ -214,7 +214,7 @@ function HomePageHero(props) {
             <Button
               endIcon={<ForumIcon />}
               component={Link}
-              to="/docs/community/"
+              to="/community/"
               variant="outlined"
               color="primary"
               style={{ marginRight: 13 }}
