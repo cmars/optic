@@ -1,0 +1,41 @@
+---
+title: Optic in CI
+slug: /change/ci
+---
+
+> Set up CI Workflows that help your team design great APIs, talk about API change, and prevent unplanned breaks. Optic offers several CI tools you can combine to fit your team's needs
+
+import { Button } from '@material-ui/core'
+import { DocsImage } from '../../src/components/Image';
+import PreviewPageModal from '../../src/components/Modal';
+import Check from '../reference/ci/check.mdx'
+import Changelog from '../reference/ci/changelog.mdx'
+import Test from '../reference/ci/test.mdx'
+
+### Check out Optic Workflows
+[make me reusable]
+
+## CI Workflows
+
+## Changelog
+[graphic]
+
+
+<PreviewPageModal Source={<Changelog />} link={'/reference/ci/changelog'}>
+  <Button color="primary" variant="contained">
+    Add Changelogs to your PRs
+  </Button>
+</PreviewPageModal>
+
+## Test
+[graphic]
+
+## Check
+
+<DocsImage src={'/img/api-checks.png'}  />
+
+<PreviewPageModal Source={<Check />} link={'/reference/ci/check'}>
+  <Button color="primary" variant="contained">
+    Add Checks to your PRs
+  </Button>
+</PreviewPageModal>

@@ -38,7 +38,7 @@ function generate(
   return allItemsInGroup.map((i) => {
     fs.writeFileSync(
       path.join(...outputPathArray, i.slug + '.mdx'),
-      docsTemplate(i.name, i.slug, i.path, i.link).trimStart()
+      docsTemplate(i.name, i.slug, i.path, i.link, i.metadata).trimStart()
     );
     return i.link;
   });

@@ -1,6 +1,5 @@
 const allIntegrationDocs = require('./generate/generate-frameworks.js');
 const allBrowserIntegrationDocs = require('./generate/generate-browsers.js');
-const allCIProviders = require('./generate/generate-ci.js');
 const allToolsIntegrations = require('./generate/generate-tools.js');
 
 const allUseCases = require('./use-cases');
@@ -37,6 +36,7 @@ module.exports = {
       collapsed: false,
       items: [
         'change/change',
+        'change/ci',
         'change/updating',
 
         {
@@ -119,21 +119,19 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Using Spectacle',
+      label: 'CI Workflows',
       collapsed: false,
-      items: ['reference/spectacle/spectacle'],
+      items: [
+        'reference/ci/changelog',
+        'reference/ci/test',
+        'reference/ci/check',
+      ],
     },
     {
       type: 'category',
-      label: 'Using Optic in CI/CD',
+      label: 'Using Spectacle',
       collapsed: false,
-      items: [
-        {
-          type: 'category',
-          label: 'CI Providers',
-          items: allCIProviders,
-        },
-      ],
+      items: ['reference/spectacle/spectacle'],
     },
   ],
 };
