@@ -101,8 +101,11 @@ module.exports = {
       label: 'Optic CLI',
       collapsed: false,
       items: [
+        'reference/optic-cli/commands/help',
         'reference/optic-cli/commands/init',
+        'reference/optic-cli/commands/check',
         'reference/optic-cli/commands/run',
+        'reference/optic-cli/commands/spec',
       ],
     },
     {

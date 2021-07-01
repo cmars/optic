@@ -20,19 +20,7 @@ You should have a few URLs on the Document New Endpoints page that have path par
 
 ## Using Bulk Mode to Learn Multiple Endpoints
 
-By default, Optic lets you [add one endpoint at a time](document/baseline). When adding each endpoint individually, you get a preview of what Optic has learned about that endpoint from the traffic. The **bulk mode** switch allows you to add multiple endpoints at once. It learns the same things about each endpoint: the only difference is you don't have to go through each one individually, seeing what is learned. You can still name the endpoints in the right-hand column as you learn them in bulk, and you'll be able to see all of the learned endpoints under the **Documentation** tab once they have been saved.
-
-<Paper elevation={3}>
-
-![Enabling bulk mode](/img/docs/bulk-enabled.png)
-
-</Paper>
-
-**Do this ⤵️**
-
-- Click the **bulk mode** switch, which will slide right and turn blue to indicate it is enabled.
-
-The plus signs have been replaced by checkboxes - you check these checkboxes to indicate which routes you want to learn. You can learn regular endpoints and [parameterized endpoints](/document/parameters) in bulk mode. The only difference is, instead of clicking a + icon to go to a preview, you check the **checkbox** to mark it for learning
+By default, Optic lets you [add one endpoint at a time](document/baseline). When adding each endpoint individually, you get a preview of what Optic has learned about that endpoint from the traffic. The **bulk mode** switch allows you to add multiple endpoints at once: the only difference is you don't have to go through each one individually. The plus signs have been replaced by checkboxes - you check these checkboxes to indicate which routes you want to learn. You can learn regular endpoints and [parameterized endpoints](/document/parameters) in bulk mode. The only difference is, instead of clicking a + icon to go to a preview, you check the **checkbox** to mark it for learning
 
 <Paper elevation={3}>
 
@@ -40,29 +28,11 @@ The plus signs have been replaced by checkboxes - you check these checkboxes to 
 
 </Paper>
 
-
 **Do this ⤵️**
 
-- [parameterize](/document/parameters) any relevant endpoints you see.
+- Click the **bulk mode** switch, which will slide right and turn blue to indicate it is enabled.
+- [Parameterize](/document/parameters) any relevant endpoints you see.
 - Check several checkboxes to mark them for learning.
-
-## Did you make a mistake?
-
-Don't worry about making a mistake. Path parameters can be added before learning an endpoint. Click on the path element that should be a parameter, and Optic will consolidate all of the traffic it sees that matches that path. Then you can add an ID, and the endpoint is ready to be added to your documentation. You don't even need to uncheck and recheck the endpoints: Optic keeps track of what you selected
-
-<Paper elevation={3}>
-
-![The first endpoint is staged](/img/docs/bulk-parameterize.png)
-
-</Paper>
-
-**Do this ⤵️**
-
-- [parameterize](/document/parameters) an endpoint for which you have multiple paths checked.
-- Notice the paths all consolidate down to the one parameterized endpoint.
-- Add an ID
-
-If you have already added and endpoint that should be parameterized, you can [discard the endpoint](/document/parameters#did-you-make-a-mistake) and learn it again, with or without bulk mode.
 
 ## Adding your endpoints
 
@@ -85,7 +55,25 @@ Once you're ready to learn some endpoints, click the **Learn {n} endpoints** but
 - Click **Learn {n} endpoints**
 - Click the **Learn** button in the modal dialog that appears
 
-Your endpoints will be automatically learned in the same way they are learned individually, and added to the right-hand side of the documentation window. They have a green highlight, indicating they are ready to be saved to your documentation. Again, if you added and endpoint that should be parameterized, you can [discard the endpoint](/document/parameters#did-you-make-a-mistake) and learn it again, with or without bulk mode.
+Your endpoints will be automatically learned in the same way they are learned individually, and added to the right-hand side of the documentation window. They have a green highlight, indicating they are ready to be saved to your documentation. If you added and endpoint that should be parameterized by mistake, you can [discard the endpoint](/document/parameters#did-you-make-a-mistake) and learn it again, with or without bulk mode.
+
+## Naming in Bulk
+
+The endpoints can be added to your documentation quickly, and they can be named quickly as well. When [adding endpoints one at a time](document/baseline), endpoint names can be added on the endpoint details screen. You won't see that in bulk mode and will name your endpoints on the right-hand side of the unmatched URL window. 
+
+<Paper elevation={3}>
+
+![All of the endpoints have been named](/img/docs/bulk-name.png)
+
+</Paper>
+
+**Do this ⤵️**
+
+- Click **Name for this endpoint** 
+- Add a name for the endpoint
+- Repeat for as many endpoints as you want to name
+
+You can name all of your endpoints at once, and adding these names is quick and easy whether you're documenting each endpoint individually or all at once in bulk mode. Your team gets to see both the documented behavior of your endpoint and the context you add by naming the endpoints.
 
 ## Do I have to check every checkbox?
 
@@ -109,24 +97,6 @@ All of your endpoints are now ready to be added to your documentation. [Add your
 - Review your choices and confirm by clicking **Learn**
 
 If you need to, you can select all endpoints to be added and [parameterize](/document/parameters) endpoints in the list with a single click, adding IDs as you go along. Don't worry about going quickly: you can always [discard](/document/parameters#did-you-make-a-mistake) and re-learn an endpoint.
-
-## Naming in Bulk
-
-The endpoints can be added to your documentation quickly, and they can be named quickly as well. When [adding endpoints one at a time](document/baseline), endpoint names can be added on the endpoint details screen. You won't see that in bulk mode and will name your endpoints on the right-hand side of the unmatched URL window. 
-
-<Paper elevation={3}>
-
-![All of the endpoints have been named](/img/docs/bulk-name.png)
-
-</Paper>
-
-**Do this ⤵️**
-
-- Click **Name for this endpoint** 
-- Add a name for the endpoint
-- Repeat for as many endpoints as you want to name
-
-You can name all of your endpoints at once, and adding these names is quick and easy whether you're documenting each endpoint individually or all at once in bulk mode. Your team gets to see both the documented behavior of your endpoint and the context you add by naming the endpoints.
 
 Don't forget to click **Save changes** to save all of these added endpoints to your documentation!
 
