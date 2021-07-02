@@ -18,8 +18,11 @@ import Test from '../reference/ci/test.mdx'
 ## CI Workflows
 
 ## Changelog
-[graphic]
+<Paper elevation={3}>
 
+![The Optic GitHub Action will show what differences in behavior have been detected in your endpoints during CI tests](/img/docs/github-actions-example.png)
+
+</Paper>
 
 <PreviewPageModal Source={<Changelog />} link={'/reference/ci/changelog'}>
   <Button color="primary" variant="contained">
@@ -28,7 +31,41 @@ import Test from '../reference/ci/test.mdx'
 </PreviewPageModal>
 
 ## Test
-[graphic]
+
+```
+Computing API diffs... Done!
+   Diffs observed for existing endpoints
+     (use "api status --review" to review in the UI
+        PATCH   /api/todos/{id}
+✓  No undocumented URLs observed
+
+
+ API Coverage Report:
+┌──────────────────────────────────┬──────────────────────────────────────────────┬───────────────────────────────────────────────────┐
+│ Endpoint                         │ Requests                                     │ Responses                                         │
+├──────────────────────────────────┼──────────────────────────────────────────────┼───────────────────────────────────────────────────┤
+│ /api/todos -> 100.0% covered     │ No Body: 1                                   │ 200: application/json: 1                          │
+│                                  │ application/json: 1                          │ 201: application/json: 1                          │
+├──────────────────────────────────┼──────────────────────────────────────────────┼───────────────────────────────────────────────────┤
+│ /api/todos/{id} -> 50.0% covered │ No Body: 1                                   │ 200: application/json: 1                          │
+│                                  │ application/json: No Coverage | 1 with diffs │ 200: application/json: No Coverage | 1 with diffs │
+└──────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────────────┘
+
+Based on 3 samples
+┌──────────────────────────────┬──────────┬──────────┬──────────────────┐
+│                              │ Observed │ Expected │ Percent Coverage │
+├──────────────────────────────┼──────────┼──────────┼──────────────────┤
+│ Documented Body Coverage     │ 6        │ 8        │ 75.0%            │
+├──────────────────────────────┼──────────┼──────────┼──────────────────┤
+│ Documented Endpoint Coverage │ 2        │ 2        │ 100.0%           │
+└──────────────────────────────┴──────────┴──────────┴──────────────────┘
+```
+
+<PreviewPageModal Source={<Check />} link={'test/run-in-ci'}>
+  <Button color="primary" variant="contained">
+    Set up CI testing with Optic
+  </Button>
+</PreviewPageModal>
 
 ## Check
 
