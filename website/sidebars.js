@@ -108,6 +108,8 @@ module.exports = {
         'reference/optic-cli/commands/spec',
         'reference/optic-cli/commands/status',
         'reference/optic-cli/commands/generate',
+        'reference/optic-cli/commands/scripts',
+        'reference/optic-cli/commands/debug',
       ],
     },
     {
