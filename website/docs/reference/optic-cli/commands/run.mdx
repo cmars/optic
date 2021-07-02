@@ -8,8 +8,6 @@ const command_url = 'https://github.com/opticdev/optic/blob/develop/workspaces/l
 
 Runs a task from your `optic.yml` file. This is the command you will use to start a task, such as for observing traffic or running tests. It takes the name of the task you wish to run, usually `start`. You may have multiple, advanced [task configurations](/reference/optic-yaml/tasks) depending on your project. 
 
-`api run start`
-
 :::tip api start
 Since start is the most common task run, Optic has a command `start` that is an alias for `run start`.
 :::
@@ -27,12 +25,11 @@ Run has a few flags that can modify the default behavior:
 
 To run your `start` task:
 
-```bash
+``` bash
 api run start
 ```
 
-which results in:
-```bash
+``` bash
 > api run baseline-ignores --collect-diffs
 [optic] Running dependent task start...
 [optic] Review the API Diff at http://localhost:34444/apis/2/diffs
@@ -40,5 +37,9 @@ which results in:
 ...
 [optic] Observed Unexpected API Behavior. Run "api status"
 ```
+
+### Special notes
+
+The `run` tasks start a proxy, and will set the host headers to the targetUrl if provided. If not (such as when only a `command` and `inboundUrl` are given) the inboundUrl, which should be localhost, will be used in the request host header.
 
 <IssuesAndContributing issue_url={issue_url} command_url={command_url} />
