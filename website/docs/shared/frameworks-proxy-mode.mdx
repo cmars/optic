@@ -1,0 +1,9 @@
+---
+title: Setup - Proxy Mode
+slug: /reference/proxy-mode
+---
+
+### What is Proxy Mode?
+
+<> When integrating Optic with your project through a proxy, Optic replaces the run command you use today to keep everything simple. For example, instead of running <code>{props.start_command}</code>, you would run <code>api start</code>. Optic will manage the lifecycle of your project, starting it on a port that Optic provides with the <code>PORT</code> environment variable. Optic then starts a proxy on the port your project usually starts on, forwarding the traffic to your application. When you run <code>api start</code>, your project runs normally and your consumers (such as any tests you have) all continue to use the same port they're used to. The only difference is that Optic will be able to observe all the traffic and help you document your API.
+</>

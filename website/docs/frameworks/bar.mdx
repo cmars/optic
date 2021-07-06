@@ -5,7 +5,16 @@ title: Bar
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
 
 <ShowWhenSdk {...props}>
-  Sdk Mode
+
+- Reusable component: What does SDK do?
+  - logs traffic to Optic from middleware - "lets Optic look at your internal test traffic by using a middleware"
+  - api start (this would be exec task but no need to complicate that here) replaces your command
+  - code example: show `optic.yml` with a `start` and a `test` command, 
+
+- SDK specific instructions - lean on READMEs where possible
+
+- Reusable verbose component - same style as foo.mdx for SDK, but there's different check points for where we can see failures.
+
 </ShowWhenSdk>
 
 <ShowWhenProxy {...props}>

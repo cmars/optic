@@ -1,0 +1,257 @@
+---
+title: Setup - Validate Proxy Mode for Frameworks
+slug: /reference/proxy-validate
+---
+
+import ExpandDocs from '../../src/components/Expand';
+
+### Validating your proxy integration
+
+This module is not yet ready for review. It's a wall of text blaaaaghhhh (Still a work in progress -- various potential verbose mode outputs are hidden in the expander, will be combined into a walkthrough and "pain points" callouts)
+
+<ExpandDocs title="1. Potential error: the project start command is not working" defaultOpen={false}>
+
+```
+Fail: bad command
+> api run start --verbose
+[optic-verbose] start task is running. Explanation:
+[optic-verbose] Running the command "noder server.js --watch db.json --routes routes.json --port $PORT"
+[optic-verbose] With an env variable called "PORT" set to "3336"
+name: "todo-js"
+[optic-verbose] Expect the Optic proxy to start on "localhost:3001" and route traffic to your API on "localhost:3336"
+[optic] Review the API Diff at http://localhost:34444/apis/1/diffs
+[optic] Optic is observing requests made to http://localhost:3001
+/bin/sh: noder: command not found
+[optic] Observed Unexpected API Behavior. Run "api status"
+[optic-verbose] Task finished with 2 samples in latest capture
+
+Fail: bad command (but verbose...probably use the former, easier to highlight)
+[optic-verbose] start task is running. Explanation:
+[optic-verbose] Running the command "node server.php --watch db.json --routes routes.json --port $PORT"
+[optic-verbose] With an env variable called "PORT" set to "3444"
+[optic-verbose] Expect the Optic proxy to start on "localhost:3001" and route traffic to your API on "localhost:3444"
+[optic] Review the API Diff at http://localhost:34444/apis/1/diffs
+[optic] Optic is observing requests made to http://localhost:3001
+internal/modules/cjs/loader.js:818
+  throw err;
+  ^
+
+Error: Cannot find module '/Users/lou/repos/monorail/projects/optic-example-projects/todo-js/server.php'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:815:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:667:27)
+    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:60:12)
+    at internal/main/run_main_module.js:17:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+[optic] Observed Unexpected API Behavior. Run "api status"
+[optic-verbose] Task finished with 2 samples in latest capture
+
+Fail: Optic inboundUrl already occupied.
+> nc -kl 3001 &
+[1] 79634
+> vim optic.yml
+> api run start --verbose
+[optic-verbose] start task is running. Explanation:
+[optic-verbose] Running the command "node server.js --watch db.json --routes routes.json --port $PORT"
+[optic-verbose] With an env variable called "PORT" set to "3321"
+[optic-verbose] Expect the Optic proxy to start on "localhost:3001" and route traffic to your API on "localhost:3321"
+[optic-verbose] ⚠️   Something is already running on port 3001. Can not start Optic Proxy there.
+[optic] Optic could not start its proxy server on port 3001
+[optic]  [pid 79634]: nc -kl 3001
+> jobs
+[1]  + running    nc -kl 3001
+> kill %1
+[1]  + 79634 terminated  nc -kl 3001
+
+
+Failure: starts on wrong port
+
+> vim optic.yml
+> api run start --verbose
+[optic-verbose] start task is running. Explanation:
+[optic-verbose] Running the command "node server.js --watch db.json --routes routes.json --port 4000"
+[optic-verbose] With an env variable called "PORT" set to "3326"
+[optic-verbose] Expect the Optic proxy to start on "localhost:3001" and route traffic to your API on "localhost:3326"
+[optic] Review the API Diff at http://localhost:34444/apis/1/diffs
+[optic] Optic is observing requests made to http://localhost:3001
+JSON Server is running
+Failed to handle request: connect ECONNREFUSED 127.0.0.1:3326
+[optic-verbose] Sample 0 GET /api/todos ➔ 502 response
+[optic-verbose] ⚠️  After 15 seconds, Optic never saw your API start on the port it assigns using the PORT variable
+^C[optic] Observed Unexpected API Behavior. Run "api status"
+[optic-verbose] Task finished with 3 samples in latest capture
+[optic-verbose] ⚠️  After 15 seconds, Optic never saw your API start on the port it assigns using the PORT variable
+
+
+More verbose wrong port failure
+
+> api run baseline-ignores --verbose
+[optic] Running dependent task start...
+[optic-verbose] baseline-ignores task is running. Explanation:
+[optic-verbose] Running the command "node server.js --watch db.json --routes routes.json --port 4000"
+[optic-verbose] With an env variable called "PORT" set to "3490"
+[optic-verbose] Expect the Optic proxy to start on "localhost:3001" and route traffic to your API on "localhost:3490"
+[optic] Review the API Diff at http://localhost:34444/apis/1/diffs
+[optic] Optic is observing requests made to http://localhost:3001
+JSON Server is running
+[optic-verbose] ⚠️  After 15 seconds, Optic never saw your API start on the port it assigns using the PORT variable
+[optic] Running test command newman run todo-js-baseline-ignores.postman_collection.json --environment todo-js.postman_environment.json
+newman
+
+Baseline API
+
+→ Get all Todos
+  GET localhost:3001/api/todos  Failed to handle request: connect ECONNREFUSED 127.0.0.1:3490
+[optic-verbose] Sample 0 GET /api/todos ➔ 502 response
+[502 Error communicating with upstream server, 99B, 71ms]
+  1. Status Test
+
+→ Get todo 0fe639b6
+  GET localhost:3001/api/todos/0fe639b6  Failed to handle request: connect ECONNREFUSED 127.0.0.1:3490
+[optic-verbose] Sample 1 GET /api/todos/0fe639b6 ➔ 502 response
+[502 Error communicating with upstream server, 99B, 10ms]
+
+→ Update Todo b16731f3
+  PATCH localhost:3001/api/todos/0fe639b6  Failed to handle request: connect ECONNREFUSED 127.0.0.1:3490
+[optic-verbose] Sample 2 PATCH /api/todos/0fe639b6 ➔ 502 response
+[502 Error communicating with upstream server, 99B, 25ms]
+
+→ Create a new Todo
+  POST localhost:3001/api/todos  Failed to handle request: connect ECONNREFUSED 127.0.0.1:3490
+[optic-verbose] Sample 3 POST /api/todos ➔ 502 response
+name: "todo-js"
+[502 Error communicating with upstream server, 99B, 10ms]
+
+→ Options request
+  OPTIONS localhost:3001  Failed to handle request: connect ECONNREFUSED 127.0.0.1:3490
+[optic-verbose] Sample 4 OPTIONS / ➔ 502 response
+[502 Error communicating with upstream server, 99B, 10ms]
+  2. Status Test
+
+→ GNDN
+  GET localhost:3001/api/notyetimplemented  Failed to handle request: connect ECONNREFUSED 127.0.0.1:3490
+[optic-verbose] Sample 5 GET /api/notyetimplemented ➔ 502 response
+[502 Error communicating with upstream server, 99B, 8ms]
+
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                1 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │                6 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │                9 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                6 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │                2 │                2 │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ total run duration: 325ms                                     │
+├───────────────────────────────────────────────────────────────┤
+│ total data received: 252B (approx)                            │
+├───────────────────────────────────────────────────────────────┤
+│ average response time: 22ms [min: 8ms, max: 71ms, s.d.: 22ms] │
+└───────────────────────────────────────────────────────────────┘
+
+  #  failure                         detail
+
+ 1.  AssertionError                  Status Test
+                                     expected response to have status code 200 but got 502
+                                     at assertion:0 in test-script
+                                     inside "Get all Todos"
+
+ 2.  AssertionError                  Status Test
+                                     expected response to have status code 204 but got 502
+                                     at assertion:0 in test-script
+                                     inside "Options request"
+[optic] Observed Unexpected API Behavior. Run "api status"
+[optic-verbose] Task finished with 9 samples in latest capture
+[optic-verbose] ⚠️  After 15 seconds, Optic never saw your API start on the port it assigns using the PORT variable
+
+
+
+Success!
+
+> api run baseline-ignores --verbose
+[optic] Running dependent task start...
+[optic-verbose] baseline-ignores task is running. Explanation:
+[optic-verbose] Running the command "node server.js --watch db.json --routes routes.json --port $PORT"
+[optic-verbose] With an env variable called "PORT" set to "3315"
+[optic-verbose] Expect the Optic proxy to start on "localhost:3001" and route traffic to your API on "localhost:3315"
+[optic] Review the API Diff at http://localhost:34444/apis/1/diffs
+[optic] Optic is observing requests made to http://localhost:3001
+JSON Server is running
+[optic-verbose] ✅ Your API just started on the port Optic assigned it using the env variable PORT -> 3315
+[optic] Running test command newman run todo-js-baseline-ignores.postman_collection.json --environment todo-js.postman_environment.json
+newman
+
+Baseline API
+
+→ Get all Todos
+  GET localhost:3001/api/todos  GET /todos 200 8.404 ms - -
+[200 OK, 6KB, 87ms]
+[optic-verbose] Sample 0 GET /api/todos ➔ 200 response
+  ✓  Status Test
+
+→ Get todo 0fe639b6
+  GET localhost:3001/api/todos/0fe639b6  GET /todos/0fe639b6 200 5.160 ms - 143
+[optic-verbose] Sample 1 GET /api/todos/0fe639b6 ➔ 200 response
+[200 OK, 539B, 19ms]
+
+→ Update Todo b16731f3
+  PATCH localhost:3001/api/todos/0fe639b6  PATCH /todos/0fe639b6 200 23.577 ms - 143
+[optic-verbose] Sample 2 PATCH /api/todos/0fe639b6 ➔ 200 response
+[200 OK, 539B, 35ms]
+
+→ Create a new Todo
+  POST localhost:3001/api/todos  POST /todos 201 10.940 ms - 154
+[optic-verbose] Sample 3 POST /api/todos ➔ 201 response
+[201 Created, 667B, 20ms]
+
+→ Options request
+  OPTIONS localhost:3001  [optic-verbose] Sample 4 OPTIONS / ➔ 204 response
+[204 No Content, 301B, 8ms]
+  ✓  Status Test
+
+→ GNDN
+  GET localhost:3001/api/notyetimplemented  GET /notyetimplemented 404 1.829 ms - 2
+[optic-verbose] Sample 5 GET /api/notyetimplemented ➔ 404 response
+[404 Not Found, 402B, 10ms]
+
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                1 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │                6 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │                9 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                6 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │                2 │                0 │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ total run duration: 405ms                                     │
+├───────────────────────────────────────────────────────────────┤
+│ total data received: 6.01KB (approx)                          │
+├───────────────────────────────────────────────────────────────┤
+│ average response time: 29ms [min: 8ms, max: 87ms, s.d.: 27ms] │
+└───────────────────────────────────────────────────────────────┘
+[optic] Observed Unexpected API Behavior. Run "api status"
+[optic-verbose] Task finished with 15 samples in latest capture
+
+ ~/repos/monorail/projects/optic-example-projects/todo-js | on master !6 ?6 .................................................................. took 8s | at 14:20:21
+
+```
+
+- Validate it's working (reusable component)
+  - api start --verbose
+  - collect 5 examples
+  - Show them what commands they should expect - do they get a checkmark or a warning symbol
+  - Call out where each mistake could show up, collapsible?
+  - Call out how each example shows up in verbose mode
+  - ctrl+c to close it up, once more check for errors at end - you're done!
+
+</ExpandDocs>
+
