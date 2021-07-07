@@ -1,16 +1,47 @@
 ---
 title: Foo
 sdk_url: https://github.com/opticdev/optic-node
-sdk_readme: https://github.com/opticdev/optic-node/pull/15/files#diff-7e5ec5d0966e58b0a5ee5fb63ced6a1fcc81cee3c4a771400537c803ebdc2d76
+sdk_readme: https://github.com/opticdev/optic-node/blob/main/README.md
+productboard_url: ""
 ---
 
-
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
+import FrameworksSDK from '/docs/shared/frameworks-sdk.mdx';
+import FrameworksSDKValidate from '/docs/shared/frameworks-sdk-validate.mdx';
+import FrameworksProxyMode from '/docs/shared/frameworks-proxy-mode.mdx';
+import FrameworksProxyValidate from '/docs/shared/frameworks-proxy-validate.mdx';
+import FrameworksUseSDK from '/docs/shared/frameworks-proxy-use-sdk.mdx';
+import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
+
 
 <ShowWhenSdk {...props}>
-  Sdk Mode
+
+<FrameworksSDK {...frontMatter}/> 
+
+<FrameworksSDKValidate />
+
 </ShowWhenSdk>
 
 <ShowWhenProxy {...props}>
-  When proxy mode
+
+<FrameworksProxyMode start_command="./foo" /> 
+
+<h3> Setting up an Optic proxy with {frontMatter.title}</h3>
+
+[Framework-specific advice goes here]
+
+[- Code example: What do you do in `optic.yml`, your framework. Super-specific to framework.]
+
+[- Use inboundUrl as their current start port]
+
+[- Use command for whatever they use today to start their project]
+
+<FrameworksProxyValidate /> 
+
+<FrameworksUseSDK framework={frontMatter.title} />
+
 </ShowWhenProxy>
+
+[- Reusable "here's more detail if you want it" at bottom, link to detailed optic config info in reference docs.]
+
+<IssuesAndContributing /> 

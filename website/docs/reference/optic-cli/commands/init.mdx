@@ -22,13 +22,11 @@ The following optional parameters may be included to pre-populate configuration 
 
 To initialize Optic with your project use:
 
-```
+``` bash
 api init
 ```
 
-which results in:
-
-```
+``` bash
 <your present working directory>
 Is this your API's root directory? (yes/no): yes
 What is this API named?: <api name>
@@ -39,7 +37,7 @@ What is this API named?: <api name>
 
 To initialize Optic with your project, passing a start command for your API project and setting the port on which Optic will listen for traffic to 4000 use:
 
-```
+``` bash
 api init --command "./run" --inboundUrl https://localhost:4000 
 ```
 
@@ -49,7 +47,7 @@ which results in the same output as above, with the `start` taks in your `optic.
 
 When running api init against a project that has already been initialized, you'll see an error message:
 
-```
+``` bash
 This directory already has an optic.yml file.
  You can see the current documentation for this project with api spec.
 ```

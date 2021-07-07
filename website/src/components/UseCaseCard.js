@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
-export const UseCaseCard = ({ title, link, description }) => {
+export const UseCaseCard = ({ title, link, description, logo }) => {
   const classes = useStyles();
   const featuredStyles = useFeatureStyles();
   const history = useHistory();
@@ -41,13 +41,16 @@ export const UseCaseCard = ({ title, link, description }) => {
       className={classes.paper}
       onClick={() => {
         if (link) {
-          history.replace(link);
+          if (link.startsWith('http://') || link.startsWith('https://')) {
+            window.location = link;
+          } else {
+            history.replace(link);
+          }
         }
       }}
     >
       <Typography variant="h5">
-        {' '}
-        <FormatCopy value={title} />
+        {logo} <FormatCopy value={title} />
       </Typography>
 
       <Typography variant="subtitle2" className={featuredStyles.descriptions}>

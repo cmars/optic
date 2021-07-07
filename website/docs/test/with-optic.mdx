@@ -35,8 +35,6 @@ Your test task is treated like a regular task, and runs with the same `api run` 
 api run test
 ```
 
-> result
-
 ``` 
 [optic] Running dependent task start...
 [optic] Review the API Diff at http://localhost:34444/apis/1/diffs
@@ -84,8 +82,6 @@ Here my test task runs `newman`, a CLI tool to run Postman collections and their
 api status
 ```
 
-> result
-
 ```
 Computing API diffs... Done!
    Diffs observed for existing endpoints
@@ -107,8 +103,6 @@ Optic also makes it easy to see how much of your documented API is covered by yo
 ```
 api status --print-coverage
 ```
-
-> result
 
 ```
 Computing API diffs... Done!
@@ -173,7 +167,7 @@ Based on 1 samples
 └──────────────────────────────┴──────────┴──────────┴──────────────────┘
 ```
 
-### Fail your tests on a Diff
+### How to fail your tests on a Diff
 
 The status and coverage reports are great ways to get insight how your API's behavior has changed. You don't have to be in the loop to investigate these reports, though. Optic can be configured to exit on a diff and throw an error code, to let your command line processes know your API's schema has changed. Now your tests can fail for schema differences as well!
 
@@ -182,8 +176,6 @@ The status and coverage reports are great ways to get insight how your API's beh
 ```
 api run baseline-ignores --exit-on-diff
 ```
-
-> result
 
 ```
 [optic] Running dependent task start...

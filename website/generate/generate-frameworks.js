@@ -5,12 +5,12 @@ const documentLinkTemplate = (slug) =>
 const documentTemplate = (name, slug, path, link, metadata) => {
   const tabValuesAsString = metadata.sdk_url
     ? [
-        { label: 'SDK', value: 'sdk' },
-        { label: 'Manual integration', value: 'manual' },
+        { label: 'Using SDK', value: 'sdk' },
+        { label: 'Using Proxy', value: 'manual' },
       ]
     : [
-        { label: 'Manual integration', value: 'manual' },
-        { label: 'SDK (coming soon)', value: 'sdk' },
+        { label: 'Using Proxy', value: 'manual' },
+        { label: 'Using SDK (coming soon)', value: 'sdk' },
       ];
 
   return `
