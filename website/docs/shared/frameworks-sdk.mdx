@@ -1,12 +1,17 @@
 ---
-title: Setup - Integrate Optic via SDK
+title: Setup - Integrate Optic via Middleware
 slug: /reference/frameworks-sdk
 ---
 
-### What is the Optic SDK
+### What does the Optic Middleware do?
 
-The most effective way to integrate your project with Optic is to use an Optic SDK. The SDK provides a middleware for your project to capture all traffic, no matter how or where it is generated. Regardless of how your tests run today, or how you instrument your project locally and in CI, Optic will be able to help you doucment your API and alert you to differences in behavior.
+Optic Middleware logs traffic handled by your API to your local instance of Optic. This makes it easy to collect API traffic from tests that do not run over the network, and removes the need to run an Optic Proxy while developing.
 
-<h3>Setting up your Optic SDK with {props.title}</h3>
+The Middleware will only enable itself and log traffic when you start the application using Optic's `api run` command, providing guarantees that the Middleware will not run in any of your real environments.
 
-<>The latest instructions for the <a href={props.sdk_url}>{props.title} SDK</a> are kept alongside the SDK itself in a <a href={props.sdk_readme}>README.md</a>. Once you've integrated the SDK, we'll validate that it is working properly.</>
+### Setting up your Optic Middleware with {props.title}
+
+<>The latest instructions for the <a href={props.sdk_url}>{props.title} Middleware</a> are kept alongside the Middleware itself in a <a href={props.sdk_readme}>README.md</a>. Once you've integrated the Middleware, we'll validate that it is working properly.</>
+
+<br />
+<br />

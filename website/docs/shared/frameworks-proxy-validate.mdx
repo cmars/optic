@@ -5,9 +5,9 @@ slug: /reference/proxy-validate
 
 import ExpandDocs from '../../src/components/Expand';
 
-### Validating your proxy integration
+### Test your Proxy integration
 
-After setting up your integration, we recommend passing some traffic through Optic to validate it is set up correctly. For the best results, you should plan to send at least 5 requests to your application. This helps assure that multiple responses are coming back as expected. Start up your project with Optic, using the `--verbose` flag. This will give you some additional troubleshooting information for your run:
+After setting up your integration, we recommend passing some traffic through Optic to validate it is set up correctly. This helps assure that multiple responses are coming back as expected. Start up your project with Optic, using the `--verbose` flag. This will give you some additional troubleshooting information for your run:
 
 ```
 api start --verbose
@@ -21,9 +21,9 @@ name: "todo-js"
 [optic-verbose] Expect the Optic proxy to start on "localhost:3001" and route traffic to your API on "localhost:3336"
 ```
 
-<ExpandDocs title="1. Potential error: the Optic port is occupied" defaultOpen={false}>
+<ExpandDocs title="Potential issue: the Optic port is occupied" defaultOpen={false}>
 
-The first error that may arise is if Optic cannot listen on the inbound port. This is most commonly caused by the API project already running on the port.
+The first issue that may arise is if Optic cannot listen on the inbound port. This is most commonly caused by the API project already running on the port.
 
 - Make sure the project is not running in another tab without Optic
 - Does the project start on the port Optic assigns it, set with the `PORT` environment variable? If the project starts on the Optic `inboundUrl` port, you'll run into this issue.
@@ -41,9 +41,9 @@ The first error that may arise is if Optic cannot listen on the inbound port. Th
 [optic] Optic is observing requests made to http://localhost:3001
 ```
 
-<ExpandDocs title="2. Potential error: the project start command is not working" defaultOpen={false}>
+<ExpandDocs title="Potential issue: the project start command is not working" defaultOpen={false}>
 
-Another common error is if the start task cannot run. The output of the command, and any failure items, will show up here. In this example the command `noder` is not found. The running command was `noder server.js --port $PORT` instead of `node ...`. This looks like a simple typo, a quick fix.
+Another common issue is if the start task cannot run. The output of the command, and any failure items, will show up here. In this example the command `noder` is not found. The running command was `noder server.js --port $PORT` instead of `node ...`. This looks like a simple typo, a quick fix.
 
 ```
 /bin/sh: noder: command not found
@@ -53,7 +53,7 @@ Another common error is if the start task cannot run. The output of the command,
 
 </ExpandDocs>
 
-<ExpandDocs title="3. Potential error: the project does not start on the correct port" defaultOpen={false}>
+<ExpandDocs title="Potential issue: the project does not start on the correct port" defaultOpen={false}>
 
 When your API project does not start on the port Optic assigns it with the `PORT` environment variable, after 15 seconds Optic will report that it never saw your project start on port `PORT`. If you attempt to pass any traffic to your project, Optic will report `ECONNREFUSED` (as there won't be a service to connect to) and samples will return HTTP code 502, a gateway error at Optic.
 
@@ -81,4 +81,4 @@ GET /todos 200 7.134 ms - 5881
 
 Note that if your API project logs any information to the console, it will appear in-line with the Optic logs. For example, above, we see the line `GET /todos 200 7.134 ms - 5881` which is reported by the application, followed by Optic's observation of the traffic with `[optic-verbose] Sample 0 GET /api/todos ➔ 200 response...`. Having the verbose Optic logs inline with the console logs from your application should help you troubleshoot any additional issues that arise as you start.
 
-Congratulations! Once you're done, you can check out the Optic dashboard to see your traffic and [document your test endpoints](/document). This will help you inspect the request and response bodies and make sure your integration is operating correctly.
+If you're working on documenting your API, we suggest collecting > 10 samples from different endpoints.

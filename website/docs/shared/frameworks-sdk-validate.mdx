@@ -1,12 +1,39 @@
 ---
-title: Setup - Integrate Optic via SDK
+title: Setup - Integrate Optic via Middleware
 slug: /reference/frameworks-sdk-validate
 ---
 
-### Validating your SDK integration
+### Connect to Optic
 
-After setting up your integration, we recommend passing some traffic through Optic to validate it is set up correctly. For the best results, you should plan to send at least 5 requests to your application. This helps assure that multiple responses are coming back as expected. Start up your project with Optic, using the `--verbose` flag. This will give you some additional troubleshooting information for your run:
+We recommend collecting some traffic with the Middleware to validate it is set up correctly:
+
+```
+start:
+  command: 'your command???'
+test:
+  command: 'your command???'
+```
+
+Start up your project with Optic, using the `--verbose` flag
+
+```
+api run start --verbose
+```
+
 
 ```
 start an exec session, look at the output
 ```
+
+Send some requests using Curl, Postman or another tool. You should see samples getting saved for Optic to learn from:
+
+```
+Sample 1....
+```
+
+Repeat the same steps for your `test` command:
+
+```
+api run test --verbose
+```
+

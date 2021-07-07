@@ -16,15 +16,17 @@ import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
 
 <ShowWhenSdk {...props}>
 
-<FrameworksSDK {...frontMatter}/> 
+<FrameworksSDK {...frontMatter}/>
+
 
 <FrameworksSDKValidate />
+
 
 </ShowWhenSdk>
 
 <ShowWhenProxy {...props}>
 
-<FrameworksProxyMode start_command="./foo" /> 
+<FrameworksProxyMode start_command="./foo" />
 
 <h3> Setting up an Optic proxy with {frontMatter.title}</h3>
 
@@ -36,12 +38,13 @@ import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
 
 [- Use command for whatever they use today to start their project]
 
-<FrameworksProxyValidate /> 
+<FrameworksProxyValidate />
 
 <FrameworksUseSDK framework={frontMatter.title} />
 
 </ShowWhenProxy>
 
+
 [- Reusable "here's more detail if you want it" at bottom, link to detailed optic config info in reference docs.]
 
-<IssuesAndContributing /> 
+<IssuesAndContributing />
