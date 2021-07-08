@@ -1,0 +1,28 @@
+---
+title: Setup - Integrate Optic via Middleware
+slug: /reference/frameworks-middleware
+---
+
+import CodeBlock from '@theme/CodeBlock';
+
+<h3> Setting up your Optic Middleware with {props.title}</h3>
+
+<>The latest instructions for integrating the <a href={props.sdk_url}>{props.title} Middleware</a> with your project are kept alongside the Middleware itself in a <a href={props.sdk_readme}>README.md</a>. Once you've integrated the Middleware, the next step is to connect your project with Optic.</>
+
+<br />
+<br />
+
+### Connect to Optic
+
+Edit the `optic.yml` file created when you ran [`api init`](/document). We recommend creating both a `start` and a `test` task so that you can both run traffic against your project manually and run your existing tests. With both tasks defined, Optic will be able to observe all of the traffic.
+
+<CodeBlock className="language-yml">
+tasks:
+  start:
+    command: {props.start_command}
+  test:
+    command: {props.start_command}
+</CodeBlock>
+
+<br />
+<br />

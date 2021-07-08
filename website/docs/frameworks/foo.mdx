@@ -1,26 +1,39 @@
 ---
 title: Foo
-sdk_url: https://github.com/opticdev/optic-node
-sdk_readme: https://github.com/opticdev/optic-node/blob/main/README.md
+middleware_url: https://github.com/opticdev/optic-node
+middleware_readme: https://github.com/opticdev/optic-node/blob/main/README.md
 productboard_url: ""
+start_command: "./foo"
 ---
 
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
-import FrameworksSDK from '/docs/shared/frameworks-sdk.mdx';
-import FrameworksSDKValidate from '/docs/shared/frameworks-sdk-validate.mdx';
+import ExpandDocs from '../../src/components/Expand';
+import FrameworksMiddlewareDesc from '/docs/shared/frameworks-middleware-desc.mdx';
+import FrameworksMiddleware from '/docs/shared/frameworks-middleware.mdx';
+import FrameworksMiddlewareValidate from '/docs/shared/frameworks-middleware-validate.mdx';
 import FrameworksProxyMode from '/docs/shared/frameworks-proxy-mode.mdx';
 import FrameworksProxyValidate from '/docs/shared/frameworks-proxy-validate.mdx';
-import FrameworksUseSDK from '/docs/shared/frameworks-proxy-use-sdk.mdx';
+import FrameworksMidleware from '/docs/shared/frameworks-proxy-use-middleware.mdx';
+import MoreDetails from '/docs/shared/frameworks-more-details.mdx';
 import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
-
 
 <ShowWhenSdk {...props}>
 
-<FrameworksSDK {...frontMatter}/>
+<FrameworksMiddlewareDesc />
 
+<ExpandDocs title="Setting up the Optic Middleware" defaultOpen={false}>
 
-<FrameworksSDKValidate />
+<FrameworksSDK />
 
+<FrameworksMiddleware {...frontMatter}/>
+
+</ExpandDocs>
+
+<ExpandDocs title="Validate your Middleware integration" defaultOpen={false}>
+
+<FrameworksMiddlewareValidate />
+
+</ExpandDocs>
 
 </ShowWhenSdk>
 
@@ -28,23 +41,54 @@ import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
 
 <FrameworksProxyMode start_command="./foo" />
 
-<h3> Setting up an Optic proxy with {frontMatter.title}</h3>
+<ExpandDocs title="Setting up your Optic Proxy" defaultOpen={false}>
 
-[Framework-specific advice goes here]
+### Connect to Optic
 
-[- Code example: What do you do in `optic.yml`, your framework. Super-specific to framework.]
+Edit the `optic.yml` file created when you ran [`api init`](/document). For a proxy, you'll need to define the command to start your API and the port on which Optic should listen. Optic will tell your application to start on a specific port with the `PORT` environment variable. We recommend starting Optic on the port your project listens on today, so all of your consumers, such as tests and local clients, work without any changes.
 
-[- Use inboundUrl as their current start port]
+#### Configuring optic.yml
 
-[- Use command for whatever they use today to start their project]
+```yml
+tasks:
+  start:
+    command: ./foo
+    inboundUrl: http://localhost:4000
+```
+
+#### Configuring your project
+
+```rust title=Before
+HttpServer::new(...)
+    .bind("127.0.0.1:3005")?
+    .run()
+    .await
+```
+
+```rust title=After
+let port = env::var("PORT").unwrap_or_else(|e| {
+    return "3005".to_string()
+});
+
+HttpServer::new(...)
+    .bind(format!("127.0.0.1:{}" , port))?
+    .run()
+    .await
+```
+<br />
+<br />
+</ExpandDocs>
+
+<ExpandDocs title="Validate your Proxy integration" defaultOpen={false}>
 
 <FrameworksProxyValidate />
 
-<FrameworksUseSDK framework={frontMatter.title} />
+</ExpandDocs>
+
+<FrameworksMidleware framework={frontMatter.title} />
 
 </ShowWhenProxy>
 
-
-[- Reusable "here's more detail if you want it" at bottom, link to detailed optic config info in reference docs.]
+<MoreDetails />
 
 <IssuesAndContributing />

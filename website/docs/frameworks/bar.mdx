@@ -1,19 +1,17 @@
 ---
 title: Bar
+productboard_url: "https://portal.productboard.com/useoptic/3-integrations-board/c/13-gitlab-ci-workflow-support"
 ---
 
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
 
 <ShowWhenSdk {...props}>
 
-- Reusable component: What does SDK do?
-  - logs traffic to Optic from middleware - "lets Optic look at your internal test traffic by using a middleware"
-  - api start (this would be exec task but no need to complicate that here) replaces your command
-  - code example: show `optic.yml` with a `start` and a `test` command, 
-
-- SDK specific instructions - lean on READMEs where possible
-
-- Reusable verbose component - same style as foo.mdx for SDK, but there's different check points for where we can see failures.
+<iframe
+  style={{width: '100%', height: 800}}
+  src={frontMatter.productboard_url}
+  frameBorder="0"
+/>
 
 </ShowWhenSdk>
 
