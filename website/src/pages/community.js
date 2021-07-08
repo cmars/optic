@@ -101,7 +101,7 @@ export default function () {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <img src="https://placekitten.com/400/400" />
+              <img src="/static/img/optic-spaceship.svg" />
             </Grid>
           </Grid>
         </Container>
@@ -194,7 +194,10 @@ export default function () {
 
           <Grid container spacing={4}>
             <Grid item xs={12} sm={4}>
-              <img src="https://placekitten.com/400/400" />
+              <img
+                src="/static/img/traffic-yo.svg"
+                style={{ maxHeight: '200px' }}
+              />
             </Grid>
             <Grid item xs={12} sm={8}>
               <Typography variant="subtitle1">
@@ -413,8 +416,137 @@ export default function () {
           </Grid>
         </Container>
 
+        {/*
+        FAQ
+        */}
+        <Container maxWidth={'md'} className={classes.section}>
+          <Typography
+            variant="h2"
+            className={classes.heading}
+            style={{ textAlign: 'center', fontSize: 30 }}
+          >
+            What do people commonly ask about Optic?
+          </Typography>
+
+          <Divider style={{ marginTop: 20, marginBottom: 30 }} />
+
+          <Typography variant="subtitle1">
+            We get a lot of questions via{' '}
+            <Link href={externalLinks.discord.link}>Discord</Link>,{' '}
+            <Link href="https://github.com/opticdev">GitHub</Link>, or even just
+            chatting{' '}
+            <Link href={externalLinks.officeHoursCalendly.href}>
+              just chatting to us
+            </Link>
+            , so we thought it'd be a good idea to answer some here.
+          </Typography>
+
+          <div>
+            <Typography variant="h3" className={classes.heading}>
+              How can I share the documentation I generate?
+            </Typography>
+            <ul>
+              <li>
+                <Link href="/share">Quick and easy: our share feature</Link>
+              </li>
+              <li>
+                <Link href="/share/openapi">
+                  <code>generate:oas</code>/<code>scripts</code> to export to an
+                  existing system
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <Typography variant="h3" className={classes.heading}>
+              Do you support (x development/infrastructure)?
+            </Typography>
+            <p>Simple answer, Yes!</p>
+            <ul>
+              <li>
+                <Link href="/capture">
+                  For languages, we have SDKs (a great way to contribute)
+                </Link>
+              </li>
+              <li>
+                <Link href="/capture">
+                  We can also integrate with live environments, such as staging,
+                  to capture traffic
+                </Link>
+              </li>
+              <li>
+                <Link href="/capture">
+                  The local CLI also has a proxy that you can use to monitor
+                  your local project or intercept traffic to a remote project
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <Typography variant="h3" className={classes.heading}>
+              I ran into something weird when documenting an edge case in my
+              API. Can you take a look at it?
+            </Typography>
+            <ul>
+              <li>
+                <Link href="/reference/optic-cli/commands/debug">
+                  generate a debug dump from CLI
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <Typography variant="h3" className={classes.heading}>
+              How do I get started?
+            </Typography>
+            <ul>
+              <li>
+                <Link href="/document">
+                  Docs: install, integrate, capture traffic, bulk add to
+                  establish your baseline
+                </Link>
+              </li>
+              <li>
+                <Link href="/change">
+                  As you monitor more traffic, Optic will report differences
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <Typography variant="h3" className={classes.heading}>
+              Is this free? Will it cost money?
+            </Typography>
+            <ul>
+              <li>
+                <Link href="/reference#under-the-hood">
+                  Optic is free and open source
+                </Link>
+                . We have a [cloud offering](BETA LINK) that lets you collect
+                traffic from your deployed environments
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <Typography variant="h3" className={classes.heading}>
+              Does this work for all APIS
+            </Typography>
+            <ul>
+              <li>
+                Today we support REST. GraphQL and Protos are on the{' '}
+                <Link href="/roadmap">roadmap</Link> but they aren’t coming soon
+              </li>
+            </ul>
+          </div>
+        </Container>
+
         {/* 
-        CONTRIBUTIONS
+        INTERESTED IN APIs
         */}
 
         <Container maxWidth={'md'} className={classes.section}>
