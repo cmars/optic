@@ -19,13 +19,13 @@ import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
 
 <ShowWhenSdk {...props}>
 
-<FrameworksMiddlewareDesc start_command="./foo"  />
+<FrameworksMiddlewareDesc start_command="./foo" />
 
 <ExpandDocs title="Setting up the Optic Middleware" defaultOpen={false}>
 
 <FrameworksSDK />
 
-<FrameworksMiddleware {...frontMatter}/>
+<FrameworksMiddleware {...frontMatter} test_command="newman run collection.json --environment environment.json" />
 
 </ExpandDocs>
 
