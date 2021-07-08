@@ -44,7 +44,7 @@ export const UseCaseCard = ({ title, link, description, logo }) => {
           if (link.startsWith('http://') || link.startsWith('https://')) {
             window.location = link;
           } else {
-            history.replace(link);
+            history.push(link);
           }
         }
       }}
