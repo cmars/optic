@@ -21,6 +21,10 @@ export function ShowAllFrameworks() {
           ) : (
             <></>
           );
+
+          console.log(i.slug);
+          console.log(Component);
+
           return (
             <Grid item xs={12} sm={2}>
               <PreviewPageModal

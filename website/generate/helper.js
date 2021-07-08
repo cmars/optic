@@ -31,7 +31,14 @@ function generate(
 
   fs.writeFileSync(
     path.join(__dirname, 'results', name + '.js'),
-    generateRuntimeOutput(allItemsInGroup)
+    generateRuntimeOutput(
+      allItemsInGroup.map((i) => {
+        return {
+          ...i,
+          outputPath: path.join(...outputPathArray, i.slug + '.mdx'),
+        };
+      })
+    )
   );
 
   emptyDir(path.join(...outputPathArray));

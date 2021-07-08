@@ -14,7 +14,7 @@ module.exports = {
 
 const resultsRoot = path.join(__dirname, 'results');
 function makeComponentLine(component) {
-  const relativePath = path.relative(resultsRoot, component.path);
+  const relativePath = path.relative(resultsRoot, component.outputPath);
   return `"${component.slug}": require('${relativePath}'),`;
 }
 
