@@ -3,20 +3,44 @@ title: Setup - Integrate Optic via Middleware
 slug: /reference/frameworks-middleware-validate
 ---
 
-We recommend collecting some traffic with the Middleware to validate it is set up correctly. Start up your project with Optic, using the `--verbose` flag
+import ExpandDocs from '../../src/components/Expand';
+
+We recommend collecting some traffic with the Middleware to validate it is set up correctly. Start up your project with Optic, using the `--verbose` flag:
 
 ```
 api run start --verbose
 ```
 
-```
-start an exec session, look at the output
-```
-
-Send some requests using Curl, Postman or another tool. You should see samples getting saved for Optic to learn from:
+Next, run some traffic through your application. We recommend running at least 5 requests against multiple endpoints to get different behavior coverage. This will help validate the traffic is observed correctly:
 
 ```
-Sample 1....
+[optic-verbose] Starting a local server that receives traffic sent from your SDK/Middleware to http://localhost:3700/
+[optic-verbose] Running command node basic-http-server.js
+Running command: node basic-http-server.js
+Traffic can be sent to: http://localhost:3700/
+```
+
+<ExpandDocs title="Potential issue: the project start command is not working" defaultOpen={false}>
+
+```
+/bin/sh: noder: command not found
+[optic-verbose] Task finished with 0 samples in latest capture
+```
+
+This error occurs when the start task cannot run. The output of the command, and any failure items, will show up here. In this example the command `noder` is not found. The running command was `noder server.js --port $PORT` instead of `node ...`. This looks like a simple typo, a quick fix.
+
+</ExpandDocs>
+
+```
+Listen http://localhost:3000
+... traffic captures show up here
+^C[optic-verbose] Task finished with 5 samples in latest capture
+```
+
+Notice the traffic captures will show up inline in the console when using verbose mode. Here is an example of what you may see in the console when requesting a todo item by ID from an example API:
+
+```
+{"uuid":"76df3296-7592-4f09-89aa-f33471e91758","request":{"host":"localhost","method":"GET","path":"/todos/22421dc3","query":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null},"headers":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null},"body":{"contentType":null,"value":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null}}},"response":{"statusCode":200,"headers":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null},"body":{"contentType":"application/json; charset=utf-8","value":{"asJsonString":"{\n  \"title\": \"Try out Optic\",\n  \"createdAt\": 1595452390983,\n  \"completed\": false,\n  \"priority\": \"high\",\n  \"id\": \"22421dc3\"\n}","asText":"{\n  \"title\": \"Try out Optic\",\n  \"createdAt\": 1595452390983,\n  \"completed\": false,\n  \"priority\": \"high\",\n  \"id\": \"22421dc3\"\n}","shapeHashV1Base64":null}}},"tags":[]}
 ```
 
 Repeat the same steps for your `test` command:

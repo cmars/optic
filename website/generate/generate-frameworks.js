@@ -3,14 +3,14 @@ const { generate } = require('./helper');
 const documentLinkTemplate = (slug) =>
   `reference/capture-methods/using-integration/${slug}`;
 const documentTemplate = (name, slug, path, link, metadata) => {
-  const tabValuesAsString = metadata.sdk_url
+  const tabValuesAsString = metadata.middleware_url
     ? [
-        { label: 'Using SDK', value: 'sdk' },
+        { label: 'Using Middleware', value: 'middleware' },
         { label: 'Using Proxy', value: 'manual' },
       ]
     : [
         { label: 'Using Proxy', value: 'manual' },
-        { label: 'Using SDK (coming soon)', value: 'sdk' },
+        { label: 'Using Middleware (coming soon)', value: 'middleware' },
       ];
 
   return `
@@ -26,11 +26,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="sdk"
+  defaultValue="middleware"
   values={${JSON.stringify(tabValuesAsString)}}>
 
-<TabItem value="sdk">
-<SpecificExample sdk={true} />
+<TabItem value="middleware">
+<SpecificExample middleware={true} />
 </TabItem>
 
 <TabItem value="manual">
