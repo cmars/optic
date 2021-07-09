@@ -6,8 +6,11 @@ productboard_url: ""
 start_command: "./foo"
 ---
 
+import { Link } from '@material-ui/core'
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
 import PreviewPageModal from '../../src/components/Modal';
+import InstallSlim from '../shared/install-slim.mdx'
+import InitSlim from '../shared/init-slim.mdx'
 import ExpandDocs from '../../src/components/Expand';
 import FrameworksMiddlewareDesc from '/docs/shared/frameworks-middleware-desc.mdx';
 import FrameworksMiddleware from '/docs/shared/frameworks-middleware.mdx';
@@ -17,6 +20,20 @@ import FrameworksProxyValidate from '/docs/shared/frameworks-proxy-validate.mdx'
 import FrameworksMidleware from '/docs/shared/frameworks-proxy-use-middleware.mdx';
 import MoreDetails from '/docs/shared/frameworks-more-details.mdx';
 import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
+
+Before you get started, make sure you have:
+<ul>
+    <li>
+        <PreviewPageModal Source={<InstallSlim />} link={'/reference/install'}>  
+            <Link href="#">Installed Optic</Link>
+        </PreviewPageModal>
+    </li>
+    <li>
+        <PreviewPageModal Source={<InitSlim />} link={'/reference/init'}>
+            <Link href="#">Run `api init`</Link>
+        </PreviewPageModal>
+    </li>
+</ul>
 
 <ShowWhenSdk {...props}>
 
@@ -93,7 +110,7 @@ api exec "node <your express server>"
 
 ### Connect to Optic
 
-Edit the `optic.yml` file created when you ran <PreviewPageModal key="" link="/document" title={`api init`} Source="/document">`api init`</PreviewPageModal>. For a proxy, you'll need to define the command to start your API and the port on which Optic should listen. Optic will tell your application to start on a specific port with the `PORT` environment variable. We recommend starting Optic on the port your project listens on today, so all of your consumers, such as tests and local clients, work without any changes.
+Edit the `optic.yml` file created when you ran `api init`. For a proxy, you'll need to define the command to start your API and the port on which Optic should listen. Optic will tell your application to start on a specific port with the `PORT` environment variable. We recommend starting Optic on the port your project listens on today, so all of your consumers, such as tests and local clients, work without any changes.
 
 #### Configuring optic.yml
 
