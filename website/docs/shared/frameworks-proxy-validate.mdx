@@ -7,11 +7,11 @@ import ExpandDocs from '../../src/components/Expand';
 
 After setting up your integration, we recommend passing some traffic through Optic to validate it is set up correctly. This helps assure that multiple responses are coming back as expected. Start up your project with Optic, using the `--verbose` flag. This will give you some additional troubleshooting information for your run:
 
-```
+``` sh
 api start --verbose
 ```
 
-```
+``` sh
 [optic-verbose] start task is running. Explanation:
 [optic-verbose] Running the command "node server.js --port $PORT"
 [optic-verbose] With an env variable called "PORT" set to "3336"
@@ -26,7 +26,7 @@ The first issue that may arise is if Optic cannot listen on the inbound port. Th
 - Make sure the project is not running in another tab without Optic
 - Does the project start on the port Optic assigns it, set with the `PORT` environment variable? If the project starts on the Optic `inboundUrl` port, you'll run into this issue.
 
-```
+``` sh
 [optic-verbose] ⚠️   Something is already running on port 3001. Can not start Optic Proxy there.
 [optic] Optic could not start its proxy server on port 3001
 [optic]  [pid 79634]: node server.js
@@ -34,7 +34,7 @@ The first issue that may arise is if Optic cannot listen on the inbound port. Th
 
 </ExpandDocs>
 
-```
+``` sh
 [optic] Review the API Diff at http://localhost:34444/apis/1/diffs
 [optic] Optic is observing requests made to http://localhost:3001
 ```
@@ -43,7 +43,7 @@ The first issue that may arise is if Optic cannot listen on the inbound port. Th
 
 Another common issue is if the start task cannot run. The output of the command, and any failure items, will show up here. In this example the command `noder` is not found. The running command was `noder server.js --port $PORT` instead of `node ...`. This looks like a simple typo, a quick fix.
 
-```
+``` sh
 /bin/sh: noder: command not found
 [optic] Observed Unexpected API Behavior. Run "api status"
 [optic-verbose] Task finished with 0 samples in latest capture
@@ -57,7 +57,7 @@ When your API project does not start on the port Optic assigns it with the `PORT
 
 Check your project, and make sure it is listening for API traffic on the port set in the `PORT` environment variable. This is how Optic knows how to observe and relay traffic to your project.
 
-```
+``` sh
 Failed to handle request: connect ECONNREFUSED 127.0.0.1:3326
 [optic-verbose] Sample 0 GET /api/todos ➔ 502 response
 [optic-verbose] ⚠️  After 15 seconds, Optic never saw your API start on the port it assigns using the PORT variable
@@ -68,13 +68,12 @@ Failed to handle request: connect ECONNREFUSED 127.0.0.1:3326
 
 </ExpandDocs>
 
-```
+``` sh
 [optic-verbose] ✅ Your API just started on the port Optic assigned it using the env variable PORT -> 3315
 GET /todos 200 7.134 ms - 5881
 [optic-verbose] Sample 0 GET /api/todos ➔ 200 response...
 ^C[optic] Observed Unexpected API Behavior. Run "api status"
 [optic-verbose] Task finished with 5 samples in latest capture
-
 ```
 
 Note that if your API project logs any information to the console, it will appear in-line with the Optic logs. For example, above, we see the line `GET /todos 200 7.134 ms - 5881` which is reported by the application, followed by Optic's observation of the traffic with `[optic-verbose] Sample 0 GET /api/todos ➔ 200 response...`. Having the verbose Optic logs inline with the console logs from your application should help you troubleshoot any additional issues that arise as you start.
