@@ -22,6 +22,8 @@ export function ShowAllFrameworks() {
             <></>
           );
 
+          const icon = i.metadata.icon || '/img/langs/rust.svg';
+
           console.log(i.slug);
           console.log(Component);
 
@@ -33,11 +35,7 @@ export function ShowAllFrameworks() {
                 title={`Collect traffic from ${i.name}`}
                 Source={<Component />}
               >
-                <img
-                  src={'/img/langs/rust.svg'}
-                  height={13}
-                  style={{ marginRight: 10 }}
-                />
+                <img src={icon} height={13} style={{ marginRight: 10 }} />
                 <Typography
                   variant="subtitle2"
                   style={{ fontSize: 17, cursor: 'pointer' }}
