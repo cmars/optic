@@ -1,8 +1,8 @@
 ---
-title: Mux
-productboard_url: 'https://portal.productboard.com/useoptic/3-integrations-board/c/24-mux'
-start_command: 'go run application.go'
-icon: '/img/langs/mux.png'
+title: Rocket
+productboard_url: 'https://portal.productboard.com/useoptic/3-integrations-board/c/29-rocket'
+start_command: 'cargo run'
+icon: '/img/langs/rocket.svg'
 ---
 
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
@@ -22,6 +22,10 @@ import MoreDetails from '/docs/shared/frameworks-more-details.mdx';
 <ShowWhenSdk {...props}>
 
 <iframe
+  style={{width: '100%', height: 800}}
+  src={frontMatter.productboard_url}
+  frameBorder="0"
+/><iframe
   style={{width: '100%', height: 800}}
   src={frontMatter.productboard_url}
   frameBorder="0"
@@ -49,18 +53,36 @@ tasks:
 
 #### Configuring your project
 
-```go title=Before
-http.ListenAndServe(":4000", r)
+```rust title=Before
+use rocket::config::{Config, Environment};
+use std::env;
+
+let config = Config::build(Environment::Staging)
+    .port(4000)
+    .unwrap();
+
+rocket::custom(config)
+    .mount("/", routes![hello])
+    .launch();
 ```
 
-```go title=After
-port := ":4000"
+```rust title=After
+use rocket::config::{Config, Environment};
+use std::env;
 
-if os.Getenv("PORT") != "" {
-    port = fmt.Sprintf(":%s", os.Getenv("PORT"))
+let mut port = 4000;
+match env::var("PORT") {
+    Ok(val) => port = val.parse::<u16>().unwrap(),
+    Err(e) => {}
 }
 
-http.ListenAndServe(port, r)
+let config = Config::build(Environment::Staging)
+    .port(port)
+    .unwrap();
+
+rocket::custom(config)
+    .mount("/", routes![hello])
+    .launch();
 ```
 
 <br />

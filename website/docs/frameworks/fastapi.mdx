@@ -30,7 +30,7 @@ import MoreDetails from '/docs/shared/frameworks-more-details.mdx';
 
 <ShowWhenProxy {...props}>
 
-<FrameworksProxyMode start_command="./foo" />
+<FrameworksProxyMode start_command={frontMatter.start_command} />
 
 ### Connect to Optic
 
@@ -48,7 +48,7 @@ tasks:
 
 #### Configuring your project
 
-No code changes should be needed - by pasisng in the port on the command line, you're ready to go!
+No code changes should be needed - by pasisng in the port with the command, you're ready to go!
 
 <br />
 <br />
