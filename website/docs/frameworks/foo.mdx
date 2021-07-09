@@ -1,12 +1,13 @@
 ---
 title: Foo
-middleware_url: https://github.com/opticdev/optic-node
-middleware_readme: https://github.com/opticdev/optic-node/blob/main/README.md
+middleware_url: https://github.com/opticdev/optic-node/blob/main/frameworks/express
+middleware_readme: https://github.com/opticdev/optic-node/blob/main/frameworks/express/README.md
 productboard_url: ""
 start_command: "./foo"
 ---
 
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
+import PreviewPageModal from '../../src/components/Modal';
 import ExpandDocs from '../../src/components/Expand';
 import FrameworksMiddlewareDesc from '/docs/shared/frameworks-middleware-desc.mdx';
 import FrameworksMiddleware from '/docs/shared/frameworks-middleware.mdx';
@@ -21,19 +22,68 @@ import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
 
 <FrameworksMiddlewareDesc start_command="./foo" />
 
-<ExpandDocs title="Setting up the Optic Middleware" defaultOpen={false}>
-
 <FrameworksSDK />
+
+#### Requirements
+
+The module requires `@useoptic/cli` to be installed, instructions on installing it are available [https://www.useoptic.com/docs/](https://www.useoptic.com/docs/).
+
+It also requires something like [`body-parser`](https://www.npmjs.com/package/body-parser) to be used as part of the middleware stack to access the body of the HTTP requests within Express
+
+#### Intsall
+
+```sh
+npm install @useoptic/express-middleware
+```
+
+#### Usage
+
+The middleware takes a configuration object and captures traffic in the background as long as `@useoptic/cli` is installed. 
+
+#### Configuration
+
+All options are optional for easier configuration in your application
+- `enabled`: `boolean` (defaults to `false`) Programmatically control if capturing data and sending it to Optic
+- `uploadUrl`: `string` (defaults to `process.env.OPTIC_LOGGING_URL`) The URL to Optics capture URL, if left blank it will expect `OPTIC_LOGGING_URL` environment variable set by the Optic CLI
+- `console`: `boolean` (defaults to `false`) Send to stdout/console for debugging
+- `framework`: `string` (defaults to '') Additional information to inform Optic of where it is capturing information
+
+#### Example
+
+Using a basic [Express](https://expressjs.com/) server proxying to [httpbin](https://httpbin.org) for easy endpoints
+
+```js
+const express = require('express')
+const bodyParser = require('body-parser')
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const optic = require('@useoptic/express-middleware');
+
+const app = express()
+const port = 3000
+
+app.use(bodyParser())
+app.use(optic({
+    enabled: true,
+}))
+
+app.use('/', createProxyMiddleware({ target: 'https://httpbin.org', changeOrigin: true }));
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
+```
+
+To start capturing data from the SDK, run your application with
+
+```sh
+api exec "node <your express server>"
+```
+
+<p>For more information, you can check the <a href={frontMatter.middleware_url}>README.md</a> for the <a href={frontMatter.middleware_url}>{frontMatter.title} Middleware</a>. Once you've integrated the Middleware, the next step is to connect your project with Optic.</p>
 
 <FrameworksMiddleware {...frontMatter} test_command="newman run collection.json --environment environment.json" />
 
-</ExpandDocs>
-
-<ExpandDocs title="Validate your Middleware integration" defaultOpen={false}>
-
 <FrameworksMiddlewareValidate />
-
-</ExpandDocs>
 
 </ShowWhenSdk>
 
@@ -41,11 +91,9 @@ import IssuesAndContributing from '/docs/shared/issues-and-contributing.mdx';
 
 <FrameworksProxyMode start_command="./foo" />
 
-<ExpandDocs title="Setting up your Optic Proxy" defaultOpen={false}>
-
 ### Connect to Optic
 
-Edit the `optic.yml` file created when you ran [`api init`](/document). For a proxy, you'll need to define the command to start your API and the port on which Optic should listen. Optic will tell your application to start on a specific port with the `PORT` environment variable. We recommend starting Optic on the port your project listens on today, so all of your consumers, such as tests and local clients, work without any changes.
+Edit the `optic.yml` file created when you ran <PreviewPageModal key="" link="/document" title={`api init`} Source="/document">`api init`</PreviewPageModal>. For a proxy, you'll need to define the command to start your API and the port on which Optic should listen. Optic will tell your application to start on a specific port with the `PORT` environment variable. We recommend starting Optic on the port your project listens on today, so all of your consumers, such as tests and local clients, work without any changes.
 
 #### Configuring optic.yml
 
@@ -77,18 +125,15 @@ HttpServer::new(...)
 ```
 <br />
 <br />
-</ExpandDocs>
-
-<ExpandDocs title="Validate your Proxy integration" defaultOpen={false}>
 
 <FrameworksProxyValidate />
-
-</ExpandDocs>
 
 <FrameworksMidleware framework={frontMatter.title} />
 
 </ShowWhenProxy>
 
-<MoreDetails />
+## Next step: Document your first endpoint
+
+Now Optic is integrated with your API, and you've confirmed traffic is flowing properly. Congratulations! Since you captured some traffic while testing the integration, now is a great time to [document your first endpoint](/document/baseline). 
 
 <IssuesAndContributing />
