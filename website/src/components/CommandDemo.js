@@ -10,6 +10,7 @@ import IconGrid, { TextWithSubtext } from './IconGrid';
 import { Tab, Tabs } from '@material-ui/core';
 import { IFrameDemo2 } from './iFrameDemo2';
 import Box from '@material-ui/core/Box';
+import { SubtleBlueBackground } from './theme';
 
 const copy = require('./demo-copy.json');
 
@@ -130,7 +131,7 @@ export function DocumentGitHubExample() {
     tab === 0 ? '/demos/github/review' : '/demos/github-with-diffs/review';
 
   return (
-    <>
+    <div style={{ backgroundColor: SubtleBlueBackground, paddingTop: 70 }}>
       <Container
         maxWidth={false}
         className={classes.gitBotContainer}
@@ -168,6 +169,6 @@ export function DocumentGitHubExample() {
         </Container>
       </Container>
       <IFrameDemo2 demoPath={demoPath} />
-    </>
+    </div>
   );
 }

@@ -33,7 +33,7 @@ module.exports = {
     hideableSidebar: false,
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: false,
+      disableSwitch: true,
     },
     navbar: {
       title: 'Optic',
@@ -63,12 +63,6 @@ module.exports = {
           position: 'left',
         },
         {
-          to: '/reference',
-          activeBasePath: '/reference',
-          label: 'Docs',
-          position: 'left',
-        },
-        {
           to: '/community',
           activeBasePath: '/community',
           label: 'Community',
@@ -78,11 +72,6 @@ module.exports = {
           to: '/roadmap',
           activeBasePath: '/roadmap',
           label: 'Roadmap',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/opticdev/optic',
-          label: 'GitHub',
           position: 'right',
         },
       ],

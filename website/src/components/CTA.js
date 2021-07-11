@@ -11,10 +11,17 @@ import ForumIcon from '@material-ui/icons/Forum';
 import Link from '@docusaurus/core/lib/client/exports/Link';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { GitHubStats } from './GitHubStatsSlim';
+import {
+  SubtleBlueBackground,
+  UpdatedBlue,
+  UpdatedBlueBackground,
+  UpdatedBlueBackgroundLighter,
+} from './theme';
+import Grid from '@material-ui/core/Grid';
 export const useStyles = makeStyles({
   section: {
-    paddingTop: 75,
-    paddingBottom: 75,
+    paddingTop: 100,
+    paddingBottom: 20,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -38,81 +45,60 @@ export const useStyles = makeStyles({
   },
 });
 
-const tryOptic = {
-  title:
-    'API-first workflows built for awesome developers. **Try Adding Optic to your API**',
-  subtext: 'Setup takes 5-10 mins.',
-  description: 'When the CLI is installing, be sure to join the community.',
-};
-
 export function CTATryOptic() {
   const classes = useStyles();
   const featuredStyles = useFeatureStyles();
   return (
-    <Container maxWidth="md" style={{ marginBottom: 110 }}>
-      <Typography
-        variant="h4"
-        className={featuredStyles.headline}
-        style={{
-          fontWeight: 300,
-          fontSize: 45,
-          textAlign: 'left',
-        }}
-      >
-        <FormatCopy value={tryOptic.title} />
-      </Typography>
+    <div className={classes.section}>
+      <Container maxWidth="lg">
+        <Grid container xs={12}>
+          <Grid item xs={12} sm={5}>
+            <img
+              src="/img/Optic_Graphic2.svg"
+              width="400"
+              style={{ marginRight: 30 }}
+            />
+          </Grid>
+          <Grid item xs={12} sm={7}>
+            <Typography variant="h1" className={featuredStyles.headline}>
+              We're here to help your team build a great API
+            </Typography>
+            <Typography variant="h1" className={featuredStyles.subtext}>
+              Explore our docs, our live demos and read about the workflows
+              Optic enables. When you are ready, set Optic up (it takes 10 mins)
+              or have a conversation with the Optic maintainers for help.
+            </Typography>
+            <Box style={{ marginTop: 5, marginBottom: 120 }}>
+              <Box
+                alignItems="center"
+                display="flex"
+                flexDirection="row"
+                justifyContent="flex-start"
+              >
+                <Button
+                  endIcon={<ChevronRightIcon />}
+                  to="/docs"
+                  variant="contained"
+                  color="primary"
+                >
+                  Get Started
+                </Button>
 
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        style={{ marginTop: 16 }}
-      >
-        <Chip
-          color="secondary"
-          style={{
-            marginLeft: 0,
-            paddingLeft: 0,
-            fontWeight: 800,
-            marginRight: 12,
-          }}
-          label="5-10 min setup"
-        />
-        <Typography variant="body1" style={{ color: '#6d757d' }}>
-          {tryOptic.description}
-        </Typography>
-      </Box>
-
-      <Box style={{ marginTop: 30, marginBottom: 120 }}>
-        <Box
-          alignItems="center"
-          display="flex"
-          flexDirection="row"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
-          <Button
-            endIcon={<ForumIcon />}
-            component={Link}
-            to="/community/"
-            variant="outlined"
-            color="primary"
-            style={{ marginRight: 13 }}
-          >
-            Join Community
-          </Button>
-          <Button
-            endIcon={<ChevronRightIcon />}
-            component={Link}
-            to="/docs/"
-            variant="outlined"
-            color="primary"
-          >
-            Get Started
-          </Button>
-        </Box>
-        <GitHubStats style={{ padding: 0, justifyContent: 'flex-start' }} />
-      </Box>
-    </Container>
+                <div style={{ marginLeft: 10 }}>
+                  <Link>Schedule a Demo</Link>
+                </div>
+              </Box>
+              <Typography
+                variant="body1"
+                style={{ color: '#6d757d', marginTop: 20 }}
+              >
+                When the CLI is installing, be sure to{' '}
+                <Link>join the community.</Link>
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </div>
   );
 }
