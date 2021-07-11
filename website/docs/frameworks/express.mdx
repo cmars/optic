@@ -1,10 +1,10 @@
 ---
-title: Foo
+title: Express
 middleware_url: https://github.com/opticdev/optic-node/blob/main/frameworks/express
 middleware_readme: https://github.com/opticdev/optic-node/blob/main/frameworks/express/README.md
 productboard_url: ''
 start_command: 'node app.js'
-icon: '/img/langs/rust.svg'
+icon: '/img/langs/express.png'
 ---
 
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
@@ -23,7 +23,7 @@ import MoreDetails from '/docs/shared/frameworks-more-details.mdx';
 
 <ShowWhenSdk {...props}>
 
-<FrameworksMiddlewareDesc start_command="./foo" />
+<FrameworksMiddlewareDesc start_command={frontMatter.start_command} />
 
 <FrameworksSDK />
 

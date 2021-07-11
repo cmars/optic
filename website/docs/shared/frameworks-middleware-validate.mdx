@@ -37,13 +37,7 @@ Listen http://localhost:3000
 ^C[optic-verbose] Task finished with 5 samples in latest capture
 ```
 
-Notice the traffic captures will show up inline in the console when using verbose mode. Here is an example of what you may see in the console when requesting a todo item by ID from an example API:
-
-```
-{"uuid":"76df3296-7592-4f09-89aa-f33471e91758","request":{"host":"localhost","method":"GET","path":"/todos/22421dc3","query":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null},"headers":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null},"body":{"contentType":null,"value":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null}}},"response":{"statusCode":200,"headers":{"asJsonString":null,"asText":null,"shapeHashV1Base64":null},"body":{"contentType":"application/json; charset=utf-8","value":{"asJsonString":"{\n  \"title\": \"Try out Optic\",\n  \"createdAt\": 1595452390983,\n  \"completed\": false,\n  \"priority\": \"high\",\n  \"id\": \"22421dc3\"\n}","asText":"{\n  \"title\": \"Try out Optic\",\n  \"createdAt\": 1595452390983,\n  \"completed\": false,\n  \"priority\": \"high\",\n  \"id\": \"22421dc3\"\n}","shapeHashV1Base64":null}}},"tags":[]}
-```
-
-Repeat the same steps for your `test` command:
+Success! Repeat the same steps for your `test` command:
 
 ```
 api run test --verbose

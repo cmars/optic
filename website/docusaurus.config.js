@@ -117,7 +117,7 @@ module.exports = {
       copyright: `Copyright © ${new Date().getFullYear()} Optic Labs`,
     },
     prism: {
-      additionalLanguages: ['csharp', 'rust'],
+      additionalLanguages: ['csharp', 'rust', 'elixir'],
     },
   },
   presets: [

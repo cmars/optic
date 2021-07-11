@@ -1,10 +1,10 @@
 ---
-title: Foo
-middleware_url: https://github.com/opticdev/optic-node/blob/main/frameworks/express
-middleware_readme: https://github.com/opticdev/optic-node/blob/main/frameworks/express/README.md
+title: Hapi
+middleware_url: https://github.com/opticdev/optic-node/blob/main/frameworks/hapi
+middleware_readme: https://github.com/opticdev/optic-node/blob/main/frameworks/hapi/README.md
 productboard_url: ''
 start_command: 'node app.js'
-icon: '/img/langs/rust.svg'
+icon: '/img/langs/hapi.png'
 ---
 
 import { ShowWhenSdk, ShowWhenProxy } from '../../src/components/FrameworkHelper';
@@ -23,57 +23,73 @@ import MoreDetails from '/docs/shared/frameworks-more-details.mdx';
 
 <ShowWhenSdk {...props}>
 
-<FrameworksMiddlewareDesc start_command="./foo" />
+<FrameworksMiddlewareDesc start_command={frontMatter.start_command} />
 
 <FrameworksSDK />
 
-#### Requirements
+## Requirements
 
 The module requires `@useoptic/cli` to be installed, instructions on installing it are available [https://www.useoptic.com/docs/](https://www.useoptic.com/docs/).
 
-It also requires something like [`body-parser`](https://www.npmjs.com/package/body-parser) to be used as part of the middleware stack to access the body of the HTTP requests within Express
-
-#### Intsall
+## Install
 
 ```sh
 npm install @useoptic/express-middleware
 ```
 
-#### Usage
+## Usage
 
 The middleware takes a configuration object and captures traffic in the background as long as `@useoptic/cli` is installed. 
 
-#### Configuration
+### Configuration
 
 All options are optional for easier configuration in your application
 - `enabled`: `boolean` (defaults to `false`) Programmatically control if capturing data and sending it to Optic
 - `uploadUrl`: `string` (defaults to `process.env.OPTIC_LOGGING_URL`) The URL to Optics capture URL, if left blank it will expect `OPTIC_LOGGING_URL` environment variable set by the Optic CLI
 - `console`: `boolean` (defaults to `false`) Send to stdout/console for debugging
-- `framework`: `string` (defaults to '') Additional information to inform Optic of where it is capturing information
+ - `framework`: `string` (defaults to '') Additional information to inform Optic of where it is capturing information
 
-#### Example
+### Example
 
-Using a basic [Express](https://expressjs.com/) server proxying to [httpbin](https://httpbin.org) for easy endpoints
+Using a basic [hapi](https://hapi.dev/) server.
 
 ```js
-const express = require('express')
-const bodyParser = require('body-parser')
-const { createProxyMiddleware } = require('http-proxy-middleware');
-const optic = require('@useoptic/express-middleware');
+const Hapi = require('@hapi/hapi')
+const Optic = require('@useoptic/hapi-middleware')
 
-const app = express()
-const port = 3000
+const init = async () => {
+  const server = Hapi.server({
+    port: 3001,
+    host: 'localhost'
+  })
 
-app.use(bodyParser())
-app.use(optic({
-    enabled: true,
-}))
+  await server.register({
+    plugin: Optic,
+    options: {
+      enabled: true
+    }
+  })
+  server.route({
+    method: ['GET', 'POST'],
+    path: '/',
+    handler: (request, h) => {
+      return 'Hello World! ' + Math.random()
+    }
+  })
 
-app.use('/', createProxyMiddleware({ target: 'https://httpbin.org', changeOrigin: true }));
+  await server.start()
+  console.log('Server running on %s', server.info.uri)
+}
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+process.on('unhandledRejection', (err) => {
+  if (err) {
+    console.log('ERROR')
+    console.log(err)
+    process.exit(1)
+  }
 })
+
+init()
 ```
 
 <p>For more information, you can check the <a href={frontMatter.middleware_url}>README.md</a> for the <a href={frontMatter.middleware_url}>{frontMatter.title} Middleware</a>. Once you've integrated the Middleware, the next step is to connect your project with Optic.</p>
@@ -86,7 +102,7 @@ app.listen(port, () => {
 
 <ShowWhenProxy {...props}>
 
-<FrameworksProxyMode start_command={frontMatter.start_command} />
+<FrameworksProxyMode start_command="./foo" />
 
 ### Connect to Optic
 
