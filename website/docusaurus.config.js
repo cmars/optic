@@ -44,14 +44,10 @@ module.exports = {
       },
       items: [
         {
-          label: 'Use Cases',
-          items: [
-            allUseCases.Document,
-            allUseCases.Test,
-            allUseCases.Change,
-            allUseCases.Share,
-          ],
-          position: 'left',
+          to: '/docs',
+          activeBasePath: '/docs',
+          label: 'Docs',
+          position: 'right',
         },
         {
           label: 'Workflows',
@@ -60,18 +56,18 @@ module.exports = {
             allWorkflows.TeamDesignFirst,
             allWorkflows.DevelopWithOpticLocally,
           ],
-          position: 'left',
+          position: 'right',
+        },
+        {
+          to: '/blog',
+          activeBasePath: '/docs',
+          label: 'Blog',
+          position: 'right',
         },
         {
           to: '/community',
           activeBasePath: '/community',
           label: 'Community',
-          position: 'right',
-        },
-        {
-          to: '/roadmap',
-          activeBasePath: '/roadmap',
-          label: 'Roadmap',
           position: 'right',
         },
       ],
@@ -129,6 +125,12 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl: 'https://github.com/opticdev/optic/edit/develop/website/',
+        },
+        blog: {
+          showReadingTime: true,
+          // Please change this to your repo.
+          editUrl:
+            'https://github.com/opticdev/optic/edit/develop/website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
