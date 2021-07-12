@@ -42,7 +42,7 @@ export function DocumentValueProp() {
   const props = {
     mini: 'Document',
     heading: 'Document your API, know when it changes',
-    description: `Writing and maintaining accurate API documentation makes your team and all your API consumers more productive, but it’s really hard to maintain docs. Optic solves this problem for teams every day, it documents your API in minutes and helps you update your documentation whenever the API changes.
+    description: `Optic gives developers a simple workflow for maintaining an accurate, up-to-date API Contract. The tool makes it easy to document new endpoints, detect unplanned changes to the API behavior, and update the API Contract when planned API changes have been released.
 `,
     image: '/img/Optic_Graphic1.svg',
     bullets: [
@@ -57,12 +57,9 @@ export function DocumentValueProp() {
 export function ChangeValueProp() {
   const props = {
     mini: 'Change',
-    heading: 'Add API Changelogs to Pull Requests & Code Review',
+    heading: 'Discuss API Changes during Code Review',
     description:
-      ' Have a conversation whenever an API is about to change. Optic adds a\n' +
-      '            list of “API Changes” to every Pull Request. API Changes are as\n' +
-      '            important to discuss as Code Changes. Optic makes it easy to talk\n' +
-      '            about them early, before they affect consumers.',
+      'Optic adds an API Changelog to every Open Pull Request. Now your team can talk about both "API Changes" and "File Changes" during code review.',
     image: '/img/Optic_Graphic3.svg',
     bullets: [
       'Document new endpoints in seconds',
@@ -79,7 +76,7 @@ export function TestValueProp() {
     mini: 'Test',
     heading: 'Test your API with Optic',
     description:
-      'Use traffic from Staging, Development and QA environments to test your API. The traffic from these environments is used to verify the contract when new versions get deployed. Get benefits of Contract Tests, without writing and maintaining them.',
+      'Use traffic from your Tests and from Staging environments to verify each version of your API meets its contract, before it gets deployed to users. Get the  benefits of Contract Tests, without writing and maintaining them.',
     image: '/img/Optic_Graphic4-01.png',
     bullets: [
       'Detect API Changes Before they affect consumers ',

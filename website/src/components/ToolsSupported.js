@@ -9,6 +9,7 @@ import { Code } from './CodeBlock';
 import makeStyles from '@material-ui/styles/makeStyles';
 
 const allFrameworks = require('../../generate/results/frameworks');
+
 const allInfrastructure = [
   'Cloudflare',
   'Azure Application Gateway',
@@ -36,7 +37,7 @@ export function ToolsSupported() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md" style={{ paddingTop: 70, paddingBottom: 90 }}>
+    <Container maxWidth="lg" style={{ paddingTop: 70, paddingBottom: 90 }}>
       <Grid container xs={12}>
         <Grid item>
           <div
