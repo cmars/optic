@@ -129,7 +129,7 @@ function HomePageHero(props) {
       </Container>
       <Container maxWidth="lg" fullWidth>
         <Paper elevation={2}>
-          <img src={'/img/document-your-api.png'} />
+          <img src={'/img/optic-image.png'} />
         </Paper>
       </Container>
     </div>
