@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -7,10 +7,8 @@ import Slide from '@material-ui/core/Slide';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import { useHistory } from '@docusaurus/router';
 
-import { Link, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { SubtleBlueBackground } from './theme';
-import KeyConcepts from '../../docs/reference/key-concepts.mdx';
-import Document from '../../docs/document/document.mdx';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { MuiThemeProvider } from './MuiIndexPage';
 
@@ -146,23 +144,4 @@ export const PreviewPageModalFakeLink = ({ link, title, source, linkText }) => {
       <a style={{ cursor: 'pointer' }}>{linkText}</a>
     </PreviewPageModal>
   );
-};
-
-export const CommonLinks = {
-  Coverage: () => (
-    <PreviewPageModalFakeLink
-      linkText={'API Coverage'}
-      link={'/reference'}
-      title={`Key Concepts`}
-      source={<KeyConcepts />}
-    />
-  ),
-  Document: ({ text }) => (
-    <PreviewPageModalFakeLink
-      linkText={text}
-      link={'/document'}
-      title={`Document your API with Optic`}
-      source={<Document />}
-    />
-  ),
 };
