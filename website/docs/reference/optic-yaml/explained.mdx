@@ -4,10 +4,7 @@ slug: /reference/optic-yaml
 ---
 
 import { Button } from '@material-ui/core'
-import PreviewPageModal from '/src/components/Modal';
 import Tasks from './tasks.mdx'
-
-## What is `optic.yml`?
 
 Optic has to store parameters to assure it can observe your API's traffic. The values, and even the parameters themselves, may vary by environment and how you integrate with your project. While we try to keep things simple, we know there is no one size fits all solution to developing, testing, and delivering software. The `optic.yml` file is where this kind of information lives. It should be checked in with your project, and everyone on your team will be able to use the same tasks. The file is broken down into sections: `tasks`, `environments`, and `scripts`.
 
@@ -17,7 +14,7 @@ Optic has to store parameters to assure it can observe your API's traffic. The v
 
 ### What are `tasks`?
 
-In Optic, a `task` is a way to manually configure traffic capture for your project, often against a local target. It is very flexible in that a `task` has several parameters you can use, depending on how you want to capture your traffic. `tasks` also allow you to call other tasks, so you can start your API then run tests against it. If you want to point Optic at a remote host with no other configuration, consider [environments](#what-are-environments) instead.
+In Optic, a `task` is a way to manually configure traffic capture for your project, often against a local target. It is very flexible in that a `task` has several parameters you can use, depending on how you want to capture your traffic. `tasks` also allow you to call other tasks, so you can start your API then run tests against it. The `run` command invokes `tasks`. If you want to point Optic at a remote host with no other configuration, consider [environments](#what-are-environments) instead.
 
 ```sh title='Example: Postman tests (using Newman)'
 > api run tests
@@ -57,15 +54,13 @@ API tests
 [optic] Observed Unexpected API Behavior. Run "api status"
 ```
 
-<PreviewPageModal Source={<Tasks />} title='Optic.yml - Tasks' link={'/reference/optic-yaml/tasks'}>
-  <Button color="primary" variant="contained">
-    Learn more about Tasks
-  </Button>
-</PreviewPageModal>
+<Button color="primary" variant="contained" href="optic-yaml/tasks">
+Learn more about Tasks
+</Button>
 
 ### What are `environments`?
 
-Unlike a `task`, an `environment` is a way to automatically configure a proxy, often against a remote target. You only need to define the target `host`: Optic will set up a proxy, launch a new session of the browser of your choice (passed as a command line flag), and configure the new browser session to trust the Optic proxy. You then interact with your API project just as you would normally. Optic observes the traffic and builds a capture session for your review.
+Unlike a `task`, an `environment` is a way to automatically configure a proxy, often against a remote target. You only need to define the target `host`. Traffic to `environments` is observed with the `intercept` command. Optic will set up a proxy, launch a new session of the browser of your choice (passed as a command line flag), and configure the new browser session to trust the Optic proxy. You then interact with your API project just as you would normally. Optic observes the traffic and builds a capture session for your review.
 
 ```sh title='Example: Documenting GitHub's API'
 > api intercept production --chrome
@@ -76,11 +71,9 @@ Unlike a `task`, an `environment` is a way to automatically configure a proxy, o
 Waiting for traffic...... done
 ```
 
-<PreviewPageModal Source={<Environments />} title='Optic.yml - Environments' link={'/reference/optic-yaml/environments'}>
-  <Button color="primary" variant="contained">
-    Learn more about Environments
-  </Button>
-</PreviewPageModal>
+<Button color="primary" variant="contained" href="optic-yaml/environments">
+Learn more about Environments
+</Button>
 
 ## Automate your API Ops with `scripts`
 
@@ -113,17 +106,16 @@ Compiling all doT templates...
 
 ```
 
-<PreviewPageModal Source={<Scripts />} title='Optic.yml - Scripts' link={'/reference/optic-yaml/scripts'}>
-  <Button color="primary" variant="contained">
-    Learn more about Scripts
-  </Button>
-</PreviewPageModal>
+<Button color="primary" variant="contained" href="optic-yaml/scripts">
+Learn more about Scripts
+</Button>
 
 ---
 
 ### Examples of `optic.yml`:
 
 ```yml title='A basic start command'
+name: "todo-js"
 tasks:
   start:
     # Starts a node server on $PORT (provided by Optic at runtime). Optic will listen for traffic on port 3001.
@@ -133,6 +125,7 @@ tasks:
 ```
 
 ```yml title='Running tests against the start command'
+name: "todo-js"
 tasks:
   start:
     ...
@@ -144,6 +137,7 @@ tasks:
 ```
 
 ```yml title='Documenting a remote API (GitHub)'
+name: "GitHub"
 environments:
   production:
     # Monitors requests to the host, and opens your browser to the (optional) webUI provided
@@ -152,12 +146,13 @@ environments:
 ```
 
 ```yml title='Generating shins documentation with a script'
+name: "todo-js"
 scripts:
   publish-spec:
     # DependsOn and install assures everyone with this repostiory will have the pre-requisites set up.
     command: "widdershins $OPENAPI_JSON -o /tmp/api.md && shins  --inline -o docs/index.html /tmp/api.md"
     dependsOn:
-      - widdershins
-      - shins
+    - widdershins
+    - shins
     install: npm install --global widdershins shins
 ```
