@@ -15,8 +15,9 @@ An `environment` is a way to automatically configure a proxy, often against a re
 ```yaml title='Barebones Intercept definition'
 name: "GitHub"
 environments:
-  production:
+  github:
     # Opens a browser configured to pass traffic through a local Optic proxy. No default URL will be loaded.
+    # run with api intercept github --chrome
     host: https://api.github.com
 ```
 
@@ -25,6 +26,7 @@ name: "GitHub"
 environments:
   production:
     # Manually browse through the GitHub API and capture all the traffic starting at Optic's repository!
+    # run with api intercept production --chrome
     host: https://api.github.com
     webUI: https://api.github.com/repos/opticdev/optic
 ```
@@ -33,9 +35,8 @@ environments:
 name: "todo-js"
 environments:
   staging:
-    # Expects your API project to run on localhost:8080. Optic will listen on localhost:3001 and forward traffic.
-    # Make sure your clients all use localhost:3001, Optic's inbound proxy port, so traffic is captured.
-    # To run this task: api run start
+    # Capture traffic to your staging API server while browsing your staging webapp.
+    # run with api intercept github --chrome
     host: https://staging.api.myapp.com
     webUI: https://staging.myapp.com
 ```
