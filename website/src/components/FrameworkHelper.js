@@ -3,7 +3,6 @@ import React from 'react';
 export function ShowWhenSdk(props) {
   if (props.middleware) {
     console.log(props);
-    debugger;
     return <>{props.children}</>;
   } else {
     return null;

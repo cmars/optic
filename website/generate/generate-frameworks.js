@@ -26,7 +26,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 <Tabs
-  defaultValue="middleware"
+  defaultValue={metadata.middleware_url ? 'middleware' : 'manual'}
   values={${JSON.stringify(tabValuesAsString)}}>
 
 <TabItem value="middleware">
