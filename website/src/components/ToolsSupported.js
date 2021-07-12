@@ -36,7 +36,7 @@ export function ToolsSupported() {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md" style={{ paddingTop: 70, paddingBottom: 90 }}>
+    <Container maxWidth="lg" style={{ paddingTop: 70, paddingBottom: 90 }}>
       <Grid container xs={12}>
         <Grid item>
           <div
