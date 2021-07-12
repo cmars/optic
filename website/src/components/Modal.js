@@ -74,7 +74,7 @@ export default function PreviewPageModal(props) {
           <DialogContent
             style={{ padding: 20, paddingTop: 25, paddingBottom: 400 }}
           >
-            {Source}
+            {open && Source}
           </DialogContent>
         </Dialog>
       </span>

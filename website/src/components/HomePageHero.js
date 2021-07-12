@@ -118,7 +118,7 @@ function HomePageHero(props) {
             Understand your APIs, know when they change
           </Typography>
           <Typography variant="h1" className={featuredClasses.subtext}>
-            Optic watches real traffic to understand your API behavior and help
+            Optic watches real traffic to understand your API behavior and helps
             developers with API documentation and testing. With Optic every
             API change is documented, reviewed, and approved before getting
             deployed.
