@@ -14,7 +14,7 @@ Optic has to store parameters to assure it can observe your API's traffic. The v
 
 ### What are `tasks`?
 
-In Optic, a `task` is a way to manually configure traffic capture for your project, often against a local target. It is very flexible in that a `task` has several parameters you can use, depending on how you want to capture your traffic. `tasks` also allow you to call other tasks, so you can start your API then run tests against it. If you want to point Optic at a remote host with no other configuration, consider [environments](#what-are-environments) instead.
+In Optic, a `task` is a way to manually configure traffic capture for your project, often against a local target. It is very flexible in that a `task` has several parameters you can use, depending on how you want to capture your traffic. `tasks` also allow you to call other tasks, so you can start your API then run tests against it. The `run` command invokes `tasks`. If you want to point Optic at a remote host with no other configuration, consider [environments](#what-are-environments) instead.
 
 ```sh title='Example: Postman tests (using Newman)'
 > api run tests
@@ -60,7 +60,7 @@ Learn more about Tasks
 
 ### What are `environments`?
 
-Unlike a `task`, an `environment` is a way to automatically configure a proxy, often against a remote target. You only need to define the target `host`: Optic will set up a proxy, launch a new session of the browser of your choice (passed as a command line flag), and configure the new browser session to trust the Optic proxy. You then interact with your API project just as you would normally. Optic observes the traffic and builds a capture session for your review.
+Unlike a `task`, an `environment` is a way to automatically configure a proxy, often against a remote target. You only need to define the target `host`. Traffic to `environments` is observed with the `intercept` command. Optic will set up a proxy, launch a new session of the browser of your choice (passed as a command line flag), and configure the new browser session to trust the Optic proxy. You then interact with your API project just as you would normally. Optic observes the traffic and builds a capture session for your review.
 
 ```sh title='Example: Documenting GitHub's API'
 > api intercept production --chrome
