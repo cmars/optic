@@ -10,8 +10,6 @@ import makeStyles from '@material-ui/styles/makeStyles';
 
 const allFrameworks = require('../../generate/results/frameworks');
 
-console.log(allFrameworks);
-
 const allInfrastructure = [
   'Cloudflare',
   'Azure Application Gateway',
@@ -68,11 +66,11 @@ export function ToolsSupported() {
         <Grid item xs={12} sm={6}>
           <Typography variant="h6">All your API Frameworks</Typography>
           <div className={classes.flexBox}>
-            {/*{allFrameworks.data.map((i, index) => (*/}
-            {/*  <div style={{ marginRight: 8 }}>*/}
-            {/*    <Code key={index}>{i.name}</Code>*/}
-            {/*  </div>*/}
-            {/*))}*/}
+            {allFrameworks.data.map((i, index) => (
+              <div style={{ marginRight: 8 }}>
+                <Code key={index}>{i.name}</Code>
+              </div>
+            ))}
           </div>
           <Link href="/roadmap" style={{ marginTop: 20 }}>
             Looking for your framework? Request it here

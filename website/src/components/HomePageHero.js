@@ -128,7 +128,7 @@ function HomePageHero(props) {
         </Container>
       </Container>
       <Container maxWidth="lg" fullWidth>
-        <Paper elevation={2}>
+        <Paper elevation={2} style={{ display: 'flex' }}>
           <img src={'/img/optic-image.png'} />
         </Paper>
       </Container>
