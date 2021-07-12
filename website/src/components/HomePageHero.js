@@ -1,23 +1,15 @@
 import makeStyles from '@material-ui/styles/makeStyles';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import { useFeatureStyles } from './featureStyles';
-import Box from '@material-ui/core/Box';
 import { GitHubStats } from './GitHubStatsSlim';
-import useDocusaurusContext from '@docusaurus/core/lib/client/exports/useDocusaurusContext';
 import { Paper } from '@material-ui/core';
-import { Code } from './CodeBlock';
-import Link from '@docusaurus/core/lib/client/exports/Link';
+import { MiniCTA } from './CTA';
+
 TimeAgo.addLocale(en);
-import ForumIcon from '@material-ui/icons/Forum';
-import { SubtleBlueBackground } from './theme';
 const timeAgo = new TimeAgo('en-US');
 
 const Headlines = {
@@ -99,7 +91,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     overflow: 'hidden',
-    marginBottom: 10,
   },
 }));
 
@@ -127,99 +118,16 @@ function HomePageHero(props) {
           <GitHubStats style={{ marginTop: 20 }} />
         </Container>
       </Container>
+
+      <Container maxWidth="md" fullWidth>
+        <MiniCTA />
+      </Container>
       <Container maxWidth="lg" fullWidth>
         <Paper elevation={2} style={{ display: 'flex' }}>
           <img src={'/img/optic-image.png'} />
         </Paper>
       </Container>
     </div>
-  );
-}
-
-function ReleaseInfoCard() {
-  const [version, setVersion] = useState();
-  useEffect(() => {
-    const result = fetch(
-      `https://api.github.com/repos/opticdev/optic/releases`
-    );
-
-    result.then((results) => {
-      results.json().then((all) => {
-        setVersion(all[0]);
-      });
-    });
-  }, []);
-
-  return (
-    <InfoCard
-      mini={'Latest Release'}
-      subtext={`Optic CLI ${version ? version.tag_name : 'v9.x.x'}`}
-      when={
-        version ? timeAgo.format(new Date(version.created_at)) : '1 day ago'
-      }
-      link={'/docs'}
-      linkText={'Get Started'}
-    />
-  );
-}
-
-function AnnouncementCard({ posts }) {
-  const { featured1 } = require('../../latest.json');
-
-  return (
-    <InfoCard
-      mini={'Announcement'}
-      subtext={featured1.name}
-      when={timeAgo.format(new Date(featured1.date))}
-      link={featured1.to}
-      linkText={'learn more'}
-    />
-  );
-}
-
-function BlogCard({ posts }) {
-  const { featured2 } = require('../../latest.json');
-
-  return (
-    <InfoCard
-      mini={'Recent Posts'}
-      subtext={featured2.name}
-      when={timeAgo.format(new Date(featured2.date))}
-      link={featured2.to}
-      linkText={'read more'}
-    />
-  );
-}
-
-function InfoCard(props) {
-  const { mini, subtext, target, when, link, linkText } = props;
-  const classes = useStyles();
-  return (
-    <Grid xs={12} sm={12} md={4} item>
-      <Card className={classes.card} elevation={2}>
-        <div className={classes.textWrap}>
-          <Typography variant="caption" className={classes.mini}>
-            {mini}
-          </Typography>
-          <Typography variant="h6" style={{ marginLeft: 1 }}>
-            {subtext}
-          </Typography>
-          <Typography variant="subtitle1" className={classes.when}>
-            {when}
-          </Typography>
-        </div>
-        <Button
-          endIcon={<ChevronRightIcon />}
-          size="small"
-          href={link}
-          target={target}
-          color="primary"
-          className={classes.button}
-        >
-          {linkText}
-        </Button>
-      </Card>
-    </Grid>
   );
 }
 

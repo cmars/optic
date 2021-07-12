@@ -1,23 +1,15 @@
 import React from 'react';
 import makeStyles from '@material-ui/styles/makeStyles';
-import { Container, Typography } from '@material-ui/core';
+import { Container, Paper, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 import { useFeatureStyles } from './featureStyles';
-import { FormatCopy } from './FormatCopy';
 import Box from '@material-ui/core/Box';
-import Chip from '@material-ui/core/Chip';
-import ForumIcon from '@material-ui/icons/Forum';
 import Link from '@docusaurus/core/lib/client/exports/Link';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { GitHubStats } from './GitHubStatsSlim';
-import {
-  SubtleBlueBackground,
-  UpdatedBlue,
-  UpdatedBlueBackground,
-  UpdatedBlueBackgroundLighter,
-} from './theme';
+import { UpdatedBlueBackground } from './theme';
 import Grid from '@material-ui/core/Grid';
+
 export const useStyles = makeStyles({
   section: {
     paddingTop: 100,
@@ -100,5 +92,53 @@ export function CTATryOptic() {
         </Grid>
       </Container>
     </div>
+  );
+}
+
+export function MiniCTA() {
+  return (
+    <Paper
+      elevation={0}
+      style={{
+        backgroundColor: UpdatedBlueBackground,
+        padding: 12,
+        display: 'flex',
+        alignItems: 'center',
+        border: '1px solid #e2e2e2',
+        marginBottom: 40,
+      }}
+    >
+      <div>
+        <Typography variant="subtitle1" style={{ fontWeight: 800 }}>
+          Featured Tutorial (15 mins):{' '}
+          <b>Document your API using real traffic</b>
+        </Typography>
+        <Typography variant="caption" style={{ fontSize: 12 }}>
+          Learn how to add Optic to an existing API and document all the
+          endpoints in minutes.
+        </Typography>
+      </div>
+      <div style={{ flex: 1 }} />
+      <div>
+        <Box
+          alignItems="center"
+          display="flex"
+          flexDirection="row"
+          justifyContent="flex-start"
+        >
+          <div style={{ marginRight: 20 }}>
+            <Link>Schedule a Demo</Link>
+          </div>
+          <Button
+            endIcon={<ChevronRightIcon />}
+            to="/docs"
+            variant="contained"
+            color="primary"
+          >
+            Get Started
+          </Button>
+        </Box>
+      </div>
+    </Paper>
   );
 }
