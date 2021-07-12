@@ -19,7 +19,7 @@ Run has a few flags that can modify the default behavior:
 - `-c`/`--print-coverage` prints how much of the documented API is covered by traffic seen in the capture session. The coverage prints once the session is terminated (`ctrl+c` or when tests finish running).
 - `--ci` Enables CI-specific behavior. This enables `--print-coverage`, `--exit-on-diff`, and `pass-exit-code`.
 - `--exit-on-diff` returns an exit code of `1` if unexpected API behavior is returned, such as an undocumented route or a change in behavior on a documented route. Normally, Optic returns `0` on successful termination regardless of the behavior observed. This is primarily used in CI/CD scenarios, such as in [GitHub Actions](/docs/github-actions), to fail builds when undocumented behavior is detected.
-- `--pass-exit-code` returns the exit code of your task. If you are using a [dependent task](/docs/get-started/testing), the exit code of the dependent command (not the base command) will be passed through. This flag is overridden by `--exit-on-diff` which will always exit a capture session with exit code 1 when a diff was detected. 
+- `--pass-exit-code` returns the exit code of your task. If you are using a [dependent task](/docs/get-started/testing), the exit code of the dependent command (not the base command) will be passed through. This flag is overridden by - - - `--verbose` which provides extra troubleshooting information at task startup, task end, and when traffic is observed. We recommend using this when configuring a new task. 
 
 ### Examples
 
