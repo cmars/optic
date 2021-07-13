@@ -169,8 +169,47 @@ module.exports = {
             from: ['/docs/get-started/config'],
           },
           {
-            to: '/document',
-            from: ['/testing'],
+            to: '/community',
+            from: ['/docs/community'],
+          },
+          {
+            to: '/document/baseline',
+            from: ['/docs/using/baseline'],
+          },
+          {
+            to: '/change/diff-review',
+            from: ['/docs/using/reviewing-diffs', '/docs/using/review-diffs'],
+          },
+          {
+            to: '/change/ci',
+            from: ['/apiops/pull-requests'],
+          },
+          {
+            to: '/',
+            from: ['/docs/demo'],
+          },
+          {
+            to: '/reference/optic-cli/commands/debug',
+            from: ['/docs/using/troubleshooting'],
+          },
+          {
+            to: '/capture',
+            from: ['/docs/integrations/integrations'],
+          },
+          {
+            to: '/reference/optic-yaml/scripts',
+            from: ['/docs/faqs-and-troubleshooting/scripts'],
+          },
+          {
+            to: '/reference/optic-yaml/ignore',
+            from: ['/docs/faqs-and-troubleshooting/captures'],
+          },
+          {
+            to: '/reference/optic-yaml',
+            from: [
+              '/docs/get-started/config',
+              '/docs/using/advanced-configuration',
+            ],
           },
         ],
       },
