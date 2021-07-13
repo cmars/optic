@@ -5,7 +5,7 @@ export function DocsImage(props) {
   const { src, height, width } = props;
 
   return (
-    <Paper style={{ margin: 20, marginLeft: 0 }} elevation={2}>
+    <Paper style={{ margin: 20, marginLeft: 0, display: 'flex' }} elevation={2}>
       <img src={src} />
     </Paper>
   );

@@ -32,7 +32,7 @@ module.exports = {
     },
     {
       type: 'category',
-      label: allUseCases.Share.label,
+      label: allUseCases.Change.label,
       collapsed: false,
       items: [
         'change/change',
@@ -59,12 +59,12 @@ module.exports = {
         },
       ],
     },
-    {
-      type: 'category',
-      label: allUseCases.Change.label,
-      collapsed: false,
-      items: ['share/share', 'share/changelogs', 'share/openapi'],
-    },
+    // {
+    //   type: 'category',
+    //   label: allUseCases.Share.label,
+    //   collapsed: false,
+    //   items: ['share/share', 'share/changelogs', 'share/openapi'],
+    // },
   ],
   referenceSideBar: [
     'reference/key-concepts',

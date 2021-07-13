@@ -17,6 +17,7 @@ import {
 } from './theme';
 import Button from '@material-ui/core/Button';
 import Link from '@docusaurus/core/lib/client/exports/Link';
+import { links } from './links';
 
 export const useStyles = makeStyles((theme) => ({
   container: {
@@ -50,6 +51,8 @@ export function DocumentValueProp() {
       'Update docs when the API changes',
       'Share with API changelogs with consumers',
     ],
+    link: links.DocumentAPI,
+    linkText: 'Document your API in 10 minutes',
   };
 
   return <ValuePropRegion {...props} />;
@@ -66,6 +69,8 @@ export function ChangeValueProp() {
       'Review every API Change',
       'Share changelogs with consumers',
     ],
+    link: links.Change,
+    linkText: 'Add Optic to your API Workflow',
   };
 
   return <ValuePropRegion {...props} />;
@@ -83,13 +88,15 @@ export function TestValueProp() {
       'Understand your API Test Coverage',
       'Confidence your APIs work as designed',
     ],
+    linkText: 'Test your API with Optic',
+    link: links.Test,
   };
 
   return <ValuePropRegion {...props} />;
 }
 
 export function ValuePropRegion(props) {
-  const { mini, heading, description, image, bullets } = props;
+  const { mini, heading, description, image, linkText, link } = props;
 
   const classes = useStyles();
   const featuredClasses = useFeatureStyles();
@@ -119,7 +126,7 @@ export function ValuePropRegion(props) {
           </Typography>
           <Typography variant="h1" className={featuredClasses.subtext}>
             {description} <br />
-            <br /> <Link href="">Document your API in 10 minute ➜ </Link>
+            <br /> <Link href={link}>{linkText} ➜ </Link>
           </Typography>
         </Grid>
 
