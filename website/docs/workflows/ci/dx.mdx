@@ -52,18 +52,11 @@ It's easy to stage/discard code changes with Git, but updating our API specifica
 1. Change the API, verify the changes by sending some traffic through Optic
 2. Run `api status`, you'll see the endpoint you updated under `Endpoints with Diffs`
 3. Open Optic's UI. *shorthand* `api status --review`
-4. Optic will suggest possible changes to the API spec, all you have to do is `Approve` them:
+4. Optic will suggest possible changes to the API spec, all you have to do is approve the changes by clicking `Save changes`:
 
 <Paper elevation={3} style={{marginBottom: 55}}>
   <img src={'/img/diff-approve.png'} width={'100%'} />
 </Paper>
-
---or--
-
-<Paper elevation={3} style={{marginBottom: 55}}>
-  <img src={'/img/diff-approve-all.png'} width={'100%'} />
-</Paper>
-
 
 5. Commit changes to your API specification
 
