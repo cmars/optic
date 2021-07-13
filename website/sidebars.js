@@ -105,6 +105,8 @@ module.exports = {
         'reference/optic-cli/commands/init',
         'reference/optic-cli/commands/check',
         'reference/optic-cli/commands/run',
+        'reference/optic-cli/commands/intercept',
+        'reference/optic-cli/commands/exec',
         'reference/optic-cli/commands/spec',
         'reference/optic-cli/commands/status',
         'reference/optic-cli/commands/generate',
