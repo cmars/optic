@@ -143,6 +143,20 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Real Environments',
+      collapsed: false,
+      items: [
+        'reference/real-environments/aws-api-gateway',
+        'reference/real-environments/azure-api-management',
+        'reference/real-environments/azure-app-gateway',
+        'reference/real-environments/cloudflare-worker',
+        'reference/real-environments/envoy-proxy',
+        'reference/real-environments/kubernetes',
+        'reference/real-environments/nginx',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Using Spectacle',
       collapsed: false,
       items: ['reference/spectacle/spectacle'],

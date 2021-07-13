@@ -10,11 +10,11 @@ A set of commands that can be used for troubleshooting purposes. These are gener
 
 ## api debug:capture [CAPTUREID]
 
-Produces a debug file with [shape hashed](/reference) trafic and the current specification. This captures the context of a specific capture session (set of observed traffic) that can be shared with Optic maintainers. The shape hashed traffic only shows the keys and types of values of the request and response traffic: no values are included. This user session context is helpful when reproducing and fixing bugs in the local CLI. It takes as a parameter the Capture ID of the current capture session, which is found in the dashboard URL path: { ... }}/diffs/local/{ Capture ID }/urls
+Produces a debug file with [shape hashed](/reference) trafic and the current specification. This captures the context of a specific capture session (set of observed traffic) that can be shared with Optic maintainers. The shape hashed traffic only shows the keys and types of values of the request and response traffic: no values are included. This user session context is helpful when reproducing and fixing bugs in the local CLI. It takes as a parameter the Capture ID of the current capture session, which is found in the dashboard URL path: `{ ... }}/diffs/local/{ Capture ID }/urls`
 
 ### Flags & Options
 
-- `CAPTUREID`  the captureId of the current capture session. This is part of the path of the Optic dashboard's diff URL, /diffs/local/{this-id}
+- `CAPTUREID`  the captureId of the current capture session. This is part of the path of the Optic dashboard's diff URL, `/diffs/local/{this-id}`
 
 ### Examples
 
