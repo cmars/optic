@@ -5,12 +5,14 @@ hide_table_of_contents: false
 ---
 
 import { HighlightSpan } from '../../src/components/HighlightSpan';
-import PreviewPageModal, {CommonLinks} from '../../src/components/Modal'
+import PreviewPageModal, { PreviewPageModalFakeLink } from '../../src/components/Modal';
 import { Paper, Button } from '@material-ui/core';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import DX from './ci/dx.mdx'
-import { SetupHelpCard } from '../../src/components/SetupHelp';
-
+import Document from '../document/document.mdx'
+import Test from '../test/test.mdx'
+import CI from '../change/ci.mdx'
+import { CommonLinks } from '../../src/components/CommonLink'
 
 - Has your team struggled to maintain a single-source-of-truth for your API?
 - Have you tried OpenAPI, but found it difficult to scale and keep up-to-date?
@@ -26,9 +28,6 @@ import { SetupHelpCard } from '../../src/components/SetupHelp';
   - preventing unplanned changes from getting deployed.
 - **API changelogs** included in every Pull Request
   - making it easy to discuss API changes during code review.
-
-Looking for something else? API design-first? Read our guide about choosing the right [Optic workflow for your team](/workflows).
-
 
 <Paper elevation={3}>
 
@@ -55,10 +54,6 @@ Looking for something else? API design-first? Read our guide about choosing the 
 - our time is best spent working on features, not writing exhaustive test cases about our API contract
 - we can work more confidently when we know our API's contract is being tested
 
-<PreviewPageModal title="Catch changes in CI -- Optic in PR Workflow" link={'/workflows/apis-in-pull-requests/developer-experience'} Source={<DX />}>
-  <Button endIcon={<OpenInNewIcon />} variant="outlined" color="primary">Demo: See what it's like to use Optic as a Developer</Button>
-</PreviewPageModal>
-
 ### 2. Developers can document new endpoints and propose API changes with ease
 > Replace "update the OpenAPI file" with Optic's UI for documenting new endpoints and recording changes to existing ones.
 
@@ -67,10 +62,6 @@ Looking for something else? API design-first? Read our guide about choosing the 
 - we benefit from early feedback from their team on any API we are building or changing.
 - we can work more confidently when we know our API contract is constantly being tested by Optic
 
-<PreviewPageModal title="Developer Experience -- Optic in PR Workflow" link={'/workflows/apis-in-pull-requests/developer-experience'} Source={<DX />}>
-  <Button endIcon={<OpenInNewIcon />} variant="outlined" color="primary">Demo: See what it's like to use Optic as a Developer</Button>
-</PreviewPageModal>
-
 ### 3. API Changes get discussed during Code Review
 > Stop trying to figure out if a Pull Request changes the API by running the code in your head, or trying to understand an OpenAPI diff. Optic generates an accurate API changelog between each PR and the base branch.
 
@@ -78,12 +69,15 @@ Looking for something else? API design-first? Read our guide about choosing the 
 - it should be easy to tell exactly what API changes are being proposed in this PR
 - we should not have to run the code in our head or make sense a huge OpenAPI diff to give feedback to our colleague.
 
-<PreviewPageModal title="Review API Changes -- Optic in PR Workflow" link={'/workflows/apis-in-pull-requests/developer-experience'} Source={<DX />}>
-  <Button endIcon={<OpenInNewIcon />} variant="outlined" color="primary">Demo: See what it's like to review a peer's API changes with Optic</Button>
+
+<PreviewPageModal title="Demo: The Developer Experience" link={'/workflows/apis-in-pull-requests/developer-experience'} Source={<DX />}>
+  <button  className={'button button--primary'}  endIcon={<OpenInNewIcon />} variant="outlined" color="primary">Demo: See what it's like to use Optic as a Developer</button>
 </PreviewPageModal>
 
 ---
 
-## Getting Setup
+### Start using the Workflow
 
-<SetupHelpCard />
+1. <PreviewPageModalFakeLink linkText="Document your API with Optic" link={'/document'} source={<Document />}/>
+2. <PreviewPageModalFakeLink linkText="Add Optic to your API Tests " link={'/test'} source={<Test />}/>
+3. <PreviewPageModalFakeLink linkText="Add Optic Changelog Bot to your Repository " link={'/change/ci'} source={<CI />}/>

@@ -140,7 +140,7 @@ export function DemoPageModal(props) {
 
 export const PreviewPageModalFakeLink = ({ link, title, source, linkText }) => {
   return (
-    <PreviewPageModal link={link} title={title} Source={source}>
+    <PreviewPageModal link={link} title={title || linkText} Source={source}>
       <a style={{ cursor: 'pointer' }}>{linkText}</a>
     </PreviewPageModal>
   );

@@ -6,6 +6,9 @@ slug: /reference/ci/changelog
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import PreviewPageModal from '../../../src/components/Modal';
+import GetToken from '../ci/get-token.mdx'
+
 
 <Tabs defaultValue={'github'} values={[
   { label: 'GitHub Actions', value: 'github' },
@@ -14,7 +17,46 @@ import TabItem from '@theme/TabItem';
   { label: 'Circle CI', value: 'circle' },
 ]}>
 <TabItem value="github">
-  HOW IT WORKS GOES HERE
+
+**Prerequisites:**
+- GitHub Actions Enabled
+- Optic initialized for your API project and checked in on the default branch of your repository for this to start working.
+
+Once that's set up, just add the following GitHub Actions workflow file:
+
+```yaml title=".github/workflows/optic-changelog.yml"
+jobs:
+# ...
+changelog:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v2
+- uses: opticdev/optic-changelog@main
+with:
+GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+OPTIC_API_KEY: ${{secrets.OPTIC_API_KEY}}
+```
+
+You'll need to add two environment variables, `GITHUB_TOKEN` which is automatically provided as a secret, and `OPTIC_API_KEY`. We **highly recommend** you add this API key as a secret in your repository and access it with the `secrets` variable as shown in the example. Otherwise, you risk leaking your key in your build environment.
+
+<PreviewPageModal Source={<GetToken />} link={'/reference/ci/get-token'}>
+  <button className={'button button--primary'}>
+    Get your Optic API Token
+  </button>
+</PreviewPageModal>
+
+There are two other optional environment variables you can configure:
+
+- `SUBSCRIBERS` - a comma-separated value of GitHub usernames to include in the PR comment, which will notify the users of an API change. Do not include the `@` with the GitHub usernames.
+- `OPTIC_SPEC_PATH` - if your spec is not in the default place, you can pass in the correct path using this environment variable. ie `.optic/api/specification.json`
+
+Once set up, this action will run and add a comment into your pull request, show a summary of what changed, and link to a full view of your APIs documentation and change.
+
+
+## Try it
+- Make an API Change with Optic, either add an endpoint or change an existing one
+- Open a Pull Request
+
 </TabItem>
 
 
