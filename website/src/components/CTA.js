@@ -68,12 +68,9 @@ export function CTATryOptic() {
                 flexDirection="row"
                 justifyContent="flex-start"
               >
-                <button
-                  className={'button button--primary'}
-                  href={links.DocsRoot}
-                >
+                <a className={'button button--primary'} href={links.DocsRoot}>
                   Get Started
-                </button>
+                </a>
 
                 <div style={{ marginLeft: 10 }}>
                   <Link href={links.Demo}>Schedule a Demo</Link>
@@ -129,9 +126,9 @@ export function MiniCTA() {
           <div style={{ marginRight: 20 }}>
             <Link href={links.Demo}>Schedule a Demo</Link>
           </div>
-          <button className={'button button--primary'} href={links.DocumentAPI}>
+          <a className={'button button--primary'} href={links.DocumentAPI}>
             Get Started
-          </button>
+          </a>
         </Box>
       </div>
     </Paper>
