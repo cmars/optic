@@ -30,35 +30,40 @@ module.exports = {
         'test/what-next',
       ],
     },
-    // {
-    //   type: 'category',
-    //   label: allUseCases.Change.label,
-    //   collapsed: false,
-    //   items: [
-    //     'change/change',
-    //     'change/ci',
-    //     'change/updating',
+    {
+      type: 'category',
+      label: allUseCases.Change.label,
+      collapsed: false,
+      items: [
+        'change/change',
+        'change/ci',
+        'change/updating',
 
-    //     {
-    //       type: 'category',
-    //       label: 'Using Diffs to Update Spec',
-    //       collapsed: true,
-    //       items: ['change/options/status', 'change/options/diff-review'],
-    //     },
-    //     {
-    //       type: 'category',
-    //       label: 'Manual Editing',
-    //       collapsed: true,
-    //       items: [
-    //         'change/options/delete',
-    //         'change/options/revert',
-    //         'change/options/descriptions',
-    //         'change/options/add',
-    //         'change/options/edit-body',
-    //       ],
-    //     },
-    //   ],
-    // },
+        {
+          type: 'category',
+          label: 'Using Diffs to Update Spec',
+          collapsed: true,
+          items: ['change/options/status', 'change/options/diff-review'],
+        },
+        {
+          type: 'category',
+          label: 'Manual Editing',
+          collapsed: true,
+          items: [
+            'change/options/delete',
+            'change/options/revert',
+            'change/options/descriptions',
+            'change/options/add',
+            'change/options/edit-body',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'link',
+      label: 'Reference Docs',
+      href: '/reference',
+    },
     // {
     //   type: 'category',
     //   label: allUseCases.Share.label,
