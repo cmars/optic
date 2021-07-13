@@ -33,6 +33,7 @@
     "frontmatter": "^0.0.3",
     "javascript-time-ago": "^2.3.4",
     "react": "^16.8.4",
+    "react-calendly": "^2.2.1",
     "react-dom": "^16.8.4",
     "react-github-btn": "^1.2.0",
     "react-helmet": "^6.1.0",
