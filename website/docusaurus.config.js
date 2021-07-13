@@ -142,4 +142,21 @@ module.exports = {
     'https://fonts.googleapis.com/css?family=Inter:200,400,600,700',
     'https://fonts.googleapis.com/css?family=Ubuntu+Mono:200,400,600,700',
   ],
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            to: '/document',
+            from: ['/docs/get-started/config'],
+          },
+          {
+            to: '/document',
+            from: ['/testing'],
+          },
+        ],
+      },
+    ],
+  ],
 };
