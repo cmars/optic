@@ -2,14 +2,14 @@ import React from 'react';
 import { MuiThemeProvider } from './Roadmap';
 import Layout from '@theme/Layout';
 import {
-  Container,
-  Typography,
-  Divider,
-  Link,
-  Grid,
   Accordion,
-  AccordionSummary,
   AccordionDetails,
+  AccordionSummary,
+  Container,
+  Divider,
+  Grid,
+  Link,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -20,18 +20,20 @@ import { UseCaseCard } from '../components/UseCaseCard';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
+  faClock,
   faCode,
   faFileAlt,
   faPen,
-  faClock,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 library.add(fab, faCode, faFileAlt, faPen, faClock);
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: 400,
     backgroundColor: SubtleBlueBackground,
+    paddingTop: 15,
     borderBottom: '1px solid #e2e2e2',
     display: 'flex',
     alignItems: 'center',
@@ -43,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 100,
   },
   heading: {
-    fontFamily: 'Ubuntu Mono',
+    fontFamily: 'Ubuntu',
     fontWeight: 700,
     fontSize: 25,
   },
@@ -53,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
 const externalLinks = {
   discord: {
     href: 'https://discord.gg/t9hADkuYjP',
+    logo: <FontAwesomeIcon icon={['fab', 'discord']} />,
+  },
+  roadmap: {
+    href: '/roadmap',
     logo: <FontAwesomeIcon icon={['fab', 'discord']} />,
   },
   githubDiscussions: {
@@ -71,7 +77,7 @@ const externalLinks = {
 
 export default function () {
   const classes = useStyles();
-  const signpostGridSize = 4;
+  const signpostGridSize = 6;
   const emailFounders = (
     <Link href="mailto:founders@useoptic.com">founders@useoptic.com</Link>
   );
@@ -86,18 +92,10 @@ export default function () {
               </Typography>
               <Typography
                 variant="subtitle1"
-                align="left"
                 style={{ lineHeight: 1.6, marginTop: 10 }}
               >
-                <strong>
-                  Let's build better APIs with API tools, together!
-                </strong>
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                style={{ lineHeight: 1.6, marginTop: 10 }}
-              >
-                Find resources, ask questions, and share your knowledge!
+                Find help, share resources and help build the next generation of
+                API tools
               </Typography>
             </Grid>
             <Grid item xs={6}>
@@ -119,39 +117,17 @@ export default function () {
                 link={externalLinks.discord.href}
                 title={'**Discord**'}
                 description={
-                  'Come talk to our community, the contributors, and the maintainers to get help or that little extra information.'
+                  'Come talk to our community, the contributors, and the maintainers about Optic and all things APIs'
                 }
                 logo={externalLinks.discord.logo}
               />
             </Grid>
             <Grid item xs={12} sm={signpostGridSize}>
               <UseCaseCard
-                link={'/capture'}
-                title={'**Integrations**'}
-                description={
-                  'Want to use optic with your language or framework, we have a whole selection of integrations and plugins for you to use.'
-                }
-                logo={<FontAwesomeIcon icon={'code'} />}
-              />
-            </Grid>
-            <Grid item xs={12} sm={signpostGridSize}>
-              <UseCaseCard
-                link={'/reference'}
+                link={'/docs'}
                 title={'**Docs**'}
-                description={
-                  'Get stuck in with Optic, use our reference docs to find out all the features available to you.'
-                }
+                description={"Learn about Optic's use cases, workflows and CLI"}
                 logo={<FontAwesomeIcon icon={'file-alt'} />}
-              />
-            </Grid>
-            <Grid item xs={12} sm={signpostGridSize}>
-              <UseCaseCard
-                link={externalLinks.githubDiscussions.href}
-                title={'**Discussions**'}
-                description={
-                  'Want to start a conversation about a topic or concept around APIs, Optic Concepts, or Optic in general, check GitHub Discussions.'
-                }
-                logo={externalLinks.githubDiscussions.logo}
               />
             </Grid>
             <Grid item xs={12} sm={signpostGridSize}>
@@ -169,17 +145,13 @@ export default function () {
                 link={externalLinks.officeHoursCalendly.href}
                 title={'**Office Hours**'}
                 description={
-                  'Like to speak directly to the maintainers? Arrange a time to speak with them about your Optic quandaries'
+                  'The Optic Maintainers hold office hours regularly to listen to help contributors, listen to feature requests and help debug issues. Drop in no advanced notice needed!'
                 }
                 logo={externalLinks.officeHoursCalendly.logo}
               />
             </Grid>
           </Grid>
         </Container>
-
-        {/* 
-       CONTRIBUTIONS
-       */}
 
         <Container maxWidth={'md'} className={classes.section}>
           <Typography
@@ -193,22 +165,6 @@ export default function () {
           <Divider style={{ marginTop: 20, marginBottom: 30 }} />
 
           <Grid container spacing={4}>
-            <Grid item xs={12} sm={4}>
-              <img
-                src="/static/img/traffic-yo.svg"
-                style={{ maxHeight: '200px' }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={8}>
-              <Typography variant="subtitle1">
-                We really appreciate you being interested in Optic and what it
-                can do to help make better APIs.
-              </Typography>
-              <Typography variant="subtitle1">
-                No matter what you do, or where in the world you are, there are
-                many ways you can help out with various levels of commitment!
-              </Typography>
-            </Grid>
             <Grid item xs={12}>
               <Accordion>
                 <AccordionSummary
@@ -222,10 +178,10 @@ export default function () {
                   <div styles={'display: block'}>
                     <div>
                       <p>
-                        This is a big project and it's only getting larger, and
-                        we've been working a long time to make it great for
-                        developers. You have no idea how much it means to
-                        receive{' '}
+                        This is a big project, and we love hearing from people
+                        in the community. When we get high fives, shoutouts and
+                        see people sharing the project it gives the team a lot
+                        of energy.
                         <Link href="https://twitter.com/intent/tweet?via=useoptic">
                           a short Tweet
                         </Link>{' '}
@@ -266,14 +222,17 @@ export default function () {
                 <AccordionDetails>
                   <div>
                     <p>
-                      The more quality feedback we receive, the faster we'll
-                      reach product-market fit. We'd love to have your feedback,
-                      and you can send it to {emailFounders}, add it to{' '}
-                      <Link href={externalLinks.githubDiscussions.href}>
-                        GitHub Discussions
+                      The more quality feedback we receive, the faster Optic
+                      improves. We'd love to have your feedback. Come chat on{' '}
+                      <Link href={externalLinks.discord.href}>Discord</Link>,{' '}
+                      <Link href={externalLinks.officeHoursCalendly.href}>
+                        drop in on our Maintainer Office Hours
+                      </Link>{' '}
+                      or add feedback to our{' '}
+                      <Link href={externalLinks.roadmap.href}>
+                        Public Roadmap
                       </Link>
-                      , or even raise it in{' '}
-                      <Link href={externalLinks.discord.href}>Discord</Link>.
+                      .
                     </p>
                   </div>
                 </AccordionDetails>
@@ -386,7 +345,10 @@ export default function () {
                       <strong>
                         Do you know a lot about managing open source projects?
                       </strong>{' '}
-                      As you can see our contributor guides are still nascent.
+                      As you can see our{' '}
+                      <Link href="https://github.com/opticdev/optic/blob/develop/Contributing.md">
+                        contributor guides are still nascent.
+                      </Link>
                       We would love to chat and learn everything we can about
                       building a great open source community.
                     </p>
@@ -416,136 +378,136 @@ export default function () {
           </Grid>
         </Container>
 
+        {/*/!**/}
+        {/*FAQ*/}
+        {/**!/*/}
+        {/*<Container maxWidth={'md'} className={classes.section}>*/}
+        {/*  <Typography*/}
+        {/*    variant="h2"*/}
+        {/*    className={classes.heading}*/}
+        {/*    style={{ textAlign: 'center', fontSize: 30 }}*/}
+        {/*  >*/}
+        {/*    What do people commonly ask about Optic?*/}
+        {/*  </Typography>*/}
+
+        {/*  <Divider style={{ marginTop: 20, marginBottom: 30 }} />*/}
+
+        {/*  <Typography variant="subtitle1">*/}
+        {/*    We get a lot of questions via{' '}*/}
+        {/*    <Link href={externalLinks.discord.link}>Discord</Link>,{' '}*/}
+        {/*    <Link href="https://github.com/opticdev">GitHub</Link>, or even just*/}
+        {/*    chatting{' '}*/}
+        {/*    <Link href={externalLinks.officeHoursCalendly.href}>*/}
+        {/*      just chatting to us*/}
+        {/*    </Link>*/}
+        {/*    , so we thought it'd be a good idea to answer some here.*/}
+        {/*  </Typography>*/}
+
+        {/*  <div>*/}
+        {/*    <Typography variant="h3" className={classes.heading}>*/}
+        {/*      How can I share the documentation I generate?*/}
+        {/*    </Typography>*/}
+        {/*    <ul>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/share">Quick and easy: our share feature</Link>*/}
+        {/*      </li>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/share/openapi">*/}
+        {/*          <code>generate:oas</code>/<code>scripts</code> to export to an*/}
+        {/*          existing system*/}
+        {/*        </Link>*/}
+        {/*      </li>*/}
+        {/*    </ul>*/}
+        {/*  </div>*/}
+
+        {/*  <div>*/}
+        {/*    <Typography variant="h3" className={classes.heading}>*/}
+        {/*      Do you support (x development/infrastructure)?*/}
+        {/*    </Typography>*/}
+        {/*    <p>Simple answer, Yes!</p>*/}
+        {/*    <ul>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/capture">*/}
+        {/*          For languages, we have SDKs (a great way to contribute)*/}
+        {/*        </Link>*/}
+        {/*      </li>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/capture">*/}
+        {/*          We can also integrate with live environments, such as staging,*/}
+        {/*          to capture traffic*/}
+        {/*        </Link>*/}
+        {/*      </li>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/capture">*/}
+        {/*          The local CLI also has a proxy that you can use to monitor*/}
+        {/*          your local project or intercept traffic to a remote project*/}
+        {/*        </Link>*/}
+        {/*      </li>*/}
+        {/*    </ul>*/}
+        {/*  </div>*/}
+
+        {/*  <div>*/}
+        {/*    <Typography variant="h3" className={classes.heading}>*/}
+        {/*      I ran into something weird when documenting an edge case in my*/}
+        {/*      API. Can you take a look at it?*/}
+        {/*    </Typography>*/}
+        {/*    <ul>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/reference/optic-cli/commands/debug">*/}
+        {/*          generate a debug dump from CLI*/}
+        {/*        </Link>*/}
+        {/*      </li>*/}
+        {/*    </ul>*/}
+        {/*  </div>*/}
+
+        {/*  <div>*/}
+        {/*    <Typography variant="h3" className={classes.heading}>*/}
+        {/*      How do I get started?*/}
+        {/*    </Typography>*/}
+        {/*    <ul>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/document">*/}
+        {/*          Docs: install, integrate, capture traffic, bulk add to*/}
+        {/*          establish your baseline*/}
+        {/*        </Link>*/}
+        {/*      </li>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/change">*/}
+        {/*          As you monitor more traffic, Optic will report differences*/}
+        {/*        </Link>*/}
+        {/*      </li>*/}
+        {/*    </ul>*/}
+        {/*  </div>*/}
+
+        {/*  <div>*/}
+        {/*    <Typography variant="h3" className={classes.heading}>*/}
+        {/*      Is this free? Will it cost money?*/}
+        {/*    </Typography>*/}
+        {/*    <ul>*/}
+        {/*      <li>*/}
+        {/*        <Link href="/reference#under-the-hood">*/}
+        {/*          Optic is free and open source*/}
+        {/*        </Link>*/}
+        {/*        . We have a [cloud offering](BETA LINK) that lets you collect*/}
+        {/*        traffic from your deployed environments*/}
+        {/*      </li>*/}
+        {/*    </ul>*/}
+        {/*  </div>*/}
+
+        {/*  <div>*/}
+        {/*    <Typography variant="h3" className={classes.heading}>*/}
+        {/*      Does this work for all APIS*/}
+        {/*    </Typography>*/}
+        {/*    <ul>*/}
+        {/*      <li>*/}
+        {/*        Today we support REST. GraphQL and Protos are on the{' '}*/}
+        {/*        <Link href="/roadmap">roadmap</Link> but they aren’t coming soon*/}
+        {/*      </li>*/}
+        {/*    </ul>*/}
+        {/*  </div>*/}
+        {/*</Container>*/}
+
         {/*
-        FAQ
-        */}
-        <Container maxWidth={'md'} className={classes.section}>
-          <Typography
-            variant="h2"
-            className={classes.heading}
-            style={{ textAlign: 'center', fontSize: 30 }}
-          >
-            What do people commonly ask about Optic?
-          </Typography>
-
-          <Divider style={{ marginTop: 20, marginBottom: 30 }} />
-
-          <Typography variant="subtitle1">
-            We get a lot of questions via{' '}
-            <Link href={externalLinks.discord.link}>Discord</Link>,{' '}
-            <Link href="https://github.com/opticdev">GitHub</Link>, or even just
-            chatting{' '}
-            <Link href={externalLinks.officeHoursCalendly.href}>
-              just chatting to us
-            </Link>
-            , so we thought it'd be a good idea to answer some here.
-          </Typography>
-
-          <div>
-            <Typography variant="h3" className={classes.heading}>
-              How can I share the documentation I generate?
-            </Typography>
-            <ul>
-              <li>
-                <Link href="/share">Quick and easy: our share feature</Link>
-              </li>
-              <li>
-                <Link href="/share/openapi">
-                  <code>generate:oas</code>/<code>scripts</code> to export to an
-                  existing system
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <Typography variant="h3" className={classes.heading}>
-              Do you support (x development/infrastructure)?
-            </Typography>
-            <p>Simple answer, Yes!</p>
-            <ul>
-              <li>
-                <Link href="/capture">
-                  For languages, we have SDKs (a great way to contribute)
-                </Link>
-              </li>
-              <li>
-                <Link href="/capture">
-                  We can also integrate with live environments, such as staging,
-                  to capture traffic
-                </Link>
-              </li>
-              <li>
-                <Link href="/capture">
-                  The local CLI also has a proxy that you can use to monitor
-                  your local project or intercept traffic to a remote project
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <Typography variant="h3" className={classes.heading}>
-              I ran into something weird when documenting an edge case in my
-              API. Can you take a look at it?
-            </Typography>
-            <ul>
-              <li>
-                <Link href="/reference/optic-cli/commands/debug">
-                  generate a debug dump from CLI
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <Typography variant="h3" className={classes.heading}>
-              How do I get started?
-            </Typography>
-            <ul>
-              <li>
-                <Link href="/document">
-                  Docs: install, integrate, capture traffic, bulk add to
-                  establish your baseline
-                </Link>
-              </li>
-              <li>
-                <Link href="/change">
-                  As you monitor more traffic, Optic will report differences
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <Typography variant="h3" className={classes.heading}>
-              Is this free? Will it cost money?
-            </Typography>
-            <ul>
-              <li>
-                <Link href="/reference#under-the-hood">
-                  Optic is free and open source
-                </Link>
-                . We have a [cloud offering](BETA LINK) that lets you collect
-                traffic from your deployed environments
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <Typography variant="h3" className={classes.heading}>
-              Does this work for all APIS
-            </Typography>
-            <ul>
-              <li>
-                Today we support REST. GraphQL and Protos are on the{' '}
-                <Link href="/roadmap">roadmap</Link> but they aren’t coming soon
-              </li>
-            </ul>
-          </div>
-        </Container>
-
-        {/* 
         INTERESTED IN APIs
         */}
 
@@ -555,7 +517,7 @@ export default function () {
             className={classes.heading}
             style={{ textAlign: 'center', fontSize: 30 }}
           >
-            Interested in APIs in general?
+            More API Content
           </Typography>
 
           <Divider style={{ marginTop: 20, marginBottom: 30 }} />
@@ -563,15 +525,16 @@ export default function () {
           <Grid container spacing={4}>
             <Grid item xs={12} sm={8}>
               <Typography variant="subtitle1">
-                We cover them quite extensively here, our{' '}
-                <Link href="https://useoptic.com/blog">blog</Link> has posts on
-                documentation and concepts. And out in the wild you can listen
+                Check out the Optic{' '}
+                <Link href="https://useoptic.com/blog">Blog</Link> where we
+                discuss building better APIs. And out in the wild you can listen
                 to our very own{' '}
-                <Link href="https://github.com/acunniffe">Aidan Cunniffe</Link>{' '}
-                is part API Storytelling with{' '}
+                <Link href="https://twitter.com/aidandcunniffe">
+                  Aidan Cunniffe,
+                </Link>{' '}
                 <Link href="https://twitter.com/kinlane">Kin Lane</Link> and{' '}
-                <Link href="https://twitter.com/mamund">Mike Amundsen</Link>.
-                You can catch watch the video cast on{' '}
+                <Link href="https://twitter.com/mamund">Mike Amundsen</Link> on
+                API Storytelling. You can catch watch the video cast on{' '}
                 <Link href="https://www.youtube.com/channel/UChLC45yh9DTkerV-TSJJo3A/featured">
                   YouTube
                 </Link>

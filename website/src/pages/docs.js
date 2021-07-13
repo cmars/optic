@@ -83,16 +83,16 @@ export default function () {
                 }
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <UseCaseCard
-                link={usecases.Share.href}
-                title={'**Share** your API'}
-                description={
-                  'Share your API documentation, an auto-generated changelog, and examples with all of your consumers. Optic makes it easy to update these resources whenever the API changes.'
-                }
-              />
-            </Grid>
-            <Grid item xs={12}>
+            {/*<Grid item xs={12} sm={6}>*/}
+            {/*  <UseCaseCard*/}
+            {/*    link={usecases.Share.href}*/}
+            {/*    title={'**Share** your API'}*/}
+            {/*    description={*/}
+            {/*      'Share your API documentation, an auto-generated changelog, and examples with all of your consumers. Optic makes it easy to update these resources whenever the API changes.'*/}
+            {/*    }*/}
+            {/*  />*/}
+            {/*</Grid>*/}
+            <Grid item xs={6}>
               <UseCaseCard
                 link={usecases.Change.href}
                 title={'**Change** your API, with confidence'}
@@ -116,7 +116,7 @@ export default function () {
           <Divider style={{ marginTop: 20, marginBottom: 30 }} />
 
           <Grid container spacing={4}>
-            <Grid item xs={12} sm={12}>
+            <Grid item xs={6}>
               <UseCaseCard
                 link={workflows.CIGitBot.href}
                 title={workflows.CIGitBot.label}
@@ -125,15 +125,15 @@ export default function () {
                 }
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <UseCaseCard
-                link={workflows.DevelopWithOpticLocally.href}
-                title={workflows.DevelopWithOpticLocally.label}
-                description={
-                  'Share your API documentation, an auto-generated changelog, and examples with all of your consumers. Optic makes it easy to update these resources whenever the API changes.'
-                }
-              />
-            </Grid>
+            {/*<Grid item xs={12} sm={6}>*/}
+            {/*  <UseCaseCard*/}
+            {/*    link={workflows.DevelopWithOpticLocally.href}*/}
+            {/*    title={workflows.DevelopWithOpticLocally.label}*/}
+            {/*    description={*/}
+            {/*      'Share your API documentation, an auto-generated changelog, and examples with all of your consumers. Optic makes it easy to update these resources whenever the API changes.'*/}
+            {/*    }*/}
+            {/*  />*/}
+            {/*</Grid>*/}
             <Grid item xs={6}>
               <UseCaseCard
                 link={workflows.TeamDesignFirst.href}

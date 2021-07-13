@@ -49,18 +49,18 @@ module.exports = {
           label: 'Docs',
           position: 'right',
         },
-        {
-          label: 'Workflows',
-          items: [
-            allWorkflows.CIGitBot,
-            allWorkflows.TeamDesignFirst,
-            allWorkflows.DevelopWithOpticLocally,
-          ],
-          position: 'right',
-        },
+        // {
+        //   label: 'Workflows',
+        //   items: [
+        //     allWorkflows.CIGitBot,
+        //     allWorkflows.TeamDesignFirst,
+        //     // allWorkflows.DevelopWithOpticLocally,
+        //   ],
+        //   position: 'right',
+        // },
         {
           to: '/blog',
-          activeBasePath: '/docs',
+          activeBasePath: '/blog',
           label: 'Blog',
           position: 'right',
         },
@@ -93,6 +93,23 @@ module.exports = {
             {
               label: 'GitHub Discussion',
               href: 'https://github.com/opticdev/optic/discussions',
+            },
+          ],
+        },
+        {
+          title: 'Documentation',
+          items: [
+            {
+              label: 'Documentation',
+              href: '/docs',
+            },
+            {
+              label: 'Use Cases',
+              href: '/document',
+            },
+            {
+              label: 'Reference',
+              href: '/reference',
             },
           ],
         },
