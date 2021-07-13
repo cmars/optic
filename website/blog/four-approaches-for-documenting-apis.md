@@ -1,5 +1,5 @@
 ---
-date: "07/01/2021"
+date: 2021-07-01
 title: "Four Approaches for Documenting APIs"
 author: Deborah Ruck
 author_url: "https://deborahruck.com/"
