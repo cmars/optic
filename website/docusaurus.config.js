@@ -166,11 +166,40 @@ module.exports = {
         redirects: [
           {
             to: '/document',
-            from: ['/docs/get-started/config'],
+            from: [
+              '/docs/get-started/config',
+              '/docs/get-started/config/intercept',
+              '/docs/get-started/config/run-with-optic',
+              '/docs/get-started/config/proxy',
+              '/docs/using/share-with-team',
+              '/docs/actix',
+              '/docs/c-sharp',
+              '/docs/django',
+              '/docs/elixir',
+              '/docs/express',
+              '/docs/fastapi',
+              '/docs/flask',
+              '/docs/mux',
+              '/docs/hapi',
+              '/docs/laravel',
+              '/docs/lithium',
+              '/docs/pistache',
+              '/docs/puma',
+              '/docs/rocket',
+              '/docs/rocket-ignite',
+              '/docs/rails',
+              '/docs/sails',
+              '/docs/spring',
+              '/docs/intellij',
+            ],
           },
           {
             to: '/community',
-            from: ['/docs/community'],
+            from: [
+              '/docs/community',
+              '/docs/optic/get-involved',
+              '/docs/optic/roadmap',
+            ],
           },
           {
             to: '/document/baseline',
@@ -189,16 +218,27 @@ module.exports = {
             from: ['/docs/demo'],
           },
           {
+            to: '/test',
+            from: ['/docs/get-started/testing'],
+          },
+          {
+            to: '/test/run-in-ci',
+            from: ['/docs/circleci', '/docs/github-actions'],
+          },
+          {
             to: '/reference/optic-cli/commands/debug',
             from: ['/docs/using/troubleshooting'],
           },
           {
             to: '/capture',
-            from: ['/docs/integrations/integrations'],
+            from: ['/docs/integrations/integrations', '/docs/deploy/live'],
           },
           {
             to: '/reference/optic-yaml/scripts',
-            from: ['/docs/faqs-and-troubleshooting/scripts'],
+            from: [
+              '/docs/faqs-and-troubleshooting/scripts',
+              '/docs/apiops/scripts',
+            ],
           },
           {
             to: '/reference/optic-yaml/ignore',
@@ -211,7 +251,27 @@ module.exports = {
               '/docs/using/advanced-configuration',
             ],
           },
+          {
+            to: '/reference/optic-cli/commands/help',
+            from: ['/docs/using/cli-commands'],
+          },
+          {
+            to: '/reference/optic-cli/commands/generate',
+            from: ['/docs/apiops/openapi'],
+          },
+          {
+            to: '/reference/spectacle',
+            from: ['/docs/using/spectacle'],
+          },
         ],
+        createRedirects: function (existingPath) {
+          if (existingPath.indexOf('/docs/deploy/')) {
+            return str.replace(
+              '/docs/deploy/',
+              '/reference/real-environments/'
+            );
+          }
+        },
       },
     ],
   ],
