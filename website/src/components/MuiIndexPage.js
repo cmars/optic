@@ -45,8 +45,8 @@ export const SplashPage = () => {
       <ToolsSupported />
       <Divider />
 
-      {/*<GridSupport />*/}
-      {/*<Divider />*/}
+      <GridSupport />
+      <Divider />
 
       <CTATryOptic />
     </MuiThemeProvider>

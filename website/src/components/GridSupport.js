@@ -73,7 +73,7 @@ const ChangelogInPR = () => (
     title="API Changelogs in Every Pull Request"
     description="What if it were easy to talk about API Changes during Code Review? Optic's GitBot adds an accurate API changelog to every Pull Request that changes the API contract. Suggest changes, discuss improvements, build a better API, together."
     linkText="Pick an Optic Workflows"
-    image="/img/Optic_Changelog.svg"
+    image="/img/Optic_revert_done.svg"
   />
 );
 
@@ -82,7 +82,7 @@ const APIChecks = () => (
     title="Design Consistent APIs"
     description="Optic built an approach to linting API Contracts that runs right in CI, and only gives you feedback about changes you're about to make, not the old endpoints you'll never go back and fix. It's simple, and makes it easy to desing great APIs together."
     linkText="Start using API Checks"
-    image="/img/Optic_Changelog.svg"
+    image="/img/Optic_api_checks.svg"
   />
 );
 
@@ -91,7 +91,7 @@ const APITesting = () => (
     title="Fail your Tests when the API Changes"
     description="When your existing tests are run with Optic, you gain the ability to fail the test suite when the API contract is not met. With Optic it is easy to verify your API contract without rewriting the tests you already have."
     linkText="Testing your API with Optic"
-    image="/img/Optic_Changelog.svg"
+    image="/img/Optic_learn_endpoint.svg"
   />
 );
 
