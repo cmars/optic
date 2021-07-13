@@ -1,5 +1,5 @@
 ---
-date: 2021-12-21
+date: 2020-12-21
 title: "Generating Documentation with Optic and Bump in your CI/CD pipeline"
 author: Lou Manglass
 author_image_url: "/img/team/lou.jpg"
