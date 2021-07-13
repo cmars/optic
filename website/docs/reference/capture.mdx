@@ -6,7 +6,7 @@ slug: /capture
 import { Paper } from '@material-ui/core';
 import {CIGitBot} from '../../workflows'
 import { ShowAllFrameworks } from '../../src/components/ShowAllFrameworks';
-
+import Beta from './real-environments/Beta.mdx'
 
 Making it easy to capture traffic is one of the most important aspects of the Optic project. Without traffic, the tool can not auto-document our APIs, detect changes, calculate coverage and test our APIs.
 
@@ -24,24 +24,29 @@ There are multiple ways to capture traffic, all with their own tradeoffs. Here i
 
 
 ## Manual Capture Methods
-[outline, flush out]
-- `api start` via Framework integrations
-- Intercept Mode
-- Proxy Mode
+
+Optic can integrate with your project locally, and provides flexibility in learning from many sources. Manual integrations are a quick way to get started, no matter how you test your API today:
+
+  <ShowAllFrameworks/>
 
 ## Automated Capture Methods
-[outline, flush out]
-- `api test` via Framework integrations
-- Link out to API Tools
-  - Postman
-  - Insomnia
 
+Integrating automated tests is the next best step for projects with good test coverage. Optic can use your existing tests to validate that your API schema follows the specification, and gives you insight into how well your tests cover the known endpoints of your API. How you can integrate your test will vary by project, so check out our [general guidelines](/tools/general-guidelines) for an overview.
 
 ## Deployed Capture Methods
-[outline, flush out]
-- all the integrations...
+
+<Beta />
+
+Explore some common deployed capture scenarios with Optic:
+
+- [AWS API Gateway]('reference/real-environments/aws-api-gateway'),
+- [Azure API Management]('reference/real-environments/azure-api-management'),
+- [Azure App Gateway]('reference/real-environments/azure-app-gateway'),
+- [Cloudflare Worker]('reference/real-environments/cloudflare-worker'),
+- [Envoy Proxy]('reference/real-environments/envoy-proxy'),
+- [Kubernetes]('reference/real-environments/kubernetes'),
+- [NGINX]('reference/real-environments/nginx'),
 
 ### Got ideas?
-
 
 This is a great place to contribute new capabilities to the project.
