@@ -25,7 +25,28 @@ Without any changes to your tests, you can start using what you already have to 
 ```
 > api run test
 
-[LOU add a good example with some passes / failures ]
+
+ API Coverage Report:
+┌─────────────────────────────────────────────┬────────────────────────────────────┬─────────────────────────────────────────┐
+│ Endpoint                                    │ Requests                           │ Responses                               │
+├─────────────────────────────────────────────┼────────────────────────────────────┼─────────────────────────────────────────┤
+│ GET /api/todos -> 100.0% covered            │ No Body: 2                         │ 200: application/json: 2                │
+├─────────────────────────────────────────────┼────────────────────────────────────┼─────────────────────────────────────────┤
+│ PATCH /api/todos/{TodoID} -> 100.0% covered │ application/json: 1 | 1 with diffs │ 200: application/json: 1 | 1 with diffs │
+├─────────────────────────────────────────────┼────────────────────────────────────┼─────────────────────────────────────────┤
+│ GET /api/todos/{TodoID} -> 0.0% covered     │ No Body: No Coverage               │ 200: application/json: No Coverage      |
+├─────────────────────────────────────────────┼────────────────────────────────────┼─────────────────────────────────────────┤
+│ POST /api/todos -> 100.0% covered           │ application/json: 1 | 1 with diffs │ 201: application/json: 1 | 1 with diffs │
+└─────────────────────────────────────────────┴────────────────────────────────────┴─────────────────────────────────────────┘
+
+Based on 5 samples
+┌──────────────────────────────┬──────────┬──────────┬──────────────────┐
+│                              │ Observed │ Expected │ Percent Coverage │
+├──────────────────────────────┼──────────┼──────────┼──────────────────┤
+│ Documented Body Coverage     │ 8        │ 8        │ 100.0%           │
+├──────────────────────────────┼──────────┼──────────┼──────────────────┤
+│ Documented Endpoint Coverage │ 4        │ 4        │ 100.0%           │
+└──────────────────────────────┴──────────┴──────────┴──────────────────┘
 ```
 
 <ExpandDocs title="How it works" defaultOpen={false}>
