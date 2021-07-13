@@ -266,7 +266,7 @@ module.exports = {
         ],
         createRedirects: function (existingPath) {
           if (existingPath.indexOf('/docs/deploy/')) {
-            return str.replace(
+            return existingPath.replace(
               '/docs/deploy/',
               '/reference/real-environments/'
             );

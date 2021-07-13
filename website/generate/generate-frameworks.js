@@ -24,6 +24,10 @@ import SpecificExample from '${path}';
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import BrowserOnly from '@docusaurus/core/lib/client/exports/BrowserOnly';
+
+
+<BrowserOnly>
 
 <Tabs
   defaultValue={metadata.middleware_url ? 'middleware' : 'manual'}
@@ -41,7 +45,7 @@ import TabItem from '@theme/TabItem';
 
 </Tabs>
 
-
+</BrowserOnly>
 `;
 };
 

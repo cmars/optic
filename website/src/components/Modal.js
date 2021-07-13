@@ -11,6 +11,7 @@ import { Typography } from '@material-ui/core';
 import { SubtleBlueBackground } from './theme';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { MuiThemeProvider } from './MuiIndexPage';
+import BrowserOnly from '@docusaurus/core/lib/client/exports/BrowserOnly';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,52 +32,54 @@ export default function PreviewPageModal(props) {
   };
 
   return (
-    <MuiThemeProvider>
-      <span>
-        <span onClick={handleClickOpen}>{children}</span>
-        <Dialog
-          open={open}
-          maxWidth={'md'}
-          fullWidth={true}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-        >
-          <DialogActions
-            style={{
-              backgroundColor: SubtleBlueBackground,
-              borderBottom: '1px solid #e2e2e2',
-              paddingLeft: 10,
-            }}
+    <BrowserOnly>
+      <MuiThemeProvider>
+        <span>
+          <span onClick={handleClickOpen}>{children}</span>
+          <Dialog
+            open={open}
+            maxWidth={'md'}
+            fullWidth={true}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
           >
-            <Typography
-              variant="subtitle1"
-              style={{ fontSize: 15, fontWeight: 600 }}
-              color="primary"
+            <DialogActions
+              style={{
+                backgroundColor: SubtleBlueBackground,
+                borderBottom: '1px solid #e2e2e2',
+                paddingLeft: 10,
+              }}
             >
-              {title}
-            </Typography>
-            <div style={{ flex: 1 }} />
-            <Button
-              endIcon={<OpenInNewIcon />}
-              onClick={() => history.push(link)}
-              style={{ textDecoration: 'none' }}
-              color="primary"
+              <Typography
+                variant="subtitle1"
+                style={{ fontSize: 15, fontWeight: 600 }}
+                color="primary"
+              >
+                {title}
+              </Typography>
+              <div style={{ flex: 1 }} />
+              <Button
+                endIcon={<OpenInNewIcon />}
+                onClick={() => history.push(link)}
+                style={{ textDecoration: 'none' }}
+                color="primary"
+              >
+                Open as Page
+              </Button>
+              <Button variant="contained" onClick={handleClose} color="primary">
+                Done
+              </Button>
+            </DialogActions>
+            <DialogContent
+              style={{ padding: 20, paddingTop: 25, paddingBottom: 400 }}
             >
-              Open as Page
-            </Button>
-            <Button variant="contained" onClick={handleClose} color="primary">
-              Done
-            </Button>
-          </DialogActions>
-          <DialogContent
-            style={{ padding: 20, paddingTop: 25, paddingBottom: 400 }}
-          >
-            {open && Source}
-          </DialogContent>
-        </Dialog>
-      </span>
-    </MuiThemeProvider>
+              {open && Source}
+            </DialogContent>
+          </Dialog>
+        </span>
+      </MuiThemeProvider>
+    </BrowserOnly>
   );
 }
 
@@ -92,49 +95,51 @@ export function DemoPageModal(props) {
   };
 
   return (
-    <MuiThemeProvider>
-      <div>
-        <Button
-          size="small"
-          color="primary"
-          onClick={() => setOpen(true)}
-          style={{ marginLeft: -5, marginBottom: 0 }}
-        >
-          Show Demo
-        </Button>
-        <Dialog
-          open={open}
-          maxWidth={'md'}
-          fullWidth={true}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose}
-        >
-          <DialogActions
-            style={{
-              backgroundColor: SubtleBlueBackground,
-              borderBottom: '1px solid #e2e2e2',
-              paddingLeft: 10,
-            }}
+    <BrowserOnly>
+      <MuiThemeProvider>
+        <div>
+          <Button
+            size="small"
+            color="primary"
+            onClick={() => setOpen(true)}
+            style={{ marginLeft: -5, marginBottom: 0 }}
           >
-            <Typography
-              variant="subtitle1"
-              style={{ fontSize: 15, fontWeight: 600 }}
-              color="primary"
+            Show Demo
+          </Button>
+          <Dialog
+            open={open}
+            maxWidth={'md'}
+            fullWidth={true}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+          >
+            <DialogActions
+              style={{
+                backgroundColor: SubtleBlueBackground,
+                borderBottom: '1px solid #e2e2e2',
+                paddingLeft: 10,
+              }}
             >
-              {title}
-            </Typography>
-            <div style={{ flex: 1 }} />
-            <Button onClick={handleClose} color="primary" variant="contained">
-              Get Started
-            </Button>
-          </DialogActions>
-          <DialogContent style={{ minHeight: 500, padding: 20 }}>
-            {children}
-          </DialogContent>
-        </Dialog>
-      </div>
-    </MuiThemeProvider>
+              <Typography
+                variant="subtitle1"
+                style={{ fontSize: 15, fontWeight: 600 }}
+                color="primary"
+              >
+                {title}
+              </Typography>
+              <div style={{ flex: 1 }} />
+              <Button onClick={handleClose} color="primary" variant="contained">
+                Get Started
+              </Button>
+            </DialogActions>
+            <DialogContent style={{ minHeight: 500, padding: 20 }}>
+              {children}
+            </DialogContent>
+          </Dialog>
+        </div>
+      </MuiThemeProvider>
+    </BrowserOnly>
   );
 }
 

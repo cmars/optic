@@ -8,6 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { primary, SubtleBlueBackground, UpdatedBlue } from './theme';
 import { FormatCopy } from './FormatCopy';
 import { MuiThemeProvider } from './MuiIndexPage';
+import BrowserOnly from '@docusaurus/core/lib/client/exports/BrowserOnly';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,22 +31,26 @@ export default function ExpandDocs(props) {
   const [open, setOpen] = useState(defaultOpen || false);
 
   return (
-    <MuiThemeProvider>
-      <Accordion
-        expanded={open}
-        elevation={0}
-        onChange={() => setOpen(!open)}
-        className={classes.root}
-      >
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h6" color="primary">
-            <FormatCopy value={title} />
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails style={{ display: 'flex', flexDirection: 'column' }}>
-          {children}
-        </AccordionDetails>
-      </Accordion>
-    </MuiThemeProvider>
+    <BrowserOnly>
+      <MuiThemeProvider>
+        <Accordion
+          expanded={open}
+          elevation={0}
+          onChange={() => setOpen(!open)}
+          className={classes.root}
+        >
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6" color="primary">
+              <FormatCopy value={title} />
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            {children}
+          </AccordionDetails>
+        </Accordion>
+      </MuiThemeProvider>
+    </BrowserOnly>
   );
 }
