@@ -119,13 +119,14 @@ function HomePageHero(props) {
         </Container>
       </Container>
 
-      <Container maxWidth="md" fullWidth>
-        <MiniCTA />
-      </Container>
       <Container maxWidth="lg" fullWidth>
         <Paper elevation={2} style={{ display: 'flex' }}>
           <img src={'/img/optic-image.png'} />
         </Paper>
+      </Container>
+
+      <Container maxWidth="md" fullWidth>
+        <MiniCTA />
       </Container>
     </div>
   );

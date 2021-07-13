@@ -15,21 +15,21 @@ module.exports = {
     googleAnalytics: {
       trackingID: 'UA-137236875-1',
     },
-    algolia: {
-      apiKey: 'b2709a62d582be097dd8841886113119',
-      indexName: 'optic-oss',
-
-      // Optional: see doc section below
-      contextualSearch: true,
-
-      // Optional: see doc section below
-      appId: 'BJWK3RB6C3',
-
-      // Optional: Algolia search parameters
-      searchParameters: {},
-
-      //... other Algolia params
-    },
+    // algolia: {
+    //   apiKey: 'b2709a62d582be097dd8841886113119',
+    //   indexName: 'optic-oss',
+    //
+    //   // Optional: see doc section below
+    //   contextualSearch: true,
+    //
+    //   // Optional: see doc section below
+    //   appId: 'BJWK3RB6C3',
+    //
+    //   // Optional: Algolia search parameters
+    //   searchParameters: {},
+    //
+    //   //... other Algolia params
+    // },
     hideableSidebar: false,
     colorMode: {
       defaultMode: 'light',

@@ -3,25 +3,37 @@ title: Run Optic in CI
 slug: /test/run-in-ci
 ---
 
+import { DocsImage } from '../../src/components/Image';
+
 
 > Make it easy to detect and fix unexpected API changes in CI. With Optic monitoring the tests in CI, you get confidence that every API change reviewed and documented before getting released.
 
-**Outcome**: Learn how to set up Optic in the CI environment
+**Outcome**: Use Optic to verify your API contracts in CI.
+(optional) Block PRs with unplanned API Changes.
 
 ### Prerequisites
 - An API, [documented with Optic](/document)
 - Your API tests [setup to run through Optic](/test/with-optic)
 
----
-
 ## Why CI?
+If you have good [API test coverage](/test/with-optic#api-coverage) (>70%), putting Optic in your CI pipeline can give your team confidence that only planned API changes are getting merged/released.
 
-## CI Providers
+If unplanned API changes get detected in your Pull Request CI or Build Process, Optic can fail those tasks, and give feedback to developers, in their current tools.
 
-## Coverage and Test Power
-- remember that your mileage here varies based on the amount of coverage you have
+<DocsImage src={'/img/unplanned.png'}/>
 
-## FAQs
-- ??
-- ??
-- ??
+### Using the `--ci` flag
+To get Optic running in CI, just add a [Test Task](/test) and run it in your CI task using the `--ci` flag.
+
+```bash
+api run test --ci
+
+[LOU ADD EXAMPLE]
+```
+
+Using the `--ci` flag makes Optic `exit 1` after running your tests if the API Contract deviates from the current contract. This is the same behavior as when using the `exit-on-diff` flag.
+
+Using the `--ci` flag also prints your API coverage into your CI logs, so you can see which endpoints have coverage, and therefore have had their contract verified, and which endpoints Optic was not able to verify. This is the same behavior as when using the `--print-coverage` flag.
+
+### What's Next
+You can also add Optic's API Changelogs, advanced testing setups, and API linting to CI. [Read more about how Optic helps your team design / change your API here.](/change)

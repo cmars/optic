@@ -9,6 +9,7 @@ import Link from '@docusaurus/core/lib/client/exports/Link';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { UpdatedBlueBackground } from './theme';
 import Grid from '@material-ui/core/Grid';
+import { links } from './links';
 
 export const useStyles = makeStyles({
   section: {
@@ -67,17 +68,15 @@ export function CTATryOptic() {
                 flexDirection="row"
                 justifyContent="flex-start"
               >
-                <Button
-                  endIcon={<ChevronRightIcon />}
-                  to="/docs"
-                  variant="contained"
-                  color="primary"
+                <button
+                  className={'button button--primary'}
+                  href={links.DocsRoot}
                 >
                   Get Started
-                </Button>
+                </button>
 
                 <div style={{ marginLeft: 10 }}>
-                  <Link>Schedule a Demo</Link>
+                  <Link href={links.Demo}>Schedule a Demo</Link>
                 </div>
               </Box>
               <Typography
@@ -85,7 +84,7 @@ export function CTATryOptic() {
                 style={{ color: '#6d757d', marginTop: 20 }}
               >
                 When the CLI is installing, be sure to{' '}
-                <Link>join the community.</Link>
+                <Link href={links.Community}>join the community.</Link>
               </Typography>
             </Box>
           </Grid>
@@ -106,6 +105,7 @@ export function MiniCTA() {
         alignItems: 'center',
         border: '1px solid #e2e2e2',
         marginBottom: 40,
+        marginTop: 100,
       }}
     >
       <div>
@@ -127,16 +127,11 @@ export function MiniCTA() {
           justifyContent="flex-start"
         >
           <div style={{ marginRight: 20 }}>
-            <Link>Schedule a Demo</Link>
+            <Link href={links.Demo}>Schedule a Demo</Link>
           </div>
-          <Button
-            endIcon={<ChevronRightIcon />}
-            to="/docs"
-            variant="contained"
-            color="primary"
-          >
+          <button className={'button button--primary'} href={links.DocumentAPI}>
             Get Started
-          </Button>
+          </button>
         </Box>
       </div>
     </Paper>
