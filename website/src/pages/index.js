@@ -1,12 +1,10 @@
 import React from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 import { SplashPage } from '../components/MuiIndexPage';
-import { GitBotDemo } from '../components/CommandDemo';
 
 function Feature({ imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);

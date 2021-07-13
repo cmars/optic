@@ -1,5 +1,5 @@
 ---
-date: "9/24/2020"
+date: 2020-09-24
 title: "Document your organization's Vault capabilities with Optic"
 author: Lou Manglass
 author_image_url: "/img/team/lou.jpg"
@@ -196,7 +196,7 @@ There's a few service endpoints fetched often, and some endpoints under `/v1/sys
 
 ![documented GET body](/img/blog-content/optic-vault-body.png)
 
-An important thing to note here: only the traffic shape is ever stored in the documentation. **The traffic itself is never stored in the documentation**. Raw traffic is observed and converted to its shape representation locally for documentation and comparison to any existing specification. We don't send your secrets off of your machine. 
+An important thing to note here: only the traffic shape is ever stored in the documentation. **The traffic itself is never stored in the documentation**. Raw traffic is observed and converted to its shape representation locally for documentation and comparison to any existing specification. We don't send your secrets off of your machine.
 
 Going through the requests, Optic has detected our `foo` field is always present. It also notices that our `excited` field is seen in some requests, and confirms with us:
 
