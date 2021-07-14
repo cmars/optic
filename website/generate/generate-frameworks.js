@@ -27,9 +27,7 @@ import TabItem from '@theme/TabItem';
 import BrowserOnly from '@docusaurus/core/lib/client/exports/BrowserOnly';
 
 
-<BrowserOnly>
-
-<Tabs
+<BrowserOnly children={() => (<Tabs
   defaultValue={metadata.middleware_url ? 'middleware' : 'manual'}
   values={${JSON.stringify(tabValuesAsString)}}>
 
@@ -41,11 +39,9 @@ import BrowserOnly from '@docusaurus/core/lib/client/exports/BrowserOnly';
 <SpecificExample proxy={true} />
 </TabItem>
 
+</Tabs>)
+} />
 
-
-</Tabs>
-
-</BrowserOnly>
 `;
 };
 

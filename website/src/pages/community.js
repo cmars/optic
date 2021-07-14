@@ -82,8 +82,8 @@ export default function () {
     <Link href="mailto:founders@useoptic.com">founders@useoptic.com</Link>
   );
   return (
-    <Layout title="Community">
-      <MuiThemeProvider>
+    <MuiThemeProvider>
+      <Layout title="Community">
         <Container maxWidth={false} className={classes.root}>
           <Grid container className={classes.root} spacing={0}>
             <Grid item xs={6}>
@@ -550,7 +550,7 @@ export default function () {
             </Grid>
           </Grid>
         </Container>
-      </MuiThemeProvider>
-    </Layout>
+      </Layout>
+    </MuiThemeProvider>
   );
 }

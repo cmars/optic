@@ -31,26 +31,28 @@ export default function ExpandDocs(props) {
   const [open, setOpen] = useState(defaultOpen || false);
 
   return (
-    <BrowserOnly>
-      <MuiThemeProvider>
-        <Accordion
-          expanded={open}
-          elevation={0}
-          onChange={() => setOpen(!open)}
-          className={classes.root}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h6" color="primary">
-              <FormatCopy value={title} />
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails
-            style={{ display: 'flex', flexDirection: 'column' }}
+    <BrowserOnly
+      children={() => (
+        <MuiThemeProvider>
+          <Accordion
+            expanded={open}
+            elevation={0}
+            onChange={() => setOpen(!open)}
+            className={classes.root}
           >
-            {children}
-          </AccordionDetails>
-        </Accordion>
-      </MuiThemeProvider>
-    </BrowserOnly>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography variant="h6" color="primary">
+                <FormatCopy value={title} />
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails
+              style={{ display: 'flex', flexDirection: 'column' }}
+            >
+              {children}
+            </AccordionDetails>
+          </Accordion>
+        </MuiThemeProvider>
+      )}
+    />
   );
 }

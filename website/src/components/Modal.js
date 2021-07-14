@@ -32,54 +32,60 @@ export default function PreviewPageModal(props) {
   };
 
   return (
-    <BrowserOnly>
-      <MuiThemeProvider>
-        <span>
-          <span onClick={handleClickOpen}>{children}</span>
-          <Dialog
-            open={open}
-            maxWidth={'md'}
-            fullWidth={true}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-          >
-            <DialogActions
-              style={{
-                backgroundColor: SubtleBlueBackground,
-                borderBottom: '1px solid #e2e2e2',
-                paddingLeft: 10,
-              }}
+    <BrowserOnly
+      children={() => (
+        <MuiThemeProvider>
+          <span>
+            <span onClick={handleClickOpen}>{children}</span>
+            <Dialog
+              open={open}
+              maxWidth={'md'}
+              fullWidth={true}
+              TransitionComponent={Transition}
+              keepMounted
+              onClose={handleClose}
             >
-              <Typography
-                variant="subtitle1"
-                style={{ fontSize: 15, fontWeight: 600 }}
-                color="primary"
+              <DialogActions
+                style={{
+                  backgroundColor: SubtleBlueBackground,
+                  borderBottom: '1px solid #e2e2e2',
+                  paddingLeft: 10,
+                }}
               >
-                {title}
-              </Typography>
-              <div style={{ flex: 1 }} />
-              <Button
-                endIcon={<OpenInNewIcon />}
-                onClick={() => history.push(link)}
-                style={{ textDecoration: 'none' }}
-                color="primary"
+                <Typography
+                  variant="subtitle1"
+                  style={{ fontSize: 15, fontWeight: 600 }}
+                  color="primary"
+                >
+                  {title}
+                </Typography>
+                <div style={{ flex: 1 }} />
+                <Button
+                  endIcon={<OpenInNewIcon />}
+                  onClick={() => history.push(link)}
+                  style={{ textDecoration: 'none' }}
+                  color="primary"
+                >
+                  Open as Page
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleClose}
+                  color="primary"
+                >
+                  Done
+                </Button>
+              </DialogActions>
+              <DialogContent
+                style={{ padding: 20, paddingTop: 25, paddingBottom: 400 }}
               >
-                Open as Page
-              </Button>
-              <Button variant="contained" onClick={handleClose} color="primary">
-                Done
-              </Button>
-            </DialogActions>
-            <DialogContent
-              style={{ padding: 20, paddingTop: 25, paddingBottom: 400 }}
-            >
-              {open && Source}
-            </DialogContent>
-          </Dialog>
-        </span>
-      </MuiThemeProvider>
-    </BrowserOnly>
+                {open && Source}
+              </DialogContent>
+            </Dialog>
+          </span>
+        </MuiThemeProvider>
+      )}
+    />
   );
 }
 
@@ -95,51 +101,59 @@ export function DemoPageModal(props) {
   };
 
   return (
-    <BrowserOnly>
-      <MuiThemeProvider>
-        <div>
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => setOpen(true)}
-            style={{ marginLeft: -5, marginBottom: 0 }}
-          >
-            Show Demo
-          </Button>
-          <Dialog
-            open={open}
-            maxWidth={'md'}
-            fullWidth={true}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-          >
-            <DialogActions
-              style={{
-                backgroundColor: SubtleBlueBackground,
-                borderBottom: '1px solid #e2e2e2',
-                paddingLeft: 10,
-              }}
-            >
-              <Typography
-                variant="subtitle1"
-                style={{ fontSize: 15, fontWeight: 600 }}
+    <BrowserOnly
+      children={() => {
+        return (
+          <MuiThemeProvider>
+            <div>
+              <Button
+                size="small"
                 color="primary"
+                onClick={() => setOpen(true)}
+                style={{ marginLeft: -5, marginBottom: 0 }}
               >
-                {title}
-              </Typography>
-              <div style={{ flex: 1 }} />
-              <Button onClick={handleClose} color="primary" variant="contained">
-                Get Started
+                Show Demo
               </Button>
-            </DialogActions>
-            <DialogContent style={{ minHeight: 500, padding: 20 }}>
-              {children}
-            </DialogContent>
-          </Dialog>
-        </div>
-      </MuiThemeProvider>
-    </BrowserOnly>
+              <Dialog
+                open={open}
+                maxWidth={'md'}
+                fullWidth={true}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+              >
+                <DialogActions
+                  style={{
+                    backgroundColor: SubtleBlueBackground,
+                    borderBottom: '1px solid #e2e2e2',
+                    paddingLeft: 10,
+                  }}
+                >
+                  <Typography
+                    variant="subtitle1"
+                    style={{ fontSize: 15, fontWeight: 600 }}
+                    color="primary"
+                  >
+                    {title}
+                  </Typography>
+                  <div style={{ flex: 1 }} />
+                  <Button
+                    onClick={handleClose}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Get Started
+                  </Button>
+                </DialogActions>
+                <DialogContent style={{ minHeight: 500, padding: 20 }}>
+                  {children}
+                </DialogContent>
+              </Dialog>
+            </div>
+          </MuiThemeProvider>
+        );
+      }}
+    />
   );
 }
 
