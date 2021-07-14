@@ -128,7 +128,9 @@ export function DocumentGitHubExample() {
   const [tab, setTab] = useState(0);
 
   const demoPath =
-    tab === 0 ? '/demos/github/review' : '/demos/github-with-diffs/review';
+    tab === 0
+      ? '/examples/github/diffs/local/example-session/urls'
+      : '/examples/github-with-diffs/diffs';
 
   return (
     <div style={{ backgroundColor: SubtleBlueBackground, paddingTop: 70 }}>
