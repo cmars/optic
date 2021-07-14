@@ -99,7 +99,7 @@ export default function () {
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <img src="/static/img/optic-spaceship.svg" />
+              <img src="/img/optic-spaceship.svg" />
             </Grid>
           </Grid>
         </Container>
