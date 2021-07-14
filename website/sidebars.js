@@ -126,7 +126,7 @@ module.exports = {
       items: [
         'reference/optic-yaml/explained',
         'reference/optic-yaml/tasks',
-        'reference/optic-yaml/enviroments',
+        'reference/optic-yaml/environments',
         'reference/optic-yaml/scripts',
         'reference/optic-yaml/ignore',
       ],

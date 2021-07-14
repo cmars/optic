@@ -92,7 +92,7 @@ Computing API diffs... Done!
 ✓  No undocumented URLs observed
 ```
 
-In this case, there are three endpoints where we've seen differences in behavior. There aren't any undocumented URLs observed in this case. If you are expecting a change in behavior, such as adding a new endpoint or adding a field to an existing endpoint, you can run `api status --review` and [update your specification](/document/updating). These are detected with the tests you have already written, with no changes necessary. These schema checks are kept up to date as you continue to update your specification in Optic. Lets dig in to our tests further and see what else we can learn.
+In this case, there are three endpoints where we've seen differences in behavior. There aren't any undocumented URLs observed in this case. If you are expecting a change in behavior, such as adding a new endpoint or adding a field to an existing endpoint, you can run `api status --review` and [update your specification](/change). These are detected with the tests you have already written, with no changes necessary. These schema checks are kept up to date as you continue to update your specification in Optic. Lets dig in to our tests further and see what else we can learn.
 
 ### API Coverage
 
@@ -189,4 +189,4 @@ You can also pass through your test exit codes with `--pass-exit-code`. This all
 
 ### Want to run Optic in CI?
 
-Setting up your tests to run with Optic locally gives you the ability to fail your tests when your schema is not met, without adding any additional tests. There are flags to fail tests and pass through exit codes which are particularly helpful in CI environments. Learn more about [runing in CI](/document/test/run-in-ci) so you can have the same benefits of schema checks with your current tests throughout your development cycle.
+Setting up your tests to run with Optic locally gives you the ability to fail your tests when your schema is not met, without adding any additional tests. There are flags to fail tests and pass through exit codes which are particularly helpful in CI environments. Learn more about [runing in CI](/test/run-in-ci) so you can have the same benefits of schema checks with your current tests throughout your development cycle.

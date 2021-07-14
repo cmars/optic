@@ -44,7 +44,7 @@ No. Previous Traffic -> Spec generators have been "one-shot". Optic instead lear
 
 - `optic.yml` - Optic's config file. Here you can set up various methods of capturing API Traffic, that can be shared with your team, and called upon in CI/CD.
   - `task` - aliases for the commands you use when building your API ie (`npm test`). When run, with `api run taskName`, the command executes, and any traffic handled by your API is captured.
-  - `enviroments` - deployed versions of your API that you can intercept traffic to from the client side. ie `api intercept production --chrome` will open your production webapp and collect all the traffic to your API that is seen in the Chrome Network tab.
+  - `environments` - deployed versions of your API that you can intercept traffic to from the client side. ie `api intercept production --chrome` will open your production webapp and collect all the traffic to your API that is seen in the Chrome Network tab.
 
 - `Optic UI` - Optic's equivalent of a Git client. Add new endpoints, and approve changes to existing ones. The [code for this UI is Open Source](https://github.com/opticdev/optic/tree/develop/workspaces/ui-v2)
 

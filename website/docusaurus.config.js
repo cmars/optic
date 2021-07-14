@@ -246,10 +246,7 @@ module.exports = {
           },
           {
             to: '/reference/optic-yaml',
-            from: [
-              '/docs/get-started/config',
-              '/docs/using/advanced-configuration',
-            ],
+            from: ['/docs/using/advanced-configuration'],
           },
           {
             to: '/reference/optic-cli/commands/help',
@@ -265,7 +262,7 @@ module.exports = {
           },
         ],
         createRedirects: function (existingPath) {
-          if (existingPath.indexOf('/docs/deploy/')) {
+          if (existingPath.indexOf('/docs/deploy/') >= 0) {
             return existingPath.replace(
               '/docs/deploy/',
               '/reference/real-environments/'
