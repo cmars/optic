@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import makeStyles from '@material-ui/styles/makeStyles';
 import { IShapeRenderer } from '<src>/types';
+import { summarizeTypes } from '<src>/utils';
 import { EditableTextField, TextFieldVariant } from './EditableTextField';
 
 export type FieldOrParameterProps = {
@@ -43,17 +44,6 @@ export const FieldOrParameter: FC<
     </div>
   );
 };
-
-function summarizeTypes(shapes: IShapeRenderer[], required: boolean) {
-  const optionalText = required ? '' : ' (optional)';
-  if (shapes.length === 1) {
-    return shapes[0].jsonType.toString().toLowerCase() + optionalText;
-  } else {
-    const allShapes = shapes.map((i) => i.jsonType.toString().toLowerCase());
-    const last = allShapes.pop();
-    return allShapes.join(', ') + ' or ' + last + optionalText;
-  }
-}
 
 const useStyles = makeStyles((theme) => ({
   container: {

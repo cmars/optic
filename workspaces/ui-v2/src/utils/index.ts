@@ -3,3 +3,4 @@ export * from './endpoint-utilities';
 export * from './go-to-anchor';
 export * from './findLongestCommonPath';
 export * from './pathMatcher';
+export * from './shapeDescriptor';
