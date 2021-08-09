@@ -29,7 +29,7 @@ export async function ingestS3({
   bucketName: string;
   region?: string;
   captureId: string;
-  pathPrefix?: string;
+  pathPrefix: string;
   endpointOverride?: string;
 }) {
   let {
@@ -63,10 +63,8 @@ export async function ingestS3({
   });
   await captureSaver.init();
 
-  const prefix = `${path.join(pathPrefix ?? '', captureId ?? '')}`;
-
   console.log(
-    `Looking in s3://${bucketName}${prefix} in region ${region}, ${
+    `Looking in s3://${bucketName}${pathPrefix} in region ${region}, ${
       endpointOverride ?? ''
     }`
   );
@@ -89,7 +87,7 @@ export async function ingestS3({
       .listObjectsV2({
         Bucket: bucketName,
         MaxKeys: 100,
-        Prefix: prefix,
+        Prefix: pathPrefix,
         ContinuationToken: cursor,
       })
       .promise();

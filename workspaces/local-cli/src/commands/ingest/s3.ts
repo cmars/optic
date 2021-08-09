@@ -10,6 +10,9 @@ import { Client } from '@useoptic/cli-client';
 import { trackUserEvent } from '../../shared/analytics';
 import openBrowser from 'react-dev-utils/openBrowser';
 import { linkToCapture } from '../../shared/ui-links';
+import { v4 as uuidv4 } from 'uuid';
+import Path from 'path';
+
 export default class IngestS3 extends Command {
   static description = 'Ingest from S3';
   static hidden: boolean = true;
@@ -17,16 +20,26 @@ export default class IngestS3 extends Command {
   static flags = {
     bucketName: flags.string({ required: true, char: 'b' }),
     region: flags.string({ char: 'r' }),
-    captureId: flags.string({ char: 'c', required: true }),
+    captureId: flags.string({ char: 'c', required: false }),
     pathPrefix: flags.string({ required: false }),
     endpointOverride: flags.string({ required: false }),
   };
 
   async run() {
     try {
-      const {
-        flags: { bucketName, region, captureId, pathPrefix, endpointOverride },
-      } = this.parse(IngestS3);
+      const parameters = this.parse(IngestS3);
+      let {
+        bucketName,
+        region,
+        captureId,
+        pathPrefix,
+        endpointOverride,
+      } = parameters.flags;
+      if (!captureId) {
+        captureId = uuidv4();
+      } else {
+        pathPrefix = `${Path.join(pathPrefix ?? '', captureId ?? '')}`;
+      }
 
       let interactionCount = await ingestS3({
         bucketName,
