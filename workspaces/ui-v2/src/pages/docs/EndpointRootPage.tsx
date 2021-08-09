@@ -17,6 +17,7 @@ import {
   HttpBodySelector,
   Panel,
   HighlightController,
+  EditableContributionField,
 } from '<src>/components';
 import { useDocumentationPageLink } from '<src>/components/navigation/Routes';
 import { FontFamily, SubtleBlueBackground } from '<src>/styles';
@@ -27,7 +28,7 @@ import {
   documentationEditActions,
 } from '<src>/store';
 import { IShapeRenderer } from '<src>/types';
-import { getEndpointId } from '<src>/utils';
+import { getEndpointId, summarizeTypes } from '<src>/utils';
 import { useRunOnKeypress } from '<src>/hooks/util';
 import {
   EndpointTOC,
@@ -294,7 +295,21 @@ export const EndpointRootPage: FC<
                           }
                         }
 
-                        return (
+                        return process.env.REACT_APP_FF_FIELD_LEVEL_EDITS ===
+                          'true' ? (
+                          <EditableContributionField
+                            key={field.fieldId}
+                            fieldId={field.fieldId}
+                            depth={field.depth}
+                            name={field.name}
+                            descriptor={summarizeTypes(
+                              field.shapes,
+                              field.required
+                            )}
+                            description={field.contribution.value}
+                            isEditable={isEditing}
+                          />
+                        ) : (
                           <DocFieldContribution
                             key={
                               field.contribution.id +
@@ -376,25 +391,42 @@ export const EndpointRootPage: FC<
                             <div className={classes.bodyDetails}>
                               <div>
                                 <ContributionsList
-                                  renderField={(field) => (
-                                    <DocFieldContribution
-                                      key={
-                                        field.contribution.id +
-                                        field.contribution.contributionKey
-                                      }
-                                      endpoint={{
-                                        pathId,
-                                        method,
-                                      }}
-                                      name={field.name}
-                                      shapes={field.shapes}
-                                      depth={field.depth}
-                                      id={field.fieldId}
-                                      initialValue={field.contribution.value}
-                                      required={field.required}
-                                      setSelectedField={setSelectedFieldId}
-                                    />
-                                  )}
+                                  renderField={(field) =>
+                                    process.env
+                                      .REACT_APP_FF_FIELD_LEVEL_EDITS ===
+                                    'true' ? (
+                                      <EditableContributionField
+                                        key={field.fieldId}
+                                        fieldId={field.fieldId}
+                                        depth={field.depth}
+                                        name={field.name}
+                                        descriptor={summarizeTypes(
+                                          field.shapes,
+                                          field.required
+                                        )}
+                                        description={field.contribution.value}
+                                        isEditable={isEditing}
+                                      />
+                                    ) : (
+                                      <DocFieldContribution
+                                        key={
+                                          field.contribution.id +
+                                          field.contribution.contributionKey
+                                        }
+                                        endpoint={{
+                                          pathId,
+                                          method,
+                                        }}
+                                        name={field.name}
+                                        shapes={field.shapes}
+                                        depth={field.depth}
+                                        id={field.fieldId}
+                                        initialValue={field.contribution.value}
+                                        required={field.required}
+                                        setSelectedField={setSelectedFieldId}
+                                      />
+                                    )
+                                  }
                                   fieldDetails={fields}
                                 />
                               </div>
@@ -472,25 +504,44 @@ export const EndpointRootPage: FC<
                               <div className={classes.bodyDetails}>
                                 <div>
                                   <ContributionsList
-                                    renderField={(field) => (
-                                      <DocFieldContribution
-                                        key={
-                                          field.contribution.id +
-                                          field.contribution.contributionKey
-                                        }
-                                        endpoint={{
-                                          pathId,
-                                          method,
-                                        }}
-                                        name={field.name}
-                                        shapes={field.shapes}
-                                        depth={field.depth}
-                                        id={field.fieldId}
-                                        initialValue={field.contribution.value}
-                                        required={field.required}
-                                        setSelectedField={setSelectedFieldId}
-                                      />
-                                    )}
+                                    renderField={(field) =>
+                                      process.env
+                                        .REACT_APP_FF_FIELD_LEVEL_EDITS ===
+                                      'true' ? (
+                                        <EditableContributionField
+                                          key={field.fieldId}
+                                          fieldId={field.fieldId}
+                                          depth={field.depth}
+                                          name={field.name}
+                                          descriptor={summarizeTypes(
+                                            field.shapes,
+                                            field.required
+                                          )}
+                                          description={field.contribution.value}
+                                          isEditable={isEditing}
+                                        />
+                                      ) : (
+                                        <DocFieldContribution
+                                          key={
+                                            field.contribution.id +
+                                            field.contribution.contributionKey
+                                          }
+                                          endpoint={{
+                                            pathId,
+                                            method,
+                                          }}
+                                          name={field.name}
+                                          shapes={field.shapes}
+                                          depth={field.depth}
+                                          id={field.fieldId}
+                                          initialValue={
+                                            field.contribution.value
+                                          }
+                                          required={field.required}
+                                          setSelectedField={setSelectedFieldId}
+                                        />
+                                      )
+                                    }
                                     fieldDetails={fields}
                                   />
                                 </div>

@@ -1,6 +1,6 @@
 export * from './Button';
 export * from './CommitMessageModal';
-export * from './ContributionsList';
+export * from './ContributionField';
 export * from './DebugOpticComponent';
 export * from './EditableTextField';
 export * from './EndpointName';
