@@ -11,8 +11,28 @@ type ContributionFieldProps = {
   description: string;
 };
 
+export const ContributionField: FC<ContributionFieldProps> = ({
+  depth,
+  name,
+  descriptor,
+  description,
+}) => {
+  const classes = useStyles({ depth, isEditable: false });
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.fieldDetailContainer}>
+        <div className={classes.fieldName}>{name}</div>
+        <div className={classes.fieldDescriptor}>{descriptor}</div>
+      </div>
+      <div className={classes.contributionContainer}>{description}</div>
+    </div>
+  );
+};
+
 type EditableContributionFieldProps = ContributionFieldProps & {
   isEditable: boolean;
+  setSelectedField?: (selectedFieldId: string | null) => void;
 };
 
 export const EditableContributionField: FC<EditableContributionFieldProps> = ({
@@ -22,6 +42,7 @@ export const EditableContributionField: FC<EditableContributionFieldProps> = ({
   descriptor,
   description,
   isEditable,
+  setSelectedField,
 }) => {
   const classes = useStyles({ depth, isEditable });
   const [isEditing, setIsEditing] = useState(false);
@@ -34,7 +55,11 @@ export const EditableContributionField: FC<EditableContributionFieldProps> = ({
       <div
         className={classes.fieldDetailContainer}
         onClick={() => {
-          isEditable && setIsEditing((prevIsEditing) => !prevIsEditing);
+          if (isEditable) {
+            // Select field when clicked into, and unselect when stop editing
+            setSelectedField && setSelectedField(!isEditing ? fieldId : null);
+            setIsEditing((prevIsEditing) => !prevIsEditing);
+          }
         }}
       >
         <div className={classes.fieldName}>{name}</div>
@@ -53,7 +78,6 @@ export const EditableContributionField: FC<EditableContributionFieldProps> = ({
         {isEditing ? (
           <>
             {/* TODO hook up editing fields and other stuff here */}
-            {/* TODO connect on click for highlight row */}
             <div>toggle for optional</div>
             <div>toggle for nullable</div>
             <div>field for updating description</div>
@@ -63,25 +87,6 @@ export const EditableContributionField: FC<EditableContributionFieldProps> = ({
           description
         )}
       </div>
-    </div>
-  );
-};
-
-export const ContributionField: FC<ContributionFieldProps> = ({
-  depth,
-  name,
-  descriptor,
-  description,
-}) => {
-  const classes = useStyles({ depth, isEditable: false });
-
-  return (
-    <div className={classes.container}>
-      <div className={classes.fieldDetailContainer}>
-        <div className={classes.fieldName}>{name}</div>
-        <div className={classes.fieldDescriptor}>{descriptor}</div>
-      </div>
-      <div className={classes.contributionContainer}>{description}</div>
     </div>
   );
 };

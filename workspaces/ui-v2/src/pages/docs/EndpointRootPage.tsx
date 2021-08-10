@@ -406,6 +406,7 @@ export const EndpointRootPage: FC<
                                         )}
                                         description={field.contribution.value}
                                         isEditable={isEditing}
+                                        setSelectedField={setSelectedFieldId}
                                       />
                                     ) : (
                                       <DocFieldContribution
@@ -519,6 +520,7 @@ export const EndpointRootPage: FC<
                                           )}
                                           description={field.contribution.value}
                                           isEditable={isEditing}
+                                          setSelectedField={setSelectedFieldId}
                                         />
                                       ) : (
                                         <DocFieldContribution
