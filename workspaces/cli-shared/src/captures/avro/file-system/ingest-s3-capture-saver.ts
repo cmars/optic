@@ -64,7 +64,7 @@ export async function ingestS3({
   await captureSaver.init();
 
   console.log(
-    `Looking in s3://${bucketName}${pathPrefix} in region ${region}, ${
+    `Looking in s3://${bucketName}/${pathPrefix} in region ${region}, ${
       endpointOverride ?? ''
     }`
   );

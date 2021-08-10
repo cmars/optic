@@ -21,7 +21,7 @@ export default class IngestS3 extends Command {
     bucketName: flags.string({ required: true, char: 'b' }),
     region: flags.string({ char: 'r' }),
     captureId: flags.string({ char: 'c', required: false }),
-    pathPrefix: flags.string({ required: false }),
+    pathPrefix: flags.string({ required: false, default: '' }),
     endpointOverride: flags.string({ required: false }),
   };
 
