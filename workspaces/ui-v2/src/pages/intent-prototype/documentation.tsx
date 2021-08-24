@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
@@ -13,17 +13,19 @@ import {
 import { EndpointName } from '<src>/components';
 
 import { useFetchEndpoints } from '<src>/hooks/useFetchEndpoints';
+import { useSpectacleContext } from '<src>/contexts/spectacle-provider';
 import {
   useAppSelector,
   useAppDispatch,
   selectors,
   documentationEditActions,
 } from '<src>/store';
+import { InMemorySpectacle } from '@useoptic/spectacle/build/in-memory';
+import { IUnrecognizedUrl } from '@useoptic/spectacle';
 
 export default function DocumentationPage() {
   const styles = useStyles();
   const routeMatch = useRouteMatch();
-  console.log({ routeMatch });
 
   useFetchEndpoints();
   const endpoints = useAppSelector((state) => state.endpoints.results).data
@@ -35,7 +37,7 @@ export default function DocumentationPage() {
         <Route
           strict
           path={`${routeMatch.url}/add/debug-capture`}
-          render={(props) => <div>Upload a debug capture</div>}
+          component={DebugCaptureProvider}
         />
 
         <Route
@@ -186,3 +188,100 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
+// DebugCaptureProvider
+// --------------------
+
+function DebugCaptureProvider() {
+  const styles = useDebugCaptureStyles();
+  const spectacle = useSpectacleContext() as InMemorySpectacle;
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<Error | null>(null);
+  const [unrecognizedUrls, setUnrecognizedUrls] = useState<
+    IUnrecognizedUrl[] | null
+  >(null);
+
+  const onChangeFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    let files = e.target.files;
+    if (!files) return;
+
+    setSelectedFile(files[0]);
+  }, []);
+
+  useEffect(() => {
+    if (!selectedFile) return;
+    if (selectedFile.type !== 'application/json') {
+      setFileError(new Error('A valid Optic debug capture is required'));
+    }
+
+    extractUnrecognizedUrls(selectedFile, spectacle).then(
+      setUnrecognizedUrls,
+      setFileError
+    );
+  }, [selectedFile, spectacle]);
+
+  return (
+    <div className={styles.container}>
+      {!selectedFile ? (
+        <input type="file" onChange={onChangeFile} accept="application/json" />
+      ) : (
+        <div>
+          <div>Filename: {selectedFile.name}</div>
+          <div>Size: {selectedFile.size}</div>
+
+          {unrecognizedUrls && (
+            <ul className={styles.unrecognizedUrlsList}>
+              {unrecognizedUrls.map(({ method, path }) => (
+                <li key={method + path}>
+                  {method.toUpperCase()} - {path}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {fileError && <div>{fileError.message}</div>}
+    </div>
+  );
+}
+
+const useDebugCaptureStyles = makeStyles((theme) => ({
+  container: {},
+  unrecognizedUrlsList: {},
+}));
+
+async function extractUnrecognizedUrls(
+  sourceFile: File,
+  spectacle: InMemorySpectacle
+): Promise<IUnrecognizedUrl[]> {
+  let maybeJson = await sourceFile.text();
+  let json = await new Promise<{ [key: string]: any }>((resolve, reject) => {
+    try {
+      let result = JSON.parse(maybeJson);
+      setImmediate(() => resolve(result)); // give the event loop a tick in case we parsed something huge
+    } catch (err) {
+      setImmediate(() => reject(err));
+    }
+  });
+
+  let interactions = json.session?.samples;
+  if (!interactions && !Array.isArray(interactions)) {
+    throw new Error('Could not find interactions in file');
+  }
+
+  let forkedSpectacle = (await spectacle.fork(
+    interactions
+  )) as InMemorySpectacle;
+
+  let diffId = 'provided-debug-capture';
+
+  let diff = await forkedSpectacle.opticContext.capturesService.startDiff(
+    diffId,
+    'example-session' // magic
+  );
+
+  let diffService = await diff.onComplete;
+
+  return (await diffService.listUnrecognizedUrls()).urls;
+}

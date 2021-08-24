@@ -527,11 +527,11 @@ export class InMemorySpectacle
     this.spectaclePromise = makeSpectacle(opticContext);
   }
 
-  async fork(): Promise<IForkableSpectacle> {
+  async fork(samples?: any[]): Promise<IForkableSpectacle> {
     const opticContext = await InMemoryOpticContextBuilder.fromEventsAndInteractions(
       this.opticContext.opticEngine,
       [...(await this.opticContext.specRepository.listEvents())],
-      this.samples,
+      samples || this.samples,
       'example-session'
     );
     return new InMemorySpectacle(opticContext, [...this.samples]);
