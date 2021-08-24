@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import PublicExamples from './public-examples';
 import WelcomePage from '<src>/pages/onboarding/WelcomePage';
 import LocalCli from './local-cli';
+import IntentPrototype from './intent-prototype';
 import { OpticEngineStore } from '<src>/hooks/useOpticEngine';
 
 export default function TopLevelRoutes() {
@@ -29,6 +30,14 @@ export default function TopLevelRoutes() {
           path="/private-sessions/:exampleId"
           render={(props: any) => (
             <PublicExamples {...props} lookupDir={'private-sessions'} />
+          )}
+        />
+
+        <Route
+          strict
+          path="/intent-prototype/:exampleId"
+          render={(props: any) => (
+            <IntentPrototype {...props} lookupDir={'example-sessions'} />
           )}
         />
 
