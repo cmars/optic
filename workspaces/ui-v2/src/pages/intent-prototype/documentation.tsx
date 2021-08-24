@@ -229,14 +229,27 @@ function DebugCaptureProvider() {
           <div>Filename: {selectedFile.name}</div>
           <div>Size: {selectedFile.size}</div>
 
-          {unrecognizedUrls && (
-            <ul className={styles.unrecognizedUrlsList}>
-              {unrecognizedUrls.map(({ method, path }) => (
-                <li key={method + path}>
-                  {method.toUpperCase()} - {path}
-                </li>
-              ))}
-            </ul>
+          {unrecognizedUrls && unrecognizedUrls.length > 0 ? (
+            <>
+              <h4>Unrecognized urls</h4>
+
+              <ul className={styles.unrecognizedUrlsList}>
+                {unrecognizedUrls.map(({ method, path }) => (
+                  <li key={method + path}>
+                    <EndpointName
+                      fontSize={15}
+                      leftPad={0}
+                      method={method}
+                      fullPath={path}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <>
+              <h4>No new urls were recognized</h4>
+            </>
           )}
         </div>
       )}
