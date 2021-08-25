@@ -22,6 +22,8 @@ import {
 } from '<src>/store';
 import { InMemorySpectacle } from '@useoptic/spectacle/build/in-memory';
 import { IUnrecognizedUrl } from '@useoptic/spectacle';
+import NewEndpointsCreator from './components/NewEndpointsCreator';
+import { PathComponentAuthoring } from '<src>/utils';
 
 export default function DocumentationPage() {
   const styles = useStyles();
@@ -197,7 +199,7 @@ function DebugCaptureProvider() {
   const spectacle = useSpectacleContext() as InMemorySpectacle;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<Error | null>(null);
-  const [unrecognizedUrls, setUnrecognizedUrls] = useState<
+  const [undocumentedUrls, setUndocumentedUrls] = useState<
     IUnrecognizedUrl[] | null
   >(null);
 
@@ -214,42 +216,27 @@ function DebugCaptureProvider() {
       setFileError(new Error('A valid Optic debug capture is required'));
     }
 
-    extractUnrecognizedUrls(selectedFile, spectacle).then(
-      setUnrecognizedUrls,
+    extractUndocumentedUrls(selectedFile, spectacle).then(
+      setUndocumentedUrls,
       setFileError
     );
   }, [selectedFile, spectacle]);
 
   return (
     <div className={styles.container}>
+      <h3>Adding a new endpoint from a debug capture</h3>
+
       {!selectedFile ? (
         <input type="file" onChange={onChangeFile} accept="application/json" />
       ) : (
         <div>
-          <div>Filename: {selectedFile.name}</div>
-          <div>Size: {selectedFile.size}</div>
-
-          {unrecognizedUrls && unrecognizedUrls.length > 0 ? (
+          {!undocumentedUrls ? (
             <>
-              <h4>Unrecognized urls</h4>
-
-              <ul className={styles.unrecognizedUrlsList}>
-                {unrecognizedUrls.map(({ method, path }) => (
-                  <li key={method + path}>
-                    <EndpointName
-                      fontSize={15}
-                      leftPad={0}
-                      method={method}
-                      fullPath={path}
-                    />
-                  </li>
-                ))}
-              </ul>
+              <div>Filename: {selectedFile.name}</div>
+              <div>Size: {selectedFile.size}</div>
             </>
           ) : (
-            <>
-              <h4>No new urls were recognized</h4>
-            </>
+            <NewEndpointsCreator undocumentedUrls={undocumentedUrls} />
           )}
         </div>
       )}
@@ -260,11 +247,13 @@ function DebugCaptureProvider() {
 }
 
 const useDebugCaptureStyles = makeStyles((theme) => ({
-  container: {},
+  container: {
+    marginBottom: theme.spacing(4),
+  },
   unrecognizedUrlsList: {},
 }));
 
-async function extractUnrecognizedUrls(
+async function extractUndocumentedUrls(
   sourceFile: File,
   spectacle: InMemorySpectacle
 ): Promise<IUnrecognizedUrl[]> {
