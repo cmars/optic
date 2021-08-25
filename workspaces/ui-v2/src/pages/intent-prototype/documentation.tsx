@@ -222,6 +222,19 @@ function DebugCaptureProvider() {
     );
   }, [selectedFile, spectacle]);
 
+  const onSubmitEndpoint = useCallback(
+    (
+      endpoints: {
+        path: string;
+        method: string;
+        pathComponents: PathComponentAuthoring[];
+      }[]
+    ) => {
+      console.log('learning endpoints', endpoints);
+    },
+    []
+  );
+
   return (
     <div className={styles.container}>
       <h3>Adding a new endpoint from a debug capture</h3>
@@ -236,7 +249,10 @@ function DebugCaptureProvider() {
               <div>Size: {selectedFile.size}</div>
             </>
           ) : (
-            <NewEndpointsCreator undocumentedUrls={undocumentedUrls} />
+            <NewEndpointsCreator
+              undocumentedUrls={undocumentedUrls}
+              onSubmit={onSubmitEndpoint}
+            />
           )}
         </div>
       )}

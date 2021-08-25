@@ -22,8 +22,16 @@ import {
 
 export default function NewEndpointsCreator({
   undocumentedUrls,
+  onSubmit,
 }: {
   undocumentedUrls: IUndocumentedUrl[];
+  onSubmit?: (
+    endpoints: {
+      path: string;
+      method: string;
+      pathComponents: PathComponentAuthoring[];
+    }[]
+  ) => void;
 }) {
   const styles = useStyles();
 
@@ -87,10 +95,42 @@ export default function NewEndpointsCreator({
     selected.has(path + method)
   );
 
+  // Submitting results
+  // ------------------
+
+  const onSubmitForm = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      if (!onSubmit) return;
+
+      let endpoints = selectedUrls.map(({ path, method }) => {
+        let pathComponents = pathPatterns[path + method]?.components;
+
+        if (pathComponents) {
+          return {
+            path: createPathFromPathComponents(pathComponents),
+            method,
+            pathComponents,
+          };
+        } else {
+          return {
+            path,
+            method,
+            pathComponents: urlStringToPathComponents(path),
+          };
+        }
+      });
+
+      onSubmit(endpoints);
+    },
+    [onSubmit, selectedUrls, pathPatterns]
+  );
+
   return (
     <Paper className={styles.container}>
       {patternMatchedUrls.length > 0 ? (
-        <>
+        <form onSubmit={onSubmitForm}>
           <h4>Create new endpoints from unrecognized paths</h4>
 
           <ul className={styles.undocumentedUrlsList}>
@@ -114,11 +154,12 @@ export default function NewEndpointsCreator({
           <Button
             variant="contained"
             color="primary"
+            type="submit"
             disabled={selectedUrls.length < 1}
           >
             Learn {selectedUrls.length} endpoints
           </Button>
-        </>
+        </form>
       ) : (
         <>
           <h4>No new urls were recognized</h4>
@@ -160,7 +201,6 @@ type UndocumentedUrlProps = {
 };
 
 function UndocumentedUrl({
-  style,
   undocumentedUrl,
   onSelect,
   onChangePattern,
@@ -235,7 +275,7 @@ function UndocumentedUrl({
       disableRipple
       divider
       disableGutters
-      style={{ display: 'flex', ...style }}
+      style={{ display: 'flex' }}
       button
       onClick={onClick}
     >
