@@ -1,6 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Link, Switch, Route, useRouteMatch } from 'react-router-dom';
+import {
+  Link,
+  Redirect,
+  Route,
+  Switch,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import {
   Button,
@@ -24,30 +31,58 @@ import { InMemorySpectacle } from '@useoptic/spectacle/build/in-memory';
 import { IUnrecognizedUrl } from '@useoptic/spectacle';
 import NewEndpointsCreator from './components/NewEndpointsCreator';
 import { PathComponentAuthoring } from '<src>/utils';
+import { generatePathCommands } from '<src>/lib/stable-path-batch-generator';
 
 export default function DocumentationPage() {
   const styles = useStyles();
   const routeMatch = useRouteMatch();
+  const history = useHistory();
 
   useFetchEndpoints();
   const endpoints = useAppSelector((state) => state.endpoints.results).data
     ?.endpoints;
+
+  const [learnableEndpoints, setLearnableEndpoints] = useState<
+    EndpointPrototypeLocation[]
+  >([]);
+
+  const onSubmitEndpointLocations = useCallback(
+    (endpoints: EndpointPrototypeLocation[]) => {
+      setLearnableEndpoints(endpoints);
+      history.push(`${routeMatch.url}/add/learn`);
+    },
+    [history, routeMatch.url]
+  );
 
   return (
     <div className={styles.pageContainer}>
       <Switch>
         <Route
           strict
-          path={`${routeMatch.url}/add/debug-capture`}
-          component={DebugCaptureProvider}
+          path={`${routeMatch.url}/add/provider/debug-capture`}
+          render={() => (
+            <DebugCaptureProvider onSubmit={onSubmitEndpointLocations} />
+          )}
         />
 
         <Route
           strict
-          path={`${routeMatch.url}/add/other`}
+          path={`${routeMatch.url}/add/provider/other`}
           render={(props) => (
             <div>Interested in this capture method? Let us know</div>
           )}
+        />
+
+        <Route
+          strict
+          path={`${routeMatch.url}/add/learn`}
+          render={(props) =>
+            learnableEndpoints.length < 1 ? (
+              <Redirect to={`${routeMatch.url}/add`} />
+            ) : (
+              <div>Learning {learnableEndpoints.length} endpoints...</div>
+            )
+          }
         />
 
         <Route
@@ -105,20 +140,20 @@ function CaptureMethodSelector({
 
       <div className={styles.captureMethods}>
         <CaptureMethodCard
-          href={`${documentationPath}/add/debug-capture`}
+          href={`${documentationPath}/add/provider/debug-capture`}
           title="Debug capture"
           description="Add a new endpoint through uploading a debug capture"
         />
 
         <CaptureMethodCard
-          href={`${documentationPath}/add/other`}
+          href={`${documentationPath}/add/provider/other`}
           title="Observe traffic locally"
           description="Use the Optic Capture Toolkit to observe traffic from your local
                 API environment"
         />
 
         <CaptureMethodCard
-          href={`${documentationPath}/add/other`}
+          href={`${documentationPath}/add/provider/other`}
           title="Import OpenAPI"
           description="Allow Optic to learn by uploading your existing OpenAPI spec"
         />
@@ -194,7 +229,17 @@ const useStyles = makeStyles((theme) => ({
 // DebugCaptureProvider
 // --------------------
 
-function DebugCaptureProvider() {
+type EndpointPrototypeLocation = {
+  path: string;
+  method: string;
+  pathComponents: PathComponentAuthoring[];
+};
+
+function DebugCaptureProvider({
+  onSubmit,
+}: {
+  onSubmit: (endpoints: EndpointPrototypeLocation[]) => void;
+}) {
   const styles = useDebugCaptureStyles();
   const spectacle = useSpectacleContext() as InMemorySpectacle;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -223,16 +268,10 @@ function DebugCaptureProvider() {
   }, [selectedFile, spectacle]);
 
   const onSubmitEndpoint = useCallback(
-    (
-      endpoints: {
-        path: string;
-        method: string;
-        pathComponents: PathComponentAuthoring[];
-      }[]
-    ) => {
-      console.log('learning endpoints', endpoints);
+    (endpoints: EndpointPrototypeLocation[]) => {
+      if (onSubmit) onSubmit(endpoints);
     },
-    []
+    [onSubmit]
   );
 
   return (
@@ -303,4 +342,27 @@ async function extractUndocumentedUrls(
 
   // TODO: include cases where path is known but no requests / responses were documented?
   return (await diffService.listUnrecognizedUrls()).urls;
+}
+
+async function* learnEndpointsCommands(
+  endpoints: {
+    path: string;
+    method: string;
+    pathComponents: PathComponentAuthoring[];
+  }[]
+): AsyncGenerator<{ commands: any[] }> {
+  let id = 0;
+
+  // const { commands, endpointPathIdMap } = generatePathCommands(
+  //   [
+  //     {
+  //       pathPattern: path
+  //       id: `endpoint_${id++}`
+  //       matchesPattern: (a, b) => true,
+  //       method: event.method,
+  //       ref: undefined,
+  //     },
+  //   ],
+  //   currentSpecContext
+  // );
 }
