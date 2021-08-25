@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import {
   Button,
@@ -26,6 +26,23 @@ export default function NewEndpointsCreator({
 }) {
   const styles = useStyles();
 
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const onSelect = useCallback(
+    (path: string, method: string) => {
+      setSelected((previousUrls) => {
+        const key = path + method;
+        const newUrls = new Set(previousUrls);
+        newUrls.has(key) ? newUrls.delete(key) : newUrls.add(key);
+        return newUrls;
+      });
+    },
+    [setSelected]
+  );
+
+  const selectedUrls = undocumentedUrls.filter(({ path, method }) =>
+    selected.has(path + method)
+  );
+
   return (
     <Paper className={styles.container}>
       {undocumentedUrls.length > 0 ? (
@@ -37,9 +54,11 @@ export default function NewEndpointsCreator({
               <li key={undocumentedUrl.method + undocumentedUrl.path}>
                 <UndocumentedUrl
                   undocumentedUrl={undocumentedUrl}
-                  handleBulkModeSelection={(path: string, method: string) => {}}
+                  onSelect={onSelect}
                   isKnownPath={false}
-                  isSelected={(path: string, method: string) => false}
+                  isSelected={selected.has(
+                    undocumentedUrl.path + undocumentedUrl.method
+                  )}
                   persistWIPPattern={(path: string, method: string) => {}}
                   wipPatterns={{}}
                   style={{}}
@@ -48,8 +67,12 @@ export default function NewEndpointsCreator({
             ))}
           </ul>
 
-          <Button variant="contained" color="primary">
-            Learn endpoints
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={selectedUrls.length < 1}
+          >
+            Learn {selectedUrls.length} endpoints
           </Button>
         </>
       ) : (
@@ -74,10 +97,10 @@ const useStyles = makeStyles((theme) => ({
 
 type UndocumentedUrlProps = {
   style: Record<string, any>;
-  handleBulkModeSelection: (path: string, method: string) => void;
+  onSelect: (path: string, method: string) => void;
   undocumentedUrl: IUndocumentedUrl;
   isKnownPath: boolean;
-  isSelected: (path: string, method: string) => boolean;
+  isSelected: boolean;
   persistWIPPattern: (
     path: string,
     method: string,
@@ -95,7 +118,7 @@ type UndocumentedUrlProps = {
 function UndocumentedUrl({
   style,
   undocumentedUrl,
-  handleBulkModeSelection,
+  onSelect,
   persistWIPPattern,
   wipPatterns,
   isSelected,
@@ -152,6 +175,13 @@ function UndocumentedUrl({
     persistWIPPattern(path, method, newSet);
   };
 
+  const onClick = useCallback(
+    (e) => {
+      onSelect(path, method);
+    },
+    [onSelect, path, method]
+  );
+
   if (hide) {
     return null;
   }
@@ -163,10 +193,10 @@ function UndocumentedUrl({
       disableGutters
       style={{ display: 'flex', ...style }}
       button
-      onClick={() => handleBulkModeSelection(path, method)}
+      onClick={onClick}
     >
       <div>
-        <Checkbox checked={isSelected(path, method)} />
+        <Checkbox checked={isSelected} />
       </div>
       <div style={{ flex: 1 }}>
         <div className={classes.wrapper}>
