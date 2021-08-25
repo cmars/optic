@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { makeStyles } from '@material-ui/core';
 import {
   Button,
@@ -14,6 +14,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import isEqual from 'lodash.isequal';
 import { IUndocumentedUrl } from '<src>/pages/diffs/contexts/SharedDiffState';
 import {
+  pathMatcher,
   PathComponentAuthoring,
   urlStringToPathComponents,
   createPathFromPathComponents,
@@ -26,6 +27,50 @@ export default function NewEndpointsCreator({
 }) {
   const styles = useStyles();
 
+  // Path patterns
+  // -------------
+  const [pathPatterns, setPathPatterns] = useState<{
+    [key: string]: {
+      components: PathComponentAuthoring[];
+      isParameterized: boolean;
+      method: string;
+    };
+  }>({});
+
+  const patternMatchedUrls = useMemo(() => {
+    let patternMatchers = Object.entries(pathPatterns)
+      .filter(([, { isParameterized }]) => isParameterized)
+      .map(([pathMethod, { components, method }]) => ({
+        pathMethod,
+        matcher: pathMatcher(components),
+        method,
+      }));
+
+    return undocumentedUrls.filter((url) =>
+      patternMatchers.every(
+        ({ pathMethod, matcher, method }) =>
+          pathMethod === url.path + url.method ||
+          !(matcher(url.path) && method === url.method)
+      )
+    );
+  }, [undocumentedUrls, pathPatterns]);
+
+  const onChangePattern = useCallback(
+    (path: string, method: string, components: PathComponentAuthoring[]) => {
+      setPathPatterns((previousPatterns) => ({
+        ...previousPatterns,
+        [path + method]: {
+          components,
+          isParameterized: components.some((c) => c.isParameter),
+          method,
+        },
+      }));
+    },
+    [setPathPatterns]
+  );
+
+  // URL selection
+  // -------------
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const onSelect = useCallback(
     (path: string, method: string) => {
@@ -38,19 +83,18 @@ export default function NewEndpointsCreator({
     },
     [setSelected]
   );
-
-  const selectedUrls = undocumentedUrls.filter(({ path, method }) =>
+  const selectedUrls = patternMatchedUrls.filter(({ path, method }) =>
     selected.has(path + method)
   );
 
   return (
     <Paper className={styles.container}>
-      {undocumentedUrls.length > 0 ? (
+      {patternMatchedUrls.length > 0 ? (
         <>
           <h4>Create new endpoints from unrecognized paths</h4>
 
           <ul className={styles.undocumentedUrlsList}>
-            {undocumentedUrls.map((undocumentedUrl, index) => (
+            {patternMatchedUrls.map((undocumentedUrl, index) => (
               <li key={undocumentedUrl.method + undocumentedUrl.path}>
                 <UndocumentedUrl
                   undocumentedUrl={undocumentedUrl}
@@ -59,8 +103,8 @@ export default function NewEndpointsCreator({
                   isSelected={selected.has(
                     undocumentedUrl.path + undocumentedUrl.method
                   )}
-                  persistWIPPattern={(path: string, method: string) => {}}
-                  wipPatterns={{}}
+                  onChangePattern={onChangePattern}
+                  pathPatterns={pathPatterns}
                   style={{}}
                 />
               </li>
@@ -101,12 +145,12 @@ type UndocumentedUrlProps = {
   undocumentedUrl: IUndocumentedUrl;
   isKnownPath: boolean;
   isSelected: boolean;
-  persistWIPPattern: (
+  onChangePattern: (
     path: string,
     method: string,
     pathComponents: PathComponentAuthoring[]
   ) => void;
-  wipPatterns: {
+  pathPatterns: {
     [key: string]: {
       components: PathComponentAuthoring[];
       isParameterized: boolean;
@@ -119,8 +163,8 @@ function UndocumentedUrl({
   style,
   undocumentedUrl,
   onSelect,
-  persistWIPPattern,
-  wipPatterns,
+  onChangePattern,
+  pathPatterns,
   isSelected,
 }: UndocumentedUrlProps) {
   const { method, path, hide, isKnownPath } = undocumentedUrl;
@@ -130,13 +174,13 @@ function UndocumentedUrl({
   const methodColor = methodColorsDark[method.toUpperCase()];
 
   const [components, setComponents] = useState<PathComponentAuthoring[]>(
-    wipPatterns[path + method]
-      ? wipPatterns[path + method].components
+    pathPatterns[path + method]
+      ? pathPatterns[path + method].components
       : urlStringToPathComponents(path)
   );
 
   function initialNameForComponent(newIndex: number): string {
-    const otherPathComponents = Object.values(wipPatterns).filter(
+    const otherPathComponents = Object.values(pathPatterns).filter(
       ({ components: wipComponents }) => {
         const a = wipComponents
           .slice(0, newIndex - 1)
@@ -172,7 +216,7 @@ function UndocumentedUrl({
       newSet[index] = parameter;
     }
     setComponents(newSet);
-    persistWIPPattern(path, method, newSet);
+    onChangePattern(path, method, newSet);
   };
 
   const onClick = useCallback(
