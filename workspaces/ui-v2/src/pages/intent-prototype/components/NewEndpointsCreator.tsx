@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core';
-import { IconButton, ListItem, Checkbox, Paper } from '@material-ui/core';
+import {
+  Button,
+  IconButton,
+  ListItem,
+  Checkbox,
+  Paper,
+} from '@material-ui/core';
 import { methodColorsDark, primary } from '<src>/styles';
-import AddIcon from '@material-ui/icons/Add';
 import padLeft from 'pad-left';
-import { LightTooltip } from '<src>/components';
 import classNames from 'classnames';
 import ClearIcon from '@material-ui/icons/Clear';
 import isEqual from 'lodash.isequal';
@@ -34,12 +38,6 @@ export default function NewEndpointsCreator({
                 <UndocumentedUrl
                   undocumentedUrl={undocumentedUrl}
                   handleBulkModeSelection={(path: string, method: string) => {}}
-                  handleSelection={(
-                    path: string,
-                    method: string,
-                    pathComponents: PathComponentAuthoring[]
-                  ) => {}}
-                  isBulkMode={true}
                   isKnownPath={false}
                   isSelected={(path: string, method: string) => false}
                   persistWIPPattern={(path: string, method: string) => {}}
@@ -49,6 +47,10 @@ export default function NewEndpointsCreator({
               </li>
             ))}
           </ul>
+
+          <Button variant="contained" color="primary">
+            Learn endpoints
+          </Button>
         </>
       ) : (
         <>
@@ -65,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   undocumentedUrlsList: {
     paddingLeft: 0,
+    marginBottom: theme.spacing(2),
     listStyleType: 'none',
   },
 }));
@@ -72,13 +75,7 @@ const useStyles = makeStyles((theme) => ({
 type UndocumentedUrlProps = {
   style: Record<string, any>;
   handleBulkModeSelection: (path: string, method: string) => void;
-  handleSelection: (
-    path: string,
-    method: string,
-    pathComponents: PathComponentAuthoring[]
-  ) => void;
   undocumentedUrl: IUndocumentedUrl;
-  isBulkMode: boolean;
   isKnownPath: boolean;
   isSelected: (path: string, method: string) => boolean;
   persistWIPPattern: (
@@ -97,9 +94,7 @@ type UndocumentedUrlProps = {
 
 function UndocumentedUrl({
   style,
-  handleSelection,
   undocumentedUrl,
-  isBulkMode,
   handleBulkModeSelection,
   persistWIPPattern,
   wipPatterns,
@@ -168,16 +163,11 @@ function UndocumentedUrl({
       disableGutters
       style={{ display: 'flex', ...style }}
       button
-      onClick={() =>
-        isBulkMode
-          ? handleBulkModeSelection(path, method)
-          : handleSelection(
-              isKnownPath ? path : createPathFromPathComponents(components),
-              method,
-              components
-            )
-      }
+      onClick={() => handleBulkModeSelection(path, method)}
     >
+      <div>
+        <Checkbox checked={isSelected(path, method)} />
+      </div>
       <div style={{ flex: 1 }}>
         <div className={classes.wrapper}>
           <div className={classes.pathWrapper}>
@@ -224,17 +214,6 @@ function UndocumentedUrl({
           known path
         </div>
       )}
-      <div style={{ paddingRight: 8 }}>
-        {isBulkMode ? (
-          <Checkbox checked={isSelected(path, method)} />
-        ) : (
-          <LightTooltip title="Review Endpoint" enterDelay={1000}>
-            <IconButton size="small" color="primary">
-              <AddIcon />
-            </IconButton>
-          </LightTooltip>
-        )}
-      </div>
     </ListItem>
   );
 }

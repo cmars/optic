@@ -285,5 +285,6 @@ async function extractUndocumentedUrls(
 
   let diffService = await diff.onComplete;
 
+  // TODO: include cases where path is known but no requests / responses were documented?
   return (await diffService.listUnrecognizedUrls()).urls;
 }
