@@ -28,10 +28,12 @@ import {
   documentationEditActions,
 } from '<src>/store';
 import { InMemorySpectacle } from '@useoptic/spectacle/build/in-memory';
-import { IUnrecognizedUrl } from '@useoptic/spectacle';
+import { IUnrecognizedUrl, IOpticEngine } from '@useoptic/spectacle';
 import NewEndpointsCreator from './components/NewEndpointsCreator';
 import { PathComponentAuthoring } from '<src>/utils';
 import { generatePathCommands } from '<src>/lib/stable-path-batch-generator';
+import { useOpticEngine } from '<src>/hooks/useOpticEngine';
+import { IEndpoint } from '<src>/types';
 
 export default function DocumentationPage() {
   const styles = useStyles();
@@ -80,7 +82,7 @@ export default function DocumentationPage() {
             learnableEndpoints.length < 1 ? (
               <Redirect to={`${routeMatch.url}/add`} />
             ) : (
-              <div>Learning {learnableEndpoints.length} endpoints...</div>
+              <EndpointsLearner endpointLocations={learnableEndpoints} />
             )
           }
         />
@@ -344,14 +346,58 @@ async function extractUndocumentedUrls(
   return (await diffService.listUnrecognizedUrls()).urls;
 }
 
+// EndpointsLearner
+// ----------------
+
+function EndpointsLearner({
+  endpointLocations,
+}: {
+  endpointLocations: EndpointPrototypeLocation[];
+}) {
+  const opticEngine = useOpticEngine();
+  const [generatedEndpoints, setGeneneratedEndpoints] = useState<any[] | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!opticEngine || !endpointLocations) return; // wait for dependencies
+    if (generatedEndpoints) return; // already started learning
+
+    setGeneneratedEndpoints([]);
+
+    const learning = (async () => {
+      const generatingEndpoints = learnEndpointsCommands(
+        endpointLocations,
+        opticEngine
+      );
+      for await (const generatedEndpoint of generatingEndpoints) {
+        setGeneneratedEndpoints((prev) => [...(prev || []), generatedEndpoint]);
+      }
+    })();
+  }, [endpointLocations, opticEngine]);
+
+  return <div>Learning {endpointLocations.length} endpoints...</div>;
+}
+
 async function* learnEndpointsCommands(
   endpoints: {
     path: string;
     method: string;
     pathComponents: PathComponentAuthoring[];
-  }[]
+  }[],
+  opticEngine: IOpticEngine
+  // currentSpecPaths: any[],
+  // currentSpecEndpoints: IEndpoint[]
 ): AsyncGenerator<{ commands: any[] }> {
   let id = 0;
+
+  // const currentSpecContext = {
+  //     currentSpecPaths: props.allPaths,
+  //     currentSpecEndpoints: props.endpoints,
+  //     domainIds: newRandomIdGenerator(),
+  //     idGeneratorStrategy: 'random',
+  //     opticEngine,
+  //   };
 
   // const { commands, endpointPathIdMap } = generatePathCommands(
   //   [
