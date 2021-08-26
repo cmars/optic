@@ -90,6 +90,18 @@ export default function DocumentationPage() {
 
         <Route
           strict
+          path={`${routeMatch.url}/add/review`}
+          render={(props) =>
+            learnedEndpoints.length < 1 ? (
+              <Redirect to={`${routeMatch.url}/add`} />
+            ) : (
+              <div>Reviewing {learnedEndpoints.length} learned endpoints</div>
+            )
+          }
+        />
+
+        <Route
+          strict
           path={`${routeMatch.url}/add`}
           render={(props) => (
             <CaptureMethodSelector documentationPath={routeMatch.url} />
@@ -305,6 +317,7 @@ function DebugCaptureEndpointProvider({
               currentEndpoints={currentEndpoints}
               currentPaths={currentPaths}
               interactions={interactions || []}
+              onLearned={onSubmit}
             />
           )
         }
@@ -459,16 +472,19 @@ function EndpointsLearner({
   currentEndpoints,
   currentPaths,
   interactions,
+  onLearned,
 }: {
   endpointLocations: EndpointPrototypeLocation[];
   currentEndpoints: IEndpoint[];
   currentPaths: IPath[];
   interactions: IHttpInteraction[];
+  onLearned: (endpoints: EndpointPrototype[]) => void;
 }) {
   const spectacle = useSpectacleContext() as InMemorySpectacle;
   const [generatedEndpoints, setGeneneratedEndpoints] = useState<any[] | null>(
     null
   );
+  const [learningError, setLearningError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (!spectacle || !endpointLocations) return; // wait for dependencies
@@ -488,12 +504,33 @@ function EndpointsLearner({
         setGeneneratedEndpoints((prev) => [...(prev || []), generatedEndpoint]);
       }
     })();
-  }, [endpointLocations, currentEndpoints, currentPaths, spectacle]);
+
+    learning.catch(setLearningError);
+  }, [
+    endpointLocations,
+    currentEndpoints,
+    currentPaths,
+    spectacle,
+    generatedEndpoints,
+  ]);
+
+  useEffect(() => {
+    if (
+      generatedEndpoints &&
+      endpointLocations.length === generatedEndpoints.length
+    ) {
+      onLearned(generatedEndpoints);
+    }
+  }, [generatedEndpoints, endpointLocations]);
 
   return (
     <div>
-      Learned {generatedEndpoints?.length || 0} / {endpointLocations.length}{' '}
-      endpoints...
+      <div>
+        Learned {generatedEndpoints?.length || 0} / {endpointLocations.length}{' '}
+        endpoints...
+      </div>
+
+      {learningError && <div>{learningError.message}</div>}
     </div>
   );
 }
