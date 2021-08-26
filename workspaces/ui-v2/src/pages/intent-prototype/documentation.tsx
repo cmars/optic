@@ -30,13 +30,17 @@ import {
 import { InMemorySpectacle } from '@useoptic/spectacle/build/in-memory';
 import { IUnrecognizedUrl, IOpticEngine } from '@useoptic/spectacle';
 import NewEndpointsCreator from './components/NewEndpointsCreator';
-import { PathComponentAuthoring } from '<src>/utils';
+import { PathComponentAuthoring, pathMatcher } from '<src>/utils';
 import { generatePathCommands } from '<src>/lib/stable-path-batch-generator';
-import { useOpticEngine } from '<src>/hooks/useOpticEngine';
 import { IEndpoint, IPath } from '<src>/types';
-import { CQRSCommand, IHttpInteraction } from '@useoptic/optic-domain';
+import {
+  CQRSCommand,
+  IHttpInteraction,
+  LearningResults,
+} from '@useoptic/optic-domain';
 import { newRandomIdGenerator } from '<src>/lib/domain-id-generator';
 import { CurrentSpecContext } from '<src>/lib/Interfaces';
+import { recomputePendingEndpointCommands } from '<src>/pages/diffs/contexts/LearnInitialBodiesMachine';
 
 export default function DocumentationPage() {
   const styles = useStyles();
@@ -257,11 +261,6 @@ function DebugCaptureEndpointProvider({
     null
   );
 
-  const [
-    undocumentedUrls,
-    setUndocumentedUrls,
-  ] = useState<IUnrecognizedUrl | null>(null);
-
   const [learnableEndpoints, setLearnableEndpoints] = useState<
     EndpointPrototypeLocation[]
   >([]);
@@ -299,12 +298,13 @@ function DebugCaptureEndpointProvider({
         path={`${routeMatch.url}/learn`}
         render={(props) =>
           learnableEndpoints.length < 1 ? (
-            <Redirect to={`${routeMatch.url}/add`} />
+            <Redirect to={`${routeMatch.url}/provide`} />
           ) : (
             <EndpointsLearner
               endpointLocations={learnableEndpoints}
               currentEndpoints={currentEndpoints}
               currentPaths={currentPaths}
+              interactions={interactions || []}
             />
           )
         }
@@ -458,18 +458,20 @@ function EndpointsLearner({
   endpointLocations,
   currentEndpoints,
   currentPaths,
+  interactions,
 }: {
   endpointLocations: EndpointPrototypeLocation[];
   currentEndpoints: IEndpoint[];
   currentPaths: IPath[];
+  interactions: IHttpInteraction[];
 }) {
-  const opticEngine = useOpticEngine();
+  const spectacle = useSpectacleContext() as InMemorySpectacle;
   const [generatedEndpoints, setGeneneratedEndpoints] = useState<any[] | null>(
     null
   );
 
   useEffect(() => {
-    if (!opticEngine || !endpointLocations) return; // wait for dependencies
+    if (!spectacle || !endpointLocations) return; // wait for dependencies
     if (generatedEndpoints) return; // already started learning
 
     setGeneneratedEndpoints([]);
@@ -479,15 +481,21 @@ function EndpointsLearner({
         endpointLocations,
         currentEndpoints,
         currentPaths,
-        opticEngine
+        interactions,
+        spectacle
       );
       for await (const generatedEndpoint of generatingEndpoints) {
         setGeneneratedEndpoints((prev) => [...(prev || []), generatedEndpoint]);
       }
     })();
-  }, [endpointLocations, currentEndpoints, currentPaths, opticEngine]);
+  }, [endpointLocations, currentEndpoints, currentPaths, spectacle]);
 
-  return <div>Learning {endpointLocations.length} endpoints...</div>;
+  return (
+    <div>
+      Learned {generatedEndpoints?.length || 0} / {endpointLocations.length}{' '}
+      endpoints...
+    </div>
+  );
 }
 
 async function* learnEndpointsCommands(
@@ -498,14 +506,17 @@ async function* learnEndpointsCommands(
   }[],
   currentSpecEndpoints: IEndpoint[],
   currentSpecPaths: IPath[],
-  opticEngine: IOpticEngine
+  interactions: IHttpInteraction[],
+  spectacle: InMemorySpectacle
 ): AsyncGenerator<{
   commands: CQRSCommand[];
   pathId: string;
   method: string;
   path: string;
 }> {
-  let id = 0;
+  const opticEngine = spectacle.opticContext.opticEngine;
+  const baseEvents = await spectacle.opticContext.specRepository.listEvents();
+  const baseEventsString = JSON.stringify(baseEvents);
 
   const currentSpecContext: CurrentSpecContext = {
     currentSpecPaths,
@@ -518,6 +529,7 @@ async function* learnEndpointsCommands(
   for (const { path, method, pathComponents } of newEndpoints) {
     let id = 'generated_endpoint';
 
+    // path commands
     const { commands: pathCommands, endpointPathIdMap } = generatePathCommands(
       [
         {
@@ -532,5 +544,54 @@ async function* learnEndpointsCommands(
     );
 
     let pathId = endpointPathIdMap[id]!;
+    const pathEvents = opticEngine.try_apply_commands(
+      JSON.stringify(pathCommands),
+      baseEventsString,
+      'simulated-batch',
+      'simulated changes',
+      'simulated-client',
+      'simulated-session'
+    );
+
+    const engineSpec = opticEngine.spec_from_events(
+      JSON.stringify([...baseEvents, ...JSON.parse(pathEvents)])
+    );
+    // body commands
+    let isEndpointPath = pathMatcher(pathComponents);
+    let endpointInteractions = interactions.filter(
+      (interaction) =>
+        isEndpointPath(interaction.request.path) &&
+        interaction.request.method === method
+    );
+
+    const interactionsJsonl = endpointInteractions
+      .map((x: IHttpInteraction) => {
+        return JSON.stringify(x);
+      })
+      .join('\n');
+
+    const learnedBodies = JSON.parse(
+      opticEngine.learn_undocumented_bodies(
+        engineSpec,
+        interactionsJsonl,
+        'random'
+      )
+    )[0] as LearningResults.UndocumentedEndpointBodies.LearnedBodies;
+
+    let queryParameterCommands: CQRSCommand[] =
+      learnedBodies?.queryParameters?.commands || [];
+    let requestsCommands: CQRSCommand[] =
+      learnedBodies?.requests.flatMap((request) => request.commands) || [];
+    let responsesCommands: CQRSCommand[] =
+      learnedBodies?.responses.flatMap((response) => response.commands) || [];
+
+    let commands = [
+      ...pathCommands,
+      ...queryParameterCommands,
+      ...requestsCommands,
+      ...responsesCommands,
+    ];
+
+    yield { commands, pathId, method, path };
   }
 }
