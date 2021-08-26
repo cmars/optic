@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   Link,
@@ -33,7 +33,10 @@ import NewEndpointsCreator from './components/NewEndpointsCreator';
 import { PathComponentAuthoring } from '<src>/utils';
 import { generatePathCommands } from '<src>/lib/stable-path-batch-generator';
 import { useOpticEngine } from '<src>/hooks/useOpticEngine';
-import { IEndpoint } from '<src>/types';
+import { IEndpoint, IPath } from '<src>/types';
+import { CQRSCommand } from '@useoptic/optic-domain';
+import { newRandomIdGenerator } from '<src>/lib/domain-id-generator';
+import { CurrentSpecContext } from '<src>/lib/Interfaces';
 
 export default function DocumentationPage() {
   const styles = useStyles();
@@ -41,8 +44,10 @@ export default function DocumentationPage() {
   const history = useHistory();
 
   useFetchEndpoints();
-  const endpoints = useAppSelector((state) => state.endpoints.results).data
-    ?.endpoints;
+  const endpoints: IEndpoint[] =
+    useAppSelector((state) => state.endpoints.results).data?.endpoints || [];
+  const paths: IPath[] =
+    useAppSelector((state) => state.paths.results).data || [];
 
   const [learnableEndpoints, setLearnableEndpoints] = useState<
     EndpointPrototypeLocation[]
@@ -82,7 +87,11 @@ export default function DocumentationPage() {
             learnableEndpoints.length < 1 ? (
               <Redirect to={`${routeMatch.url}/add`} />
             ) : (
-              <EndpointsLearner endpointLocations={learnableEndpoints} />
+              <EndpointsLearner
+                endpointLocations={learnableEndpoints}
+                currentEndpoints={endpoints}
+                currentPaths={paths}
+              />
             )
           }
         />
@@ -351,8 +360,12 @@ async function extractUndocumentedUrls(
 
 function EndpointsLearner({
   endpointLocations,
+  currentEndpoints,
+  currentPaths,
 }: {
   endpointLocations: EndpointPrototypeLocation[];
+  currentEndpoints: IEndpoint[];
+  currentPaths: IPath[];
 }) {
   const opticEngine = useOpticEngine();
   const [generatedEndpoints, setGeneneratedEndpoints] = useState<any[] | null>(
@@ -368,47 +381,60 @@ function EndpointsLearner({
     const learning = (async () => {
       const generatingEndpoints = learnEndpointsCommands(
         endpointLocations,
+        currentEndpoints,
+        currentPaths,
         opticEngine
       );
       for await (const generatedEndpoint of generatingEndpoints) {
         setGeneneratedEndpoints((prev) => [...(prev || []), generatedEndpoint]);
       }
     })();
-  }, [endpointLocations, opticEngine]);
+  }, [endpointLocations, currentEndpoints, currentPaths, opticEngine]);
 
   return <div>Learning {endpointLocations.length} endpoints...</div>;
 }
 
 async function* learnEndpointsCommands(
-  endpoints: {
+  newEndpoints: {
     path: string;
     method: string;
     pathComponents: PathComponentAuthoring[];
   }[],
+  currentSpecEndpoints: IEndpoint[],
+  currentSpecPaths: IPath[],
   opticEngine: IOpticEngine
-  // currentSpecPaths: any[],
-  // currentSpecEndpoints: IEndpoint[]
-): AsyncGenerator<{ commands: any[] }> {
+): AsyncGenerator<{
+  commands: CQRSCommand[];
+  pathId: string;
+  method: string;
+  path: string;
+}> {
   let id = 0;
 
-  // const currentSpecContext = {
-  //     currentSpecPaths: props.allPaths,
-  //     currentSpecEndpoints: props.endpoints,
-  //     domainIds: newRandomIdGenerator(),
-  //     idGeneratorStrategy: 'random',
-  //     opticEngine,
-  //   };
+  const currentSpecContext: CurrentSpecContext = {
+    currentSpecPaths,
+    currentSpecEndpoints,
+    domainIds: newRandomIdGenerator(),
+    idGeneratorStrategy: 'random',
+    opticEngine,
+  };
 
-  // const { commands, endpointPathIdMap } = generatePathCommands(
-  //   [
-  //     {
-  //       pathPattern: path
-  //       id: `endpoint_${id++}`
-  //       matchesPattern: (a, b) => true,
-  //       method: event.method,
-  //       ref: undefined,
-  //     },
-  //   ],
-  //   currentSpecContext
-  // );
+  for (const { path, method, pathComponents } of newEndpoints) {
+    let id = 'generated_endpoint';
+
+    const { commands: pathCommands, endpointPathIdMap } = generatePathCommands(
+      [
+        {
+          pathPattern: path,
+          id,
+          matchesPattern: (a, b) => true,
+          method,
+          ref: undefined,
+        },
+      ],
+      currentSpecContext
+    );
+
+    let pathId = endpointPathIdMap[id]!;
+  }
 }
