@@ -34,7 +34,7 @@ import { PathComponentAuthoring } from '<src>/utils';
 import { generatePathCommands } from '<src>/lib/stable-path-batch-generator';
 import { useOpticEngine } from '<src>/hooks/useOpticEngine';
 import { IEndpoint, IPath } from '<src>/types';
-import { CQRSCommand } from '@useoptic/optic-domain';
+import { CQRSCommand, IHttpInteraction } from '@useoptic/optic-domain';
 import { newRandomIdGenerator } from '<src>/lib/domain-id-generator';
 import { CurrentSpecContext } from '<src>/lib/Interfaces';
 
@@ -49,14 +49,14 @@ export default function DocumentationPage() {
   const paths: IPath[] =
     useAppSelector((state) => state.paths.results).data || [];
 
-  const [learnableEndpoints, setLearnableEndpoints] = useState<
-    EndpointPrototypeLocation[]
-  >([]);
+  const [learnedEndpoints, setLearnedEndpoints] = useState<EndpointPrototype[]>(
+    []
+  );
 
-  const onSubmitEndpointLocations = useCallback(
-    (endpoints: EndpointPrototypeLocation[]) => {
-      setLearnableEndpoints(endpoints);
-      history.push(`${routeMatch.url}/add/learn`);
+  const onSubmitEndpointPrototypes = useCallback(
+    (endpoints: EndpointPrototype[]) => {
+      setLearnedEndpoints(endpoints);
+      history.push(`${routeMatch.url}/add/review`);
     },
     [history, routeMatch.url]
   );
@@ -66,34 +66,22 @@ export default function DocumentationPage() {
       <Switch>
         <Route
           strict
-          path={`${routeMatch.url}/add/provider/debug-capture`}
+          path={`${routeMatch.url}/add/debug-capture`}
           render={() => (
-            <DebugCaptureProvider onSubmit={onSubmitEndpointLocations} />
+            <DebugCaptureEndpointProvider
+              currentEndpoints={endpoints}
+              currentPaths={paths}
+              onSubmit={onSubmitEndpointPrototypes}
+            />
           )}
         />
 
         <Route
           strict
-          path={`${routeMatch.url}/add/provider/other`}
+          path={`${routeMatch.url}/add/other`}
           render={(props) => (
             <div>Interested in this capture method? Let us know</div>
           )}
-        />
-
-        <Route
-          strict
-          path={`${routeMatch.url}/add/learn`}
-          render={(props) =>
-            learnableEndpoints.length < 1 ? (
-              <Redirect to={`${routeMatch.url}/add`} />
-            ) : (
-              <EndpointsLearner
-                endpointLocations={learnableEndpoints}
-                currentEndpoints={endpoints}
-                currentPaths={paths}
-              />
-            )
-          }
         />
 
         <Route
@@ -151,20 +139,20 @@ function CaptureMethodSelector({
 
       <div className={styles.captureMethods}>
         <CaptureMethodCard
-          href={`${documentationPath}/add/provider/debug-capture`}
+          href={`${documentationPath}/add/debug-capture/provide`}
           title="Debug capture"
           description="Add a new endpoint through uploading a debug capture"
         />
 
         <CaptureMethodCard
-          href={`${documentationPath}/add/provider/other`}
+          href={`${documentationPath}/add/other`}
           title="Observe traffic locally"
           description="Use the Optic Capture Toolkit to observe traffic from your local
                 API environment"
         />
 
         <CaptureMethodCard
-          href={`${documentationPath}/add/provider/other`}
+          href={`${documentationPath}/add/other`}
           title="Import OpenAPI"
           description="Allow Optic to learn by uploading your existing OpenAPI spec"
         />
@@ -237,8 +225,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// DebugCaptureProvider
-// --------------------
+// DebugCaptureEndpointProvider
+// ----------------------------
+type EndpointPrototype = {
+  path: string;
+  method: string;
+  pathId: string;
+  commands: CQRSCommand[];
+};
 
 type EndpointPrototypeLocation = {
   path: string;
@@ -246,15 +240,97 @@ type EndpointPrototypeLocation = {
   pathComponents: PathComponentAuthoring[];
 };
 
-function DebugCaptureProvider({
+function DebugCaptureEndpointProvider({
+  currentEndpoints,
+  currentPaths,
+
   onSubmit,
 }: {
+  currentEndpoints: IEndpoint[];
+  currentPaths: IPath[];
+  onSubmit: (endpoints: EndpointPrototype[]) => void;
+}) {
+  const routeMatch = useRouteMatch();
+  const history = useHistory();
+
+  const [interactions, setInteractions] = useState<IHttpInteraction[] | null>(
+    null
+  );
+
+  const [
+    undocumentedUrls,
+    setUndocumentedUrls,
+  ] = useState<IUnrecognizedUrl | null>(null);
+
+  const [learnableEndpoints, setLearnableEndpoints] = useState<
+    EndpointPrototypeLocation[]
+  >([]);
+
+  const onChangeInteractions = useCallback(
+    (interactions: IHttpInteraction[]) => {
+      setInteractions(interactions);
+    },
+    [setInteractions]
+  );
+
+  const onSubmitEndpointLocations = useCallback(
+    (endpoints: EndpointPrototypeLocation[]) => {
+      setLearnableEndpoints(endpoints);
+      history.push(`${routeMatch.url}/learn`);
+    },
+    [history, routeMatch.url, setLearnableEndpoints]
+  );
+
+  return (
+    <Switch>
+      <Route
+        strict
+        path={`${routeMatch.url}/provide`}
+        render={() => (
+          <DebugCaptureProvider
+            onChangeInteractions={onChangeInteractions}
+            onSubmit={onSubmitEndpointLocations}
+          />
+        )}
+      />
+
+      <Route
+        strict
+        path={`${routeMatch.url}/learn`}
+        render={(props) =>
+          learnableEndpoints.length < 1 ? (
+            <Redirect to={`${routeMatch.url}/add`} />
+          ) : (
+            <EndpointsLearner
+              endpointLocations={learnableEndpoints}
+              currentEndpoints={currentEndpoints}
+              currentPaths={currentPaths}
+            />
+          )
+        }
+      />
+    </Switch>
+  );
+}
+
+// DebugCaptureProvider
+// --------------------
+
+function DebugCaptureProvider({
+  onChangeInteractions,
+  onSubmit,
+}: {
+  onChangeInteractions: (interactions: IHttpInteraction[]) => void;
   onSubmit: (endpoints: EndpointPrototypeLocation[]) => void;
 }) {
   const styles = useDebugCaptureStyles();
   const spectacle = useSpectacleContext() as InMemorySpectacle;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<Error | null>(null);
+  const [diffError, setDiffError] = useState<Error | null>(null);
+  const [interactions, setInteractions] = useState<IHttpInteraction[] | null>(
+    null
+  );
   const [undocumentedUrls, setUndocumentedUrls] = useState<
     IUnrecognizedUrl[] | null
   >(null);
@@ -272,11 +348,22 @@ function DebugCaptureProvider({
       setFileError(new Error('A valid Optic debug capture is required'));
     }
 
-    extractUndocumentedUrls(selectedFile, spectacle).then(
+    extractInteractions(selectedFile).then(setInteractions, setFileError);
+  }, [selectedFile, setInteractions, setFileError]);
+
+  useEffect(() => {
+    if (!interactions) return;
+    onChangeInteractions(interactions);
+  }, [interactions]);
+
+  useEffect(() => {
+    if (!interactions) return;
+
+    extractUndocumentedUrls(interactions, spectacle).then(
       setUndocumentedUrls,
-      setFileError
+      setDiffError
     );
-  }, [selectedFile, spectacle]);
+  }, [interactions, spectacle, setUndocumentedUrls, setDiffError]);
 
   const onSubmitEndpoint = useCallback(
     (endpoints: EndpointPrototypeLocation[]) => {
@@ -293,12 +380,14 @@ function DebugCaptureProvider({
         <input type="file" onChange={onChangeFile} accept="application/json" />
       ) : (
         <div>
-          {!undocumentedUrls ? (
+          {!interactions && (
             <>
               <div>Filename: {selectedFile.name}</div>
               <div>Size: {selectedFile.size}</div>
             </>
-          ) : (
+          )}
+
+          {undocumentedUrls && (
             <NewEndpointsCreator
               undocumentedUrls={undocumentedUrls}
               onSubmit={onSubmitEndpoint}
@@ -308,6 +397,7 @@ function DebugCaptureProvider({
       )}
 
       {fileError && <div>{fileError.message}</div>}
+      {diffError && <div>{diffError.message}</div>}
     </div>
   );
 }
@@ -319,10 +409,9 @@ const useDebugCaptureStyles = makeStyles((theme) => ({
   unrecognizedUrlsList: {},
 }));
 
-async function extractUndocumentedUrls(
-  sourceFile: File,
-  spectacle: InMemorySpectacle
-): Promise<IUnrecognizedUrl[]> {
+async function extractInteractions(
+  sourceFile: File
+): Promise<IHttpInteraction[]> {
   let maybeJson = await sourceFile.text();
   let json = await new Promise<{ [key: string]: any }>((resolve, reject) => {
     try {
@@ -338,6 +427,13 @@ async function extractUndocumentedUrls(
     throw new Error('Could not find interactions in file');
   }
 
+  return interactions as IHttpInteraction[];
+}
+
+async function extractUndocumentedUrls(
+  interactions: IHttpInteraction[],
+  spectacle: InMemorySpectacle
+): Promise<IUnrecognizedUrl[]> {
   let forkedSpectacle = (await spectacle.fork(
     interactions
   )) as InMemorySpectacle;
