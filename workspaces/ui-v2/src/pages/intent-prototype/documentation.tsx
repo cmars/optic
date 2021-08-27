@@ -22,6 +22,7 @@ import { EndpointName } from '<src>/components';
 import DebugCaptureEndpointProvider, {
   EndpointPrototype,
 } from './components/DebugCaptureEndpointProvider';
+import ReviewEndpointChanges from './components/ReviewEndpointsChanges';
 import { useFetchEndpoints } from '<src>/hooks/useFetchEndpoints';
 import { useAppSelector } from '<src>/store';
 import { IEndpoint, IPath } from '<src>/types';
@@ -79,7 +80,7 @@ export default function DocumentationPage() {
             learnedEndpoints.length < 1 ? (
               <Redirect to={`${routeMatch.url}/add`} />
             ) : (
-              <div>Reviewing {learnedEndpoints.length} learned endpoints</div>
+              <ReviewEndpointChanges learnedEndpoints={learnedEndpoints} />
             )
           }
         />
