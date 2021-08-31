@@ -95,34 +95,36 @@ export default function DocumentationPage() {
 
         <Route
           render={(props) => (
-            <Button
-              color="primary"
-              to={`${routeMatch.url}/add`}
-              component={Link}
-              variant="contained"
-            >
-              Add Endpoint
-            </Button>
+            <>
+              {endpoints && endpoints.length > 0 ? (
+                <ul className={styles.endpointsList}>
+                  {endpoints?.map((endpoint) => (
+                    <li key={endpoint.id}>
+                      <EndpointName
+                        fontSize={19}
+                        leftPad={0}
+                        method={endpoint.method}
+                        fullPath={endpoint.fullPath}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div>No documented endpoints yet</div>
+              )}
+
+              <Button
+                color="primary"
+                to={`${routeMatch.url}/add`}
+                component={Link}
+                variant="contained"
+              >
+                Add Endpoint
+              </Button>
+            </>
           )}
         />
       </Switch>
-
-      {endpoints && endpoints.length > 0 ? (
-        <ul className={styles.endpointsList}>
-          {endpoints?.map((endpoint) => (
-            <li key={endpoint.id}>
-              <EndpointName
-                fontSize={19}
-                leftPad={0}
-                method={endpoint.method}
-                fullPath={endpoint.fullPath}
-              />
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div>No documented endpoints yet</div>
-      )}
     </div>
   );
 }
