@@ -32,7 +32,7 @@ export function SimulatedCommandStore(props: SimulatedCommandStoreProps) {
     undefined
   );
   const clientSessionId = useAppSelector(
-    (state) => state.metadata.data?.sessionId!
+    (state) => state.metadata.data?.sessionId! || 'simulated-client-session'
   );
   useEffect(() => {
     async function task() {
