@@ -46,7 +46,7 @@ export const ChangelogEndpointRootPage: FC<
   );
 };
 
-const ChangelogRootComponent: FC<
+export const ChangelogRootComponent: FC<
   RouteComponentProps<{
     pathId: string;
     method: string;

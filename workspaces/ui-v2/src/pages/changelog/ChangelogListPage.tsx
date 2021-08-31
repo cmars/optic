@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import {
   RouteComponentProps,
+  Link,
   useHistory,
   useRouteMatch,
 } from 'react-router-dom';
@@ -102,14 +103,11 @@ export function ChangelogRootPage(props: { changelogBatchId: string }) {
                     <ListItem
                       key={index}
                       button
+                      to={`${match.url}/paths/${endpoint.pathId}/methods/${endpoint.method}`}
+                      component={Link}
                       disableRipple
                       disableGutters
                       style={{ display: 'flex' }}
-                      onClick={() =>
-                        history.push(
-                          `${match.url}/paths/${endpoint.pathId}/methods/${endpoint.method}`
-                        )
-                      }
                       className={classNames({
                         [changelogStyles.added]: endpoint.changes === 'added',
                         [changelogStyles.updated]:
