@@ -80,7 +80,10 @@ export default function DocumentationPage() {
             learnedEndpoints.length < 1 ? (
               <Redirect to={`${routeMatch.url}/add`} />
             ) : (
-              <ReviewEndpointChanges learnedEndpoints={learnedEndpoints} />
+              <ReviewEndpointChanges
+                learnedEndpoints={learnedEndpoints}
+                rootPath={routeMatch.url}
+              />
             )
           }
         />

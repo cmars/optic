@@ -5,10 +5,12 @@ import {
   Redirect,
   Route,
   useRouteMatch,
+  useHistory,
   RouteComponentProps,
   match,
 } from 'react-router-dom';
 import { makeStyles, Button, Breadcrumbs, Paper } from '@material-ui/core';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   useChangelogPages,
@@ -27,13 +29,18 @@ import { ChangelogRootPage as ChangelogList } from '<src>/pages/changelog/Change
 import { ChangelogRootComponent as ChangelogEndpoint } from '<src>/pages/changelog/ChangelogEndpointRootPage';
 
 import { useFetchEndpoints } from '<src>/hooks/useFetchEndpoints';
+import { CQRSCommand } from '@useoptic/optic-domain';
+import { IForkableSpectacle } from '@useoptic/spectacle';
 
 export default function ReviewEndpointsChangesContainer({
   learnedEndpoints,
+  rootPath,
 }: {
   learnedEndpoints: EndpointPrototype[];
+  rootPath: string;
 }) {
   const spectacle = useSpectacleContext();
+  const history = useHistory();
 
   const previewCommands = useMemo(
     () => learnedEndpoints.flatMap((endpoint) => endpoint.commands),
@@ -41,6 +48,14 @@ export default function ReviewEndpointsChangesContainer({
   );
 
   let simulatedStore = useMemo(createReduxStore, [learnedEndpoints]);
+
+  let onCommit = useCallback(
+    async (commands, commitMessage) => {
+      await commitCommands(commands, commitMessage, spectacle);
+      history.push(rootPath);
+    },
+    [spectacle, history]
+  );
 
   return (
     <SimulatedCommandStore
@@ -51,6 +66,7 @@ export default function ReviewEndpointsChangesContainer({
         <ReviewEndpointsChanges
           learnedEndpoints={learnedEndpoints}
           simulatedBatchId={simulatedBatchId}
+          onCommit={onCommit}
         />
       )}
     </SimulatedCommandStore>
@@ -60,9 +76,12 @@ export default function ReviewEndpointsChangesContainer({
 function ReviewEndpointsChanges({
   learnedEndpoints,
   simulatedBatchId,
+
+  onCommit,
 }: {
   learnedEndpoints: EndpointPrototype[];
   simulatedBatchId?: string;
+  onCommit: (commands: CQRSCommand[], commitMessage: string) => Promise<void>;
 }) {
   const routeMatch = useRouteMatch();
 
@@ -82,9 +101,12 @@ function ReviewEndpointsChanges({
 
   const onSubmitCommit = useCallback(
     async (commitMessage: string) => {
-      console.log('committing: ', commitMessage);
+      await onCommit(
+        learnedEndpoints.flatMap(({ commands }) => commands),
+        commitMessage
+      );
     },
-    [setIsCommitting]
+    [onCommit, learnedEndpoints]
   );
 
   const styles = useStyles();
@@ -134,6 +156,33 @@ function ReviewEndpointsChanges({
       )}
     </div>
   );
+}
+
+async function commitCommands(
+  commands: CQRSCommand[],
+  commitMessage: string,
+  spectacle: IForkableSpectacle
+) {
+  try {
+    await spectacle.mutate<any, any>({
+      query: `
+        mutation X($commands: [JSON!]!, $batchCommitId: ID!, $commitMessage: String!, $clientId: ID!, $clientSessionId: ID!) {
+    applyCommands(commands: $commands, batchCommitId: $batchCommitId, commitMessage: $commitMessage, clientId: $clientId, clientSessionId: $clientSessionId) {
+      batchCommitId
+    }
+  }`,
+      variables: {
+        commands,
+        batchCommitId: uuidv4(),
+        commitMessage: commitMessage,
+        clientId: 'intention ui prototype client',
+        clientSessionId: 'intention ui prototype session',
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    debugger;
+  }
 }
 
 const ReviewEndpoint: FC<
