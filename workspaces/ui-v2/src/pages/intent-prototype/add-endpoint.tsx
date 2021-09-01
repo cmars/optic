@@ -22,7 +22,11 @@ import DebugCaptureEndpointProvider, {
 } from './components/DebugCaptureEndpointProvider';
 import ReviewEndpointChanges from './components/ReviewEndpointsChanges';
 import { useAppSelector } from '<src>/store';
-import AddEndpointControl from './components/AddEndpointControl';
+import {
+  AddEndpointControl,
+  createContext as createAddEndpointContext,
+  Provider as AddEndpointContext,
+} from './components/AddEndpointContext';
 import { IEndpoint, IPath } from '<src>/types';
 
 export default function AddEndpointIntent() {
@@ -47,69 +51,71 @@ export default function AddEndpointIntent() {
     [history, routeMatch.url]
   );
 
+  const addEndpointContext = createAddEndpointContext(
+    routeMatch.url,
+    [],
+    learnedEndpoints
+  );
+
   return (
     <div className={styles.container}>
-      <Switch>
-        <Route
-          strict
-          path={`${routeMatch.url}/debug-capture`}
-          render={() => (
-            <>
-              <AddEndpointControl intentPath={routeMatch.url} activeStep={1} />
+      <AddEndpointContext value={addEndpointContext}>
+        <Switch>
+          <Route
+            strict
+            path={`${routeMatch.url}/debug-capture`}
+            render={() => (
               <DebugCaptureEndpointProvider
                 currentEndpoints={endpoints}
                 currentPaths={paths}
                 onSubmit={onSubmitEndpointPrototypes}
               />
-            </>
-          )}
-        />
+            )}
+          />
 
-        <Route
-          strict
-          path={`${routeMatch.url}/other`}
-          render={(props) => (
-            <>
-              <AddEndpointControl intentPath={routeMatch.url} activeStep={0} />
-              <div>Interested in this capture method? Let us know</div>
-            </>
-          )}
-        />
-
-        <Route
-          strict
-          path={`${routeMatch.url}/review`}
-          render={(props) =>
-            learnedEndpoints.length < 1 ? (
-              <Redirect to={`${routeMatch.url}/add`} />
-            ) : (
+          <Route
+            strict
+            path={`${routeMatch.url}/other`}
+            render={(props) => (
               <>
-                <AddEndpointControl
-                  intentPath={routeMatch.url}
-                  activeStep={2}
-                />
-                <ReviewEndpointChanges
-                  learnedEndpoints={learnedEndpoints}
-                  rootPath={routeMatch.url}
-                />
+                <AddEndpointControl activeStep={0} />
+                <div>Interested in this capture method? Let us know</div>
               </>
-            )
-          }
-        />
+            )}
+          />
 
-        <Route
-          strict
-          path={`${routeMatch.url}/capture-method`}
-          render={(props) => (
-            <>
-              <AddEndpointControl intentPath={routeMatch.url} activeStep={0} />
-              <CaptureMethodSelector intentPath={routeMatch.url} />
-            </>
-          )}
-        />
+          <Route
+            strict
+            path={`${routeMatch.url}/review`}
+            render={(props) =>
+              learnedEndpoints.length < 1 ? (
+                <Redirect to={`${routeMatch.url}/add`} />
+              ) : (
+                <>
+                  <AddEndpointControl activeStep={2} />
+                  <ReviewEndpointChanges
+                    learnedEndpoints={learnedEndpoints}
+                    rootPath={routeMatch.url}
+                  />
+                </>
+              )
+            }
+          />
 
-        <Redirect to={`${routeMatch.url}/capture-method`} />
-      </Switch>
+          <Route
+            strict
+            path={`${routeMatch.url}/capture-method`}
+            render={(props) => (
+              <>
+                <AddEndpointControl activeStep={0} />
+                <CaptureMethodSelector intentPath={routeMatch.url} />
+              </>
+            )}
+          />
+
+          <Redirect to={`${routeMatch.url}/capture-method`} />
+        </Switch>
+      </AddEndpointContext>
     </div>
   );
 }

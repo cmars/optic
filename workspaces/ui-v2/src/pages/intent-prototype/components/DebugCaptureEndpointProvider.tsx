@@ -23,6 +23,7 @@ import {
 } from '@useoptic/optic-domain';
 import { newRandomIdGenerator } from '<src>/lib/domain-id-generator';
 import { CurrentSpecContext } from '<src>/lib/Interfaces';
+import { AddEndpointControl } from './AddEndpointContext';
 
 // DebugCaptureEndpointProvider
 // ----------------------------
@@ -82,7 +83,10 @@ export default function DebugCaptureEndpointProvider({
         strict
         path={`${routeMatch.url}/provide`}
         render={() => (
-          <DebugCaptureProvider onChangeInteractions={onChangeInteractions} />
+          <>
+            <AddEndpointControl activeStep={0} />
+            <DebugCaptureProvider onChangeInteractions={onChangeInteractions} />
+          </>
         )}
       />
 
@@ -93,10 +97,13 @@ export default function DebugCaptureEndpointProvider({
           !interactions ? (
             <Redirect to={`${routeMatch.url}/provide`} />
           ) : (
-            <EndpointsSelector
-              interactions={interactions}
-              onSubmit={onSubmitEndpointLocations}
-            />
+            <>
+              <AddEndpointControl activeStep={1} />
+              <EndpointsSelector
+                interactions={interactions}
+                onSubmit={onSubmitEndpointLocations}
+              />
+            </>
           )
         }
       />
@@ -108,13 +115,16 @@ export default function DebugCaptureEndpointProvider({
           learnableEndpoints.length < 1 ? (
             <Redirect to={`${routeMatch.url}/select`} />
           ) : (
-            <EndpointsLearner
-              endpointLocations={learnableEndpoints}
-              currentEndpoints={currentEndpoints}
-              currentPaths={currentPaths}
-              interactions={interactions || []}
-              onLearned={onSubmit}
-            />
+            <>
+              <AddEndpointControl activeStep={1} />
+              <EndpointsLearner
+                endpointLocations={learnableEndpoints}
+                currentEndpoints={currentEndpoints}
+                currentPaths={currentPaths}
+                interactions={interactions || []}
+                onLearned={onSubmit}
+              />
+            </>
           )
         }
       />
