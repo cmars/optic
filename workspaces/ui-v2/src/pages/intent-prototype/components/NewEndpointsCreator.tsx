@@ -20,18 +20,20 @@ import {
   createPathFromPathComponents,
 } from '<src>/utils';
 
+export interface EndpointPrototypeLocation {
+  path: string;
+  method: string;
+  pathComponents: PathComponentAuthoring[];
+}
+
 export default function NewEndpointsCreator({
   undocumentedUrls,
+  initialEndpoints,
   onSubmit,
 }: {
   undocumentedUrls: IUndocumentedUrl[];
-  onSubmit?: (
-    endpoints: {
-      path: string;
-      method: string;
-      pathComponents: PathComponentAuthoring[];
-    }[]
-  ) => void;
+  initialEndpoints: EndpointPrototypeLocation[];
+  onSubmit?: (endpoints: EndpointPrototypeLocation[]) => void;
 }) {
   const styles = useStyles();
 
@@ -43,7 +45,35 @@ export default function NewEndpointsCreator({
       isParameterized: boolean;
       method: string;
     };
-  }>({});
+  }>(
+    initialEndpoints.reduce(
+      (
+        pathPatterns: {
+          [key: string]: {
+            components: PathComponentAuthoring[];
+            isParameterized: boolean;
+            method: string;
+          };
+        },
+        { pathComponents, method: initialMethod }
+      ) => {
+        let matchesPath = pathMatcher(pathComponents);
+        let path = undocumentedUrls.find(
+          ({ path, method }) => matchesPath(path) && method === initialMethod
+        )?.path;
+        if (path) {
+          pathPatterns[path + initialMethod] = {
+            components: pathComponents,
+            isParameterized: pathComponents.some((c) => c.isParameter),
+            method: initialMethod,
+          };
+        }
+
+        return pathPatterns;
+      },
+      {}
+    )
+  );
 
   const patternMatchedUrls = useMemo(() => {
     let patternMatchers = Object.entries(pathPatterns)
@@ -79,7 +109,22 @@ export default function NewEndpointsCreator({
 
   // URL selection
   // -------------
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<Set<string>>(
+    new Set(
+      patternMatchedUrls
+        .filter(({ path, method }) => {
+          const initialEndpoint = initialEndpoints.find(
+            ({ pathComponents, method: initialMethod }) => {
+              const matchesPath = pathMatcher(pathComponents);
+              return matchesPath(path) && method === initialMethod;
+            }
+          );
+
+          return !!initialEndpoint;
+        })
+        .map(({ path, method }) => path + method)
+    )
+  );
   const onSelect = useCallback(
     (path: string, method: string) => {
       setSelected((previousUrls) => {
@@ -110,12 +155,14 @@ export default function NewEndpointsCreator({
         if (pathComponents) {
           return {
             path: createPathFromPathComponents(pathComponents),
+            url: path,
             method,
             pathComponents,
           };
         } else {
           return {
             path,
+            url: path,
             method,
             pathComponents: urlStringToPathComponents(path),
           };

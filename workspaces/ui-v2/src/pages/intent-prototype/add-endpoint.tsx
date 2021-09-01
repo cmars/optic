@@ -20,6 +20,7 @@ import {
 import DebugCaptureEndpointProvider, {
   EndpointPrototype,
 } from './components/DebugCaptureEndpointProvider';
+import { EndpointPrototypeLocation } from './components/NewEndpointsCreator';
 import ReviewEndpointChanges from './components/ReviewEndpointsChanges';
 import { useAppSelector } from '<src>/store';
 import {
@@ -40,12 +41,16 @@ export default function AddEndpointIntent() {
   const paths: IPath[] =
     useAppSelector((state) => state.paths.results).data || [];
 
-  const [learnedEndpoints, setLearnedEndpoints] = useState<EndpointPrototype[]>(
-    []
-  );
-
   const [interactions, setInteractions] = useState<IHttpInteraction[] | null>(
     null
+  );
+
+  const [learnableEndpoints, setLearnableEndpoints] = useState<
+    EndpointPrototypeLocation[]
+  >([]);
+
+  const [learnedEndpoints, setLearnedEndpoints] = useState<EndpointPrototype[]>(
+    []
   );
 
   const onChangeInteractions = useCallback(
@@ -53,6 +58,13 @@ export default function AddEndpointIntent() {
       setInteractions([...interactions]);
     },
     [setInteractions]
+  );
+
+  const onChangeLearnableEndpoints = useCallback(
+    (endpoints: EndpointPrototypeLocation[]) => {
+      setLearnableEndpoints([...endpoints]);
+    },
+    [setLearnableEndpoints]
   );
 
   const onSubmitEndpointPrototypes = useCallback(
@@ -81,7 +93,9 @@ export default function AddEndpointIntent() {
                 currentEndpoints={endpoints}
                 currentPaths={paths}
                 initialInteractions={interactions}
+                initialLearnableEndpoints={learnableEndpoints}
                 onChangeInteractions={onChangeInteractions}
+                onChangeLearnableEndpoints={onChangeLearnableEndpoints}
                 onSubmit={onSubmitEndpointPrototypes}
               />
             )}

@@ -13,7 +13,9 @@ import { makeStyles, Button } from '@material-ui/core';
 import { useSpectacleContext } from '<src>/contexts/spectacle-provider';
 import { InMemorySpectacle } from '@useoptic/spectacle/build/in-memory';
 import { IUnrecognizedUrl } from '@useoptic/spectacle';
-import NewEndpointsCreator from './NewEndpointsCreator';
+import NewEndpointsCreator, {
+  EndpointPrototypeLocation,
+} from './NewEndpointsCreator';
 import { PathComponentAuthoring, pathMatcher } from '<src>/utils';
 import { generatePathCommands } from '<src>/lib/stable-path-batch-generator';
 import { IEndpoint, IPath } from '<src>/types';
@@ -35,26 +37,24 @@ export type EndpointPrototype = {
   commands: CQRSCommand[];
 };
 
-type EndpointPrototypeLocation = {
-  path: string;
-  method: string;
-  pathComponents: PathComponentAuthoring[];
-};
-
 export default function DebugCaptureEndpointProvider({
   currentEndpoints,
   currentPaths,
 
   initialInteractions,
+  initialLearnableEndpoints,
 
   onChangeInteractions,
+  onChangeLearnableEndpoints,
   onSubmit,
 }: {
   currentEndpoints: IEndpoint[];
   currentPaths: IPath[];
   initialInteractions: IHttpInteraction[] | null;
+  initialLearnableEndpoints: EndpointPrototypeLocation[];
 
   onChangeInteractions: (interactions: IHttpInteraction[]) => void;
+  onChangeLearnableEndpoints: (endpoints: EndpointPrototypeLocation[]) => void;
   onSubmit: (endpoints: EndpointPrototype[]) => void;
 }) {
   const routeMatch = useRouteMatch();
@@ -66,7 +66,7 @@ export default function DebugCaptureEndpointProvider({
 
   const [learnableEndpoints, setLearnableEndpoints] = useState<
     EndpointPrototypeLocation[]
-  >([]);
+  >(initialLearnableEndpoints);
 
   const onChangeInteractionsHandler = useCallback(
     (interactions: IHttpInteraction[]) => {
@@ -79,7 +79,8 @@ export default function DebugCaptureEndpointProvider({
 
   const onSubmitEndpointLocations = useCallback(
     (endpoints: EndpointPrototypeLocation[]) => {
-      setLearnableEndpoints(endpoints);
+      setLearnableEndpoints([...endpoints]);
+      onChangeLearnableEndpoints(endpoints);
       history.push(`${routeMatch.url}/learn`);
     },
     [history, routeMatch.url, setLearnableEndpoints]
@@ -113,6 +114,7 @@ export default function DebugCaptureEndpointProvider({
               <AddEndpointControl activeStep={1} />
               <EndpointsSelector
                 interactions={interactions}
+                initialEndpoints={learnableEndpoints}
                 onSubmit={onSubmitEndpointLocations}
               />
             </>
@@ -269,9 +271,11 @@ async function extractInteractions(
 // ----------------
 function EndpointsSelector({
   interactions,
+  initialEndpoints,
   onSubmit,
 }: {
   interactions: IHttpInteraction[];
+  initialEndpoints: EndpointPrototypeLocation[];
   onSubmit: (endpoints: EndpointPrototypeLocation[]) => void;
 }) {
   const spectacle = useSpectacleContext() as InMemorySpectacle;
@@ -298,6 +302,7 @@ function EndpointsSelector({
     <div>
       {undocumentedUrls && (
         <NewEndpointsCreator
+          initialEndpoints={initialEndpoints}
           undocumentedUrls={undocumentedUrls}
           onSubmit={onSubmitEndpoint}
         />
