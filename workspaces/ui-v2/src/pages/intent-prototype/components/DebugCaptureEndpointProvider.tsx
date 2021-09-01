@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
 import {
+  Link,
   Redirect,
   Route,
   Switch,
   useRouteMatch,
   useHistory,
 } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 
 import { useSpectacleContext } from '<src>/contexts/spectacle-provider';
 import { InMemorySpectacle } from '@useoptic/spectacle/build/in-memory';
@@ -93,6 +94,8 @@ export default function DebugCaptureEndpointProvider({
           <>
             <AddEndpointControl activeStep={0} />
             <DebugCaptureProvider
+              interactions={interactions}
+              providerPath={routeMatch.url}
               onChangeInteractions={onChangeInteractionsHandler}
             />
           </>
@@ -145,18 +148,19 @@ export default function DebugCaptureEndpointProvider({
 // --------------------
 
 function DebugCaptureProvider({
+  interactions,
+  providerPath,
   onChangeInteractions,
 }: {
+  interactions: IHttpInteraction[] | null;
+  providerPath: string;
   onChangeInteractions: (interactions: IHttpInteraction[]) => void;
 }) {
   const styles = useDebugCaptureStyles();
   const spectacle = useSpectacleContext() as InMemorySpectacle;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<Error | null>(null);
-
-  const [interactions, setInteractions] = useState<IHttpInteraction[] | null>(
-    null
-  );
+  const [selectingFile, _setSelectingFile] = useState<boolean>(!interactions);
 
   const onChangeFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let files = e.target.files;
@@ -171,27 +175,49 @@ function DebugCaptureProvider({
       setFileError(new Error('A valid Optic debug capture is required'));
     }
 
-    extractInteractions(selectedFile).then(setInteractions, setFileError);
-  }, [selectedFile, setInteractions, setFileError]);
-
-  useEffect(() => {
-    if (!interactions) return;
-    onChangeInteractions(interactions);
-  }, [interactions]);
+    extractInteractions(selectedFile).then(onChangeInteractions, setFileError);
+  }, [selectedFile, onChangeInteractions, setFileError]);
 
   return (
     <div className={styles.container}>
-      <h3>Adding a new endpoint from a debug capture</h3>
-
-      {!selectedFile ? (
-        <input type="file" onChange={onChangeFile} accept="application/json" />
-      ) : (
+      {interactions && (
         <div>
-          {!interactions && (
-            <>
+          <div className={styles.interactionsSummary}>
+            Extracted {interactions.length} interactions from the capture you've
+            provided
+          </div>
+          <Button
+            component={Link}
+            to={`${providerPath}/select`}
+            variant="contained"
+            color="primary"
+          >
+            Continue
+          </Button>
+          <span className={styles.interactionButtonsDivider}>or</span>
+
+          <input
+            type="file"
+            onChange={onChangeFile}
+            accept="application/json"
+          />
+        </div>
+      )}
+
+      {(selectingFile || selectedFile) && (
+        <div>
+          <h3>Provide a debug capture</h3>
+          {!selectedFile ? (
+            <input
+              type="file"
+              onChange={onChangeFile}
+              accept="application/json"
+            />
+          ) : (
+            <div>
               <div>Filename: {selectedFile.name}</div>
               <div>Size: {selectedFile.size}</div>
-            </>
+            </div>
           )}
         </div>
       )}
@@ -205,6 +231,16 @@ const useDebugCaptureStyles = makeStyles((theme) => ({
   container: {
     marginBottom: theme.spacing(4),
   },
+
+  interactionsSummary: {
+    marginBottom: theme.spacing(2),
+  },
+
+  interactionButtonsDivider: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+
   unrecognizedUrlsList: {},
 }));
 
