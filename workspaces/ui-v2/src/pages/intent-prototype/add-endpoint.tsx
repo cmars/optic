@@ -15,11 +15,6 @@ import {
   CardActionArea,
   CardContent,
   CardActions,
-  Paper,
-  Stepper,
-  Step,
-  StepButton,
-  StepLabel,
 } from '@material-ui/core';
 
 import DebugCaptureEndpointProvider, {
@@ -27,6 +22,7 @@ import DebugCaptureEndpointProvider, {
 } from './components/DebugCaptureEndpointProvider';
 import ReviewEndpointChanges from './components/ReviewEndpointsChanges';
 import { useAppSelector } from '<src>/store';
+import AddEndpointControl from './components/AddEndpointControl';
 import { IEndpoint, IPath } from '<src>/types';
 
 export default function AddEndpointIntent() {
@@ -118,52 +114,6 @@ export default function AddEndpointIntent() {
   );
 }
 
-function AddEndpointControl({
-  intentPath,
-  activeStep,
-}: {
-  intentPath: string;
-  activeStep: number;
-}) {
-  const styles = useStyles();
-
-  return (
-    <div className={styles.controls}>
-      <div className={styles.controlsHeader}>
-        <h4 className={styles.controlsTitle}>Add endpoints</h4>
-
-        <Stepper
-          className={styles.controlsProgress}
-          activeStep={activeStep}
-          alternativeLabel
-        >
-          <Step completed={true}>
-            <StepButton
-              component={Link}
-              to={`${intentPath}/capture-method`}
-              optional={
-                activeStep > 0 && (
-                  <div className={styles.controlsProgressDetails}>
-                    Debug capture
-                  </div>
-                )
-              }
-            >
-              Provide a capture
-            </StepButton>
-          </Step>
-          <Step completed={false}>
-            <StepLabel>Select endpoints</StepLabel>
-          </Step>
-          <Step completed={false}>
-            <StepLabel>Review and edit</StepLabel>
-          </Step>
-        </Stepper>
-      </div>
-    </div>
-  );
-}
-
 function CaptureMethodSelector({ intentPath }: { intentPath: string }) {
   const styles = useStyles();
 
@@ -234,25 +184,6 @@ function CaptureMethodCard({
 
 const useStyles = makeStyles((theme) => ({
   container: {},
-
-  controls: {},
-  controlsHeader: {
-    display: 'flex',
-  },
-  controlsTitle: {
-    ...theme.typography.h6,
-    margin: theme.spacing(1, 0),
-    color: theme.palette.grey[400],
-  },
-  controlsProgress: {
-    background: 'none',
-    flexGrow: 1,
-  },
-  controlsProgressDetails: {
-    textAlign: 'center',
-    fontSize: theme.typography.fontSize - 3,
-  },
-  controlsContent: {},
 
   endpointsList: {
     listStyleType: 'none',
