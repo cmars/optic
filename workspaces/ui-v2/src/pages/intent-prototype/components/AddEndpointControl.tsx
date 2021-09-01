@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import { Stepper, Step, StepButton, StepLabel } from '@material-ui/core';
 
-const steps = [
-  { href: '/capture-method', label: 'Provide a capture' },
-  { href: '/capture-method', label: 'Provide a capture' },
+const STEPS = [
+  { href: '/debug-capture/provide', label: 'Provide a capture' },
+  { href: '/debug-capture/select', label: 'Select endpoints' },
+  { href: '/review', label: 'Review and edit' },
 ];
 
 export default function AddEndpointControl({
@@ -28,17 +29,17 @@ export default function AddEndpointControl({
           activeStep={activeStep}
           alternativeLabel
         >
-          <Step completed={true}>
-            <StepButton component={Link} to={`${intentPath}/capture-method`}>
-              Provide a capture
-            </StepButton>
-          </Step>
-          <Step completed={false}>
-            <StepLabel>Select endpoints</StepLabel>
-          </Step>
-          <Step completed={false}>
-            <StepLabel>Review and edit</StepLabel>
-          </Step>
+          {STEPS.map(({ href, label }, index) => (
+            <Step completed={activeStep > index} key={label}>
+              {activeStep >= index ? (
+                <StepButton component={Link} to={`${intentPath}/${href}`}>
+                  {label}
+                </StepButton>
+              ) : (
+                <StepLabel>{label}</StepLabel>
+              )}
+            </Step>
+          ))}
         </Stepper>
       </div>
     </div>
