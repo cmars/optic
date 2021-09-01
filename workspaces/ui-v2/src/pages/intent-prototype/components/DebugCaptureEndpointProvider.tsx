@@ -63,6 +63,7 @@ export default function DebugCaptureEndpointProvider({
   const onChangeInteractions = useCallback(
     (interactions: IHttpInteraction[]) => {
       setInteractions(interactions);
+      history.push(`${routeMatch.url}/select`);
     },
     [setInteractions]
   );
@@ -81,11 +82,23 @@ export default function DebugCaptureEndpointProvider({
         strict
         path={`${routeMatch.url}/provide`}
         render={() => (
-          <DebugCaptureProvider
-            onChangeInteractions={onChangeInteractions}
-            onSubmit={onSubmitEndpointLocations}
-          />
+          <DebugCaptureProvider onChangeInteractions={onChangeInteractions} />
         )}
+      />
+
+      <Route
+        strict
+        path={`${routeMatch.url}/select`}
+        render={() =>
+          !interactions ? (
+            <Redirect to={`${routeMatch.url}/provide`} />
+          ) : (
+            <EndpointsSelector
+              interactions={interactions}
+              onSubmit={onSubmitEndpointLocations}
+            />
+          )
+        }
       />
 
       <Route
@@ -93,7 +106,7 @@ export default function DebugCaptureEndpointProvider({
         path={`${routeMatch.url}/learn`}
         render={(props) =>
           learnableEndpoints.length < 1 ? (
-            <Redirect to={`${routeMatch.url}/provide`} />
+            <Redirect to={`${routeMatch.url}/select`} />
           ) : (
             <EndpointsLearner
               endpointLocations={learnableEndpoints}
@@ -114,22 +127,17 @@ export default function DebugCaptureEndpointProvider({
 
 function DebugCaptureProvider({
   onChangeInteractions,
-  onSubmit,
 }: {
   onChangeInteractions: (interactions: IHttpInteraction[]) => void;
-  onSubmit: (endpoints: EndpointPrototypeLocation[]) => void;
 }) {
   const styles = useDebugCaptureStyles();
   const spectacle = useSpectacleContext() as InMemorySpectacle;
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<Error | null>(null);
-  const [diffError, setDiffError] = useState<Error | null>(null);
+
   const [interactions, setInteractions] = useState<IHttpInteraction[] | null>(
     null
   );
-  const [undocumentedUrls, setUndocumentedUrls] = useState<
-    IUnrecognizedUrl[] | null
-  >(null);
 
   const onChangeFile = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     let files = e.target.files;
@@ -152,22 +160,6 @@ function DebugCaptureProvider({
     onChangeInteractions(interactions);
   }, [interactions]);
 
-  useEffect(() => {
-    if (!interactions) return;
-
-    extractUndocumentedUrls(interactions, spectacle).then(
-      setUndocumentedUrls,
-      setDiffError
-    );
-  }, [interactions, spectacle, setUndocumentedUrls, setDiffError]);
-
-  const onSubmitEndpoint = useCallback(
-    (endpoints: EndpointPrototypeLocation[]) => {
-      if (onSubmit) onSubmit(endpoints);
-    },
-    [onSubmit]
-  );
-
   return (
     <div className={styles.container}>
       <h3>Adding a new endpoint from a debug capture</h3>
@@ -182,18 +174,10 @@ function DebugCaptureProvider({
               <div>Size: {selectedFile.size}</div>
             </>
           )}
-
-          {undocumentedUrls && (
-            <NewEndpointsCreator
-              undocumentedUrls={undocumentedUrls}
-              onSubmit={onSubmitEndpoint}
-            />
-          )}
         </div>
       )}
 
       {fileError && <div>{fileError.message}</div>}
-      {diffError && <div>{diffError.message}</div>}
     </div>
   );
 }
@@ -224,6 +208,48 @@ async function extractInteractions(
   }
 
   return interactions as IHttpInteraction[];
+}
+
+// EndpointSelector
+// ----------------
+function EndpointsSelector({
+  interactions,
+  onSubmit,
+}: {
+  interactions: IHttpInteraction[];
+  onSubmit: (endpoints: EndpointPrototypeLocation[]) => void;
+}) {
+  const spectacle = useSpectacleContext() as InMemorySpectacle;
+  const [diffError, setDiffError] = useState<Error | null>(null);
+  const [undocumentedUrls, setUndocumentedUrls] = useState<
+    IUnrecognizedUrl[] | null
+  >(null);
+
+  useEffect(() => {
+    extractUndocumentedUrls(interactions, spectacle).then(
+      setUndocumentedUrls,
+      setDiffError
+    );
+  }, [interactions, spectacle, setUndocumentedUrls, setDiffError]);
+
+  const onSubmitEndpoint = useCallback(
+    (endpoints: EndpointPrototypeLocation[]) => {
+      if (onSubmit) onSubmit(endpoints);
+    },
+    [onSubmit]
+  );
+
+  return (
+    <div>
+      {undocumentedUrls && (
+        <NewEndpointsCreator
+          undocumentedUrls={undocumentedUrls}
+          onSubmit={onSubmitEndpoint}
+        />
+      )}
+      {diffError && <div>{diffError.message}</div>}
+    </div>
+  );
 }
 
 async function extractUndocumentedUrls(
