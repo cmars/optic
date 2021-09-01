@@ -44,26 +44,33 @@ export default function DebugCaptureEndpointProvider({
   currentEndpoints,
   currentPaths,
 
+  initialInteractions,
+
+  onChangeInteractions,
   onSubmit,
 }: {
   currentEndpoints: IEndpoint[];
   currentPaths: IPath[];
+  initialInteractions: IHttpInteraction[] | null;
+
+  onChangeInteractions: (interactions: IHttpInteraction[]) => void;
   onSubmit: (endpoints: EndpointPrototype[]) => void;
 }) {
   const routeMatch = useRouteMatch();
   const history = useHistory();
 
   const [interactions, setInteractions] = useState<IHttpInteraction[] | null>(
-    null
+    initialInteractions
   );
 
   const [learnableEndpoints, setLearnableEndpoints] = useState<
     EndpointPrototypeLocation[]
   >([]);
 
-  const onChangeInteractions = useCallback(
+  const onChangeInteractionsHandler = useCallback(
     (interactions: IHttpInteraction[]) => {
-      setInteractions(interactions);
+      setInteractions([...interactions]);
+      onChangeInteractions(interactions);
       history.push(`${routeMatch.url}/select`);
     },
     [setInteractions]
@@ -85,7 +92,9 @@ export default function DebugCaptureEndpointProvider({
         render={() => (
           <>
             <AddEndpointControl activeStep={0} />
-            <DebugCaptureProvider onChangeInteractions={onChangeInteractions} />
+            <DebugCaptureProvider
+              onChangeInteractions={onChangeInteractionsHandler}
+            />
           </>
         )}
       />

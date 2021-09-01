@@ -28,6 +28,7 @@ import {
   Provider as AddEndpointContext,
 } from './components/AddEndpointContext';
 import { IEndpoint, IPath } from '<src>/types';
+import { IHttpInteraction } from '@useoptic/optic-domain';
 
 export default function AddEndpointIntent() {
   const styles = useStyles();
@@ -43,6 +44,17 @@ export default function AddEndpointIntent() {
     []
   );
 
+  const [interactions, setInteractions] = useState<IHttpInteraction[] | null>(
+    null
+  );
+
+  const onChangeInteractions = useCallback(
+    (interactions: IHttpInteraction[]) => {
+      setInteractions([...interactions]);
+    },
+    [setInteractions]
+  );
+
   const onSubmitEndpointPrototypes = useCallback(
     (endpoints: EndpointPrototype[]) => {
       setLearnedEndpoints(endpoints);
@@ -53,7 +65,7 @@ export default function AddEndpointIntent() {
 
   const addEndpointContext = createAddEndpointContext(
     routeMatch.url,
-    [],
+    interactions,
     learnedEndpoints
   );
 
@@ -68,6 +80,8 @@ export default function AddEndpointIntent() {
               <DebugCaptureEndpointProvider
                 currentEndpoints={endpoints}
                 currentPaths={paths}
+                initialInteractions={interactions}
+                onChangeInteractions={onChangeInteractions}
                 onSubmit={onSubmitEndpointPrototypes}
               />
             )}

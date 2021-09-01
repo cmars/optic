@@ -66,18 +66,18 @@ function useStats() {
 // ------------------
 const STEPS = [
   {
-    href: '/debug-capture/provide',
+    href: 'debug-capture/provide',
     label: 'Provide a capture',
     completed: (stats: AddEndpointContext['stats']) =>
       !!stats.captureSize && stats.captureSize > 0,
   },
   {
-    href: '/debug-capture/select',
+    href: 'debug-capture/select',
     label: 'Select endpoints',
     completed: (stats: AddEndpointContext['stats']) =>
       !!stats.selectedEndpointsAmount && stats.selectedEndpointsAmount > 0,
   },
-  { href: '/review', label: 'Review and edit', completed: () => false },
+  { href: 'review', label: 'Review and edit', completed: () => false },
 ];
 
 export function AddEndpointControl({ activeStep }: { activeStep: number }) {
@@ -95,18 +95,27 @@ export function AddEndpointControl({ activeStep }: { activeStep: number }) {
           className={styles.controlsProgress}
           activeStep={activeStep}
           alternativeLabel
+          nonLinear
         >
-          {STEPS.map(({ href, label, completed }) => (
-            <Step completed={completed(stats)} key={label}>
-              {completed(stats) ? (
-                <StepButton component={Link} to={`${intentPath}/${href}`}>
-                  {label}
-                </StepButton>
-              ) : (
-                <StepLabel>{label}</StepLabel>
-              )}
-            </Step>
-          ))}
+          {STEPS.map(({ href, label, completed }, index) => {
+            let previousStep = (index > 0 && STEPS[index - 1]) || null;
+
+            let selectable = previousStep
+              ? previousStep.completed(stats)
+              : true;
+
+            return (
+              <Step completed={completed(stats)} key={label}>
+                {selectable ? (
+                  <StepButton component={Link} to={`${intentPath}/${href}`}>
+                    {label}
+                  </StepButton>
+                ) : (
+                  <StepLabel>{label}</StepLabel>
+                )}
+              </Step>
+            );
+          })}
         </Stepper>
       </div>
     </div>
