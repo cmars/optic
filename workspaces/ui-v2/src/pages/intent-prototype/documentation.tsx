@@ -19,10 +19,7 @@ import {
 
 import { EndpointName } from '<src>/components';
 
-import DebugCaptureEndpointProvider, {
-  EndpointPrototype,
-} from './components/DebugCaptureEndpointProvider';
-import ReviewEndpointChanges from './components/ReviewEndpointsChanges';
+import AddEndpointIntent from './add-endpoint';
 import { useFetchEndpoints } from '<src>/hooks/useFetchEndpoints';
 import { useAppSelector } from '<src>/store';
 import { IEndpoint, IPath } from '<src>/types';
@@ -30,7 +27,6 @@ import { IEndpoint, IPath } from '<src>/types';
 export default function DocumentationPage() {
   const styles = useStyles();
   const routeMatch = useRouteMatch();
-  const history = useHistory();
 
   useFetchEndpoints();
   const endpoints: IEndpoint[] =
@@ -38,62 +34,13 @@ export default function DocumentationPage() {
   const paths: IPath[] =
     useAppSelector((state) => state.paths.results).data || [];
 
-  const [learnedEndpoints, setLearnedEndpoints] = useState<EndpointPrototype[]>(
-    []
-  );
-
-  const onSubmitEndpointPrototypes = useCallback(
-    (endpoints: EndpointPrototype[]) => {
-      setLearnedEndpoints(endpoints);
-      history.push(`${routeMatch.url}/add/review`);
-    },
-    [history, routeMatch.url]
-  );
-
   return (
     <div className={styles.pageContainer}>
       <Switch>
         <Route
           strict
-          path={`${routeMatch.url}/add/debug-capture`}
-          render={() => (
-            <DebugCaptureEndpointProvider
-              currentEndpoints={endpoints}
-              currentPaths={paths}
-              onSubmit={onSubmitEndpointPrototypes}
-            />
-          )}
-        />
-
-        <Route
-          strict
-          path={`${routeMatch.url}/add/other`}
-          render={(props) => (
-            <div>Interested in this capture method? Let us know</div>
-          )}
-        />
-
-        <Route
-          strict
-          path={`${routeMatch.url}/add/review`}
-          render={(props) =>
-            learnedEndpoints.length < 1 ? (
-              <Redirect to={`${routeMatch.url}/add`} />
-            ) : (
-              <ReviewEndpointChanges
-                learnedEndpoints={learnedEndpoints}
-                rootPath={routeMatch.url}
-              />
-            )
-          }
-        />
-
-        <Route
-          strict
           path={`${routeMatch.url}/add`}
-          render={(props) => (
-            <CaptureMethodSelector documentationPath={routeMatch.url} />
-          )}
+          component={AddEndpointIntent}
         />
 
         <Route
