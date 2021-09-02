@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState, useCallback } from 'react';
+import React, { FC, useEffect, useMemo, useState, useCallback } from 'react';
 import {
   Link,
   Switch,
@@ -17,7 +17,7 @@ import {
   useChangelogEndpointPageLink,
 } from '<src>/components/navigation/Routes';
 
-import { createReduxStore } from '<src>/store';
+import { endpointActions, useAppDispatch } from '<src>/store';
 import { EndpointPrototype } from './DebugCaptureEndpointProvider';
 import {
   CommitMessageModal,
@@ -28,7 +28,6 @@ import { useSpectacleContext } from '<src>/contexts/spectacle-provider';
 import { ChangelogRootPage as ChangelogList } from '<src>/pages/changelog/ChangelogListPage';
 import { ChangelogRootComponent as ChangelogEndpoint } from '<src>/pages/changelog/ChangelogEndpointRootPage';
 
-import { useFetchEndpoints } from '<src>/hooks/useFetchEndpoints';
 import { CQRSCommand } from '@useoptic/optic-domain';
 import { IForkableSpectacle } from '@useoptic/spectacle';
 
@@ -83,7 +82,7 @@ function ReviewEndpointsChanges({
 }) {
   const routeMatch = useRouteMatch();
 
-  useFetchEndpoints();
+  useFetchLearnedEndpoints(learnedEndpoints);
   const changelogPages = useChangelogPages();
   const changelogEndpointPageLink = useChangelogEndpointPageLink();
 
@@ -182,6 +181,24 @@ async function commitCommands(
     debugger;
   }
 }
+
+export const useFetchLearnedEndpoints = (
+  learnedEndpoints: EndpointPrototype[]
+) => {
+  const dispatch = useAppDispatch();
+  const spectacle = useSpectacleContext();
+  useEffect(() => {
+    dispatch(
+      endpointActions.fetchEndpoints({
+        spectacle,
+        include: learnedEndpoints.map(({ pathId, method }) => ({
+          pathId,
+          method,
+        })),
+      })
+    );
+  }, [dispatch, spectacle, learnedEndpoints]);
+};
 
 const ReviewEndpoint: FC<
   RouteComponentProps<{

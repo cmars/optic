@@ -143,94 +143,106 @@ export type EndpointQueryResults = {
 export const endpointQueryResultsToJson = (
   { endpoints }: EndpointQueryResults,
   endpointChanges: EndpointChangeQueryResults | null,
-  includeChanges: boolean
+  includeChanges: boolean,
+  included?: { pathId: string; method: string }[]
 ): {
   endpoints: IEndpoint[];
   changes: Record<string, ChangeType>;
 } => {
   const changes: Record<string, ChangeType> = {};
-  const mappedEndpoints = endpoints.map((endpoint) => {
-    if (endpoint.query) {
-      const change = convertSpectacleChangeToChangeType(endpoint.query.changes);
-      if (change) {
-        changes[endpoint.query.id] = change;
-      }
-    }
-    return {
-      id: endpoint.id,
-      pathId: endpoint.pathId,
-      method: endpoint.method,
-      description: endpoint.contributions.description || '',
-      purpose: endpoint.contributions.purpose || '',
-      isRemoved: endpoint.isRemoved,
-      fullPath: endpoint.pathPattern,
-      pathParameters: endpoint.pathComponents.map((path) => ({
-        id: path.id,
-        name: path.name,
-        isParameterized: path.isParameterized,
-        description: path.contributions.description || '',
-        endpointId: endpoint.id,
-      })),
-      query:
-        endpoint.query && endpoint.query.rootShapeId
-          ? {
-              queryParametersId: endpoint.query.id,
-              rootShapeId: endpoint.query.rootShapeId,
-              isRemoved: endpoint.query.isRemoved,
-              description: endpoint.query.contributions.description || '',
-              endpointId: endpoint.id,
-              pathId: endpoint.pathId,
-              method: endpoint.method,
-            }
-          : null,
-      requests: endpoint.requests.map((request) => {
-        const change = convertSpectacleChangeToChangeType(request.changes);
+  const mappedEndpoints = endpoints
+    .filter(
+      (endpoint) =>
+        !included ||
+        included.some(
+          ({ pathId, method }) =>
+            pathId === endpoint.pathId && method === endpoint.method
+        )
+    )
+    .map((endpoint) => {
+      if (endpoint.query) {
+        const change = convertSpectacleChangeToChangeType(
+          endpoint.query.changes
+        );
         if (change) {
-          changes[request.id] = change;
+          changes[endpoint.query.id] = change;
         }
-        return {
-          requestId: request.id,
-          body: request.body
+      }
+      return {
+        id: endpoint.id,
+        pathId: endpoint.pathId,
+        method: endpoint.method,
+        description: endpoint.contributions.description || '',
+        purpose: endpoint.contributions.purpose || '',
+        isRemoved: endpoint.isRemoved,
+        fullPath: endpoint.pathPattern,
+        pathParameters: endpoint.pathComponents.map((path) => ({
+          id: path.id,
+          name: path.name,
+          isParameterized: path.isParameterized,
+          description: path.contributions.description || '',
+          endpointId: endpoint.id,
+        })),
+        query:
+          endpoint.query && endpoint.query.rootShapeId
             ? {
-                rootShapeId: request.body.rootShapeId,
-                contentType: request.body.contentType,
+                queryParametersId: endpoint.query.id,
+                rootShapeId: endpoint.query.rootShapeId,
+                isRemoved: endpoint.query.isRemoved,
+                description: endpoint.query.contributions.description || '',
+                endpointId: endpoint.id,
+                pathId: endpoint.pathId,
+                method: endpoint.method,
               }
             : null,
-          description: request.contributions.description || '',
-          endpointId: endpoint.id,
-          pathId: endpoint.pathId,
-          method: endpoint.method,
-          isRemoved: request.isRemoved,
-        };
-      }),
-      // Group by status code
-      responsesByStatusCode: groupBy(
-        endpoint.responses.map((response) => {
-          const change = convertSpectacleChangeToChangeType(response.changes);
+        requests: endpoint.requests.map((request) => {
+          const change = convertSpectacleChangeToChangeType(request.changes);
           if (change) {
-            changes[response.id] = change;
+            changes[request.id] = change;
           }
           return {
-            responseId: response.id,
-            statusCode: response.statusCode,
-            description: response.contributions.description || '',
+            requestId: request.id,
+            body: request.body
+              ? {
+                  rootShapeId: request.body.rootShapeId,
+                  contentType: request.body.contentType,
+                }
+              : null,
+            description: request.contributions.description || '',
             endpointId: endpoint.id,
             pathId: endpoint.pathId,
             method: endpoint.method,
-            isRemoved: response.isRemoved,
-            body:
-              response.bodies.length >= 1
-                ? {
-                    rootShapeId: response.bodies[0].rootShapeId,
-                    contentType: response.bodies[0].contentType,
-                  }
-                : null,
+            isRemoved: request.isRemoved,
           };
         }),
-        'statusCode'
-      ),
-    };
-  });
+        // Group by status code
+        responsesByStatusCode: groupBy(
+          endpoint.responses.map((response) => {
+            const change = convertSpectacleChangeToChangeType(response.changes);
+            if (change) {
+              changes[response.id] = change;
+            }
+            return {
+              responseId: response.id,
+              statusCode: response.statusCode,
+              description: response.contributions.description || '',
+              endpointId: endpoint.id,
+              pathId: endpoint.pathId,
+              method: endpoint.method,
+              isRemoved: response.isRemoved,
+              body:
+                response.bodies.length >= 1
+                  ? {
+                      rootShapeId: response.bodies[0].rootShapeId,
+                      contentType: response.bodies[0].contentType,
+                    }
+                  : null,
+            };
+          }),
+          'statusCode'
+        ),
+      };
+    });
 
   if (endpointChanges) {
     endpointChanges.endpointChanges.endpoints.forEach(
@@ -246,8 +258,12 @@ export const endpointQueryResultsToJson = (
 
 export const fetchEndpoints = createAsyncThunk<
   ReturnType<typeof endpointQueryResultsToJson>,
-  { spectacle: IForkableSpectacle; sinceBatchCommitId?: string }
->('FETCH_ENDPOINTS', async ({ spectacle, sinceBatchCommitId }) => {
+  {
+    spectacle: IForkableSpectacle;
+    sinceBatchCommitId?: string;
+    include?: { pathId: string; method: string }[];
+  }
+>('FETCH_ENDPOINTS', async ({ spectacle, sinceBatchCommitId, include }) => {
   try {
     const resultsPromise = spectacle.query<
       EndpointQueryResults,
@@ -289,7 +305,8 @@ export const fetchEndpoints = createAsyncThunk<
     return endpointQueryResultsToJson(
       results.data!,
       endpointChanges?.data || null,
-      sinceBatchCommitId !== undefined
+      sinceBatchCommitId !== undefined,
+      include
     );
   } catch (e) {
     console.error(e);
