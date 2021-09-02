@@ -34,10 +34,10 @@ import { IForkableSpectacle } from '@useoptic/spectacle';
 
 export default function ReviewEndpointsChangesContainer({
   learnedEndpoints,
-  rootPath,
+  documentationPath,
 }: {
   learnedEndpoints: EndpointPrototype[];
-  rootPath: string;
+  documentationPath: string;
 }) {
   const spectacle = useSpectacleContext();
   const history = useHistory();
@@ -47,14 +47,12 @@ export default function ReviewEndpointsChangesContainer({
     [learnedEndpoints]
   );
 
-  let simulatedStore = useMemo(createReduxStore, [learnedEndpoints]);
-
   let onCommit = useCallback(
     async (commands, commitMessage) => {
       await commitCommands(commands, commitMessage, spectacle);
-      history.push(rootPath);
+      history.push(documentationPath);
     },
-    [spectacle, history]
+    [spectacle, history, documentationPath]
   );
 
   return (

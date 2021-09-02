@@ -10,19 +10,22 @@ import {
 } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import {
+  AppBar,
   Button,
   Card,
   CardActionArea,
   CardContent,
   CardActions,
+  Toolbar,
 } from '@material-ui/core';
 
-import { EndpointName } from '<src>/components';
+import { EndpointName, Page } from '<src>/components';
 
 import AddEndpointIntent from './add-endpoint';
 import { useFetchEndpoints } from '<src>/hooks/useFetchEndpoints';
 import { useAppSelector } from '<src>/store';
 import { IEndpoint, IPath } from '<src>/types';
+import * as Theme from '<src>/styles/theme';
 
 export default function DocumentationPage() {
   const styles = useStyles();
@@ -36,45 +39,57 @@ export default function DocumentationPage() {
 
   return (
     <div className={styles.pageContainer}>
-      <Switch>
-        <Route
-          strict
-          path={`${routeMatch.url}/add`}
-          component={AddEndpointIntent}
-        />
+      <AppBar position="static" color="primary">
+        <Toolbar>
+          <Button to={routeMatch.url} component={Link} color="inherit">
+            Docs
+          </Button>
+        </Toolbar>
+      </AppBar>
 
-        <Route
-          render={(props) => (
-            <>
-              {endpoints && endpoints.length > 0 ? (
-                <ul className={styles.endpointsList}>
-                  {endpoints?.map((endpoint) => (
-                    <li key={endpoint.id}>
-                      <EndpointName
-                        fontSize={19}
-                        leftPad={0}
-                        method={endpoint.method}
-                        fullPath={endpoint.fullPath}
-                      />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div>No documented endpoints yet</div>
-              )}
+      <div className={styles.pageBody}>
+        <Switch>
+          <Route
+            strict
+            path={`${routeMatch.url}/add`}
+            render={() => (
+              <AddEndpointIntent documentationPath={routeMatch.url} />
+            )}
+          />
 
-              <Button
-                color="primary"
-                to={`${routeMatch.url}/add`}
-                component={Link}
-                variant="contained"
-              >
-                Add Endpoint
-              </Button>
-            </>
-          )}
-        />
-      </Switch>
+          <Route
+            render={(props) => (
+              <>
+                {endpoints && endpoints.length > 0 ? (
+                  <ul className={styles.endpointsList}>
+                    {endpoints?.map((endpoint) => (
+                      <li key={endpoint.id}>
+                        <EndpointName
+                          fontSize={19}
+                          leftPad={0}
+                          method={endpoint.method}
+                          fullPath={endpoint.fullPath}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div>No documented endpoints yet</div>
+                )}
+
+                <Button
+                  color="primary"
+                  to={`${routeMatch.url}/add`}
+                  component={Link}
+                  variant="contained"
+                >
+                  Add Endpoint
+                </Button>
+              </>
+            )}
+          />
+        </Switch>
+      </div>
     </div>
   );
 }
@@ -152,7 +167,8 @@ function CaptureMethodCard({
 }
 
 const useStyles = makeStyles((theme) => ({
-  pageContainer: {
+  pageContainer: {},
+  pageBody: {
     padding: theme.spacing(3, 4),
   },
 

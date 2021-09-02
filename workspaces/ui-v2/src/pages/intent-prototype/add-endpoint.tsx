@@ -31,7 +31,11 @@ import {
 import { IEndpoint, IPath } from '<src>/types';
 import { IHttpInteraction } from '@useoptic/optic-domain';
 
-export default function AddEndpointIntent() {
+export default function AddEndpointIntent({
+  documentationPath,
+}: {
+  documentationPath: string;
+}) {
   const styles = useStyles();
   const routeMatch = useRouteMatch();
   const history = useHistory();
@@ -123,7 +127,7 @@ export default function AddEndpointIntent() {
                   <AddEndpointControl activeStep={2} />
                   <ReviewEndpointChanges
                     learnedEndpoints={learnedEndpoints}
-                    rootPath={routeMatch.url}
+                    documentationPath={documentationPath}
                   />
                 </>
               )
